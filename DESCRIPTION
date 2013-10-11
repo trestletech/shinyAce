@@ -17,3 +17,4 @@ Collate:
     'init.R'
     'render-htable.R'
     'aceEditor.R'
+    'updateAceEditor.R'

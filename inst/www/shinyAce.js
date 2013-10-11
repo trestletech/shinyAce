@@ -43,3 +43,20 @@ $.extend(shinyAceInputBinding, {
 
 Shiny.inputBindings.register(shinyAceInputBinding);
 })();
+
+
+Shiny.addCustomMessageHandler('shinyAce', function(data) {
+  var id = data.id;
+  var $el = $('#' + id);
+  
+  var theme = data.theme;
+  var mode = data.mode;
+  
+  if (theme){
+    editor.setTheme("ace/theme/" + theme);
+  }
+  
+  if (mode){
+    editor.getSession().setMode("ace/mode/" + mode);
+  }
+});

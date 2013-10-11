@@ -24,3 +24,4 @@ aceEditor <- function(outputId, mode="plain_text", theme="textmate", height="400
                       sep=""))
   )
 }
+
