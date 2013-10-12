@@ -9,8 +9,7 @@ shinyServer(function(input, output, session) {
   })
   
   observe({
-    print("Updating...")
-    updateAceEditor(session, "ace", input$theme, input$mode)
+    updateAceEditor(session, "ace", theme=input$theme, mode=input$mode)
   })
   
 })

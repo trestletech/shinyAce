@@ -24,6 +24,6 @@ shinyUI(
   
   # Show the simple table
   mainPanel(
-    aceEditor("ace")
+    aceEditor("ace", value="function sayHi(foo){\n  alert('hi');\n}")
   )
 ))

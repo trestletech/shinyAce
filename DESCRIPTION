@@ -16,5 +16,6 @@ BugReports: https://github.com/trestletech/shinyAce/issues
 Collate:
     'init.R'
     'render-htable.R'
-    'aceEditor.R'
-    'updateAceEditor.R'
+    'ace-editor.R'
+    'js-quote.R'
+    'update-ace-editor.R'

@@ -2,7 +2,7 @@
 \alias{updateAceEditor}
 \title{Update Ace Editor}
 \usage{
-  updateAceEditor(session, editorId, theme, mode)
+  updateAceEditor(session, editorId, value, theme, mode)
 }
 \arguments{
   \item{session}{The Shiny session to whom the editor

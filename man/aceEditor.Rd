@@ -2,8 +2,7 @@
 \alias{aceEditor}
 \title{Render Ace}
 \usage{
-  aceEditor(outputId, mode = "plain_text",
-    theme = "textmate", height = "400px")
+  aceEditor(outputId, value, mode, theme, height = "400px")
 }
 \arguments{
   \item{outputId}{The ID associated with this element}

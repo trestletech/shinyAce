@@ -1,19 +1,4 @@
 (function(){
-  
-var shinyAceOutputBinding = new Shiny.OutputBinding();
-$.extend(shinyAceOutputBinding, {
-  find: function(scope) {
-    return $(scope).find('.shiny-ace');
-  },
-  renderValue: function(el, value) {
-    if (!value){
-      return;
-    }
-    
-    $(el).data('aceEditor').setValue(value);
-  }
-});
-Shiny.outputBindings.register(shinyAceOutputBinding, 'shinyAce.aceBinding');
 
 var shinyAceInputBinding = new Shiny.InputBinding();
 $.extend(shinyAceInputBinding, {
@@ -49,14 +34,17 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
   var id = data.id;
   var $el = $('#' + id);
   
-  var theme = data.theme;
-  var mode = data.mode;
+  var editor = $el.data('aceEditor');
   
-  if (theme){
-    editor.setTheme("ace/theme/" + theme);
+  if (data.theme){
+    editor.setTheme("ace/theme/" + data.theme);
   }
   
-  if (mode){
-    editor.getSession().setMode("ace/mode/" + mode);
+  if (data.mode){
+    editor.getSession().setMode("ace/mode/" + data.mode);
+  }
+  
+  if (data.value){
+    editor.getSession().setValue(data.value);
   }
 });
