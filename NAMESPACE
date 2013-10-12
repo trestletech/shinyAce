@@ -1,4 +1,2 @@
 export(aceEditor)
-export(renderHtable)
 export(updateAceEditor)
-importFrom(shiny,exprToFunction)

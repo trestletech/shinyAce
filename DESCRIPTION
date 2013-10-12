@@ -15,7 +15,6 @@ Imports:
 BugReports: https://github.com/trestletech/shinyAce/issues
 Collate:
     'init.R'
-    'render-htable.R'
     'ace-editor.R'
     'js-quote.R'
     'update-ace-editor.R'
