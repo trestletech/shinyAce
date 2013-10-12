@@ -9,6 +9,10 @@ in `ui.R` or afterwards using the `updateAceEditor()` function. The editor
 registers itself as a reactive Shiny input, so the current value of the
 editor can easily be pulled from `server.R` using `input$yourEditorsName`.
 
+![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce.png)
+
+Or view an [interactive example](http://bit.ly/160IgdO).
+
 Installation
 ------------
 
