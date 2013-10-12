@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="shinyAce : Integrating the Ace Editor with Shiny" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>shinyAce</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/trestletech/shinyAce">View on GitHub</a>
+
+          <h1 id="project_title">shinyAce</h1>
+          <h2 id="project_tagline">Integrating the Ace Editor with Shiny</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/trestletech/shinyAce/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/trestletech/shinyAce/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="shinyace" class="anchor" href="#shinyace"><span class="octicon octicon-link"></span></a>shinyAce</h1>
+
+<p>The <code>shinyAce</code> package enables Shiny application developers to use the 
+<a href="http://ace.c9.io/#nav=about">Ace text editor</a> in their applications. All
+current modes (languages) and themes are supported in this package. The 
+mode, theme, and current text can be defined when the element is initialized 
+in <code>ui.R</code> or afterwards using the <code>updateAceEditor()</code> function. The editor
+registers itself as a reactive Shiny input, so the current value of the
+editor can easily be pulled from <code>server.R</code> using <code>input$yourEditorsName</code>.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>You can install the latest version of the code using the <code>devtools</code> R package.
+This package uses a new proposed feature in Shiny which must be specifically
+installed, as well.</p>
+
+<pre><code># Install devtools, if you haven't already.
+install.packages("devtools")
+
+library(devtools)
+install_github("shinyAce", "trestletech")
+</code></pre>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>The development of this project was generously sponsored by the <a href="http://www.irsn.fr/EN/Pages/home.aspx">Institut de 
+Radioprotection et de Sûreté Nucléaire</a> 
+and performed by <a href="http://trestletech.com">Jeff Allen</a>. The code is
+licensed under The MIT License (MIT).</p>
+
+<p>Copyright (c) 2013 Institut de Radioprotection et de Sûreté Nucléaire</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">shinyAce maintained by <a href="https://github.com/trestletech">trestletech</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-43159940-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
