@@ -11,7 +11,7 @@ License: MIT
 Depends:
     R (>= 2.15.0)
 Imports:
-    shiny (>= 0.7.0.99)
+    shiny (>= 0.7.0)
 BugReports: https://github.com/trestletech/shinyAce/issues
 Collate:
     'init.R'
