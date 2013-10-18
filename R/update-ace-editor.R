@@ -15,7 +15,7 @@ updateAceEditor <- function(session, editorId, value, theme, mode){
   theList <- list(id=editorId)
   
   if (!missing(value)){
-    theList["val"] <- jsQuote(value)
+    theList["value"] <- value
   }
   if (!missing(theme)){
     theList["theme"] <- theme

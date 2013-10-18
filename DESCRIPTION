@@ -12,6 +12,8 @@ Depends:
     R (>= 2.15.0)
 Imports:
     shiny (>= 0.7.0)
+Suggests:
+    testthat
 BugReports: https://github.com/trestletech/shinyAce/issues
 Collate:
     'init.R'
