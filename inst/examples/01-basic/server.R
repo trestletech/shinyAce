@@ -12,4 +12,14 @@ shinyServer(function(input, output, session) {
     updateAceEditor(session, "ace", theme=input$theme, mode=input$mode)
   })
   
+  observe({
+    if (input$reset == 0){
+      return(NULL)
+    }
+    
+    updateAceEditor(session, "ace", value="createData <- function(rows){
+  data.frame(col1=1:rows, col2=rnorm(rows))
+}")
+  })
+  
 })

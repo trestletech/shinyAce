@@ -13,7 +13,7 @@ aceEditor <- function(outputId, value, mode, theme, height="400px"){
     js <- paste(js, "editor.getSession().setMode('ace/mode/",mode,"');", sep="")
   }
   if (!missing(value)){
-    js <- paste(js, "editor.setValue(", jsQuote(value), ");", sep="")
+    js <- paste(js, "editor.setValue(", jsQuote(value), ", -1);", sep="")
   }  
   js <- paste(js, "$('#", outputId, "').data('aceEditor',editor);", sep="")
   
@@ -28,7 +28,7 @@ aceEditor <- function(outputId, value, mode, theme, height="400px"){
               validateCssUnit(height)
         )
     ),
-    tags$script(type="text/javascript", js)
+    tags$script(type="text/javascript", HTML(js))
   )
 }
 

@@ -17,6 +17,7 @@ shinyUI(
   sidebarPanel(
     selectInput("mode", "Mode: ", choices=modes, selected="plain_text"),
     selectInput("theme", "Theme: ", choices=themes, selected="textmate"),
+    actionButton("reset", "Reset Text"),
     HTML("<hr />"),
     helpText(HTML("A simple Shiny Ace editor.
                   <p>Created using <a href = \"http://github.com/trestletech/shinyAce\">shinyAce</a>."))
@@ -24,6 +25,8 @@ shinyUI(
   
   # Show the simple table
   mainPanel(
-    aceEditor("ace", value="function sayHi(foo){\n  alert('hi');\n}")
+    aceEditor("ace", value="createData <- function(rows){
+  data.frame(col1=1:rows, col2=rnorm(rows))
+}")
   )
 ))

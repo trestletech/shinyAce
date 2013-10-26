@@ -45,6 +45,6 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
   }
   
   if (data.value){
-    editor.getSession().setValue(data.value);
+    editor.getSession().setValue(data.value, -1);
   }
 });
