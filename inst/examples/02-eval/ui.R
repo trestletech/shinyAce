@@ -9,7 +9,7 @@ shinyUI(
     div(class="row-fluid",
         div(class="span6",
           h2("Source Code"),  
-          aceEditor("code", value="df <- data.frame(num=1:4, 
+          aceEditor("code", mode="r", value="df <- data.frame(num=1:4, 
   let=LETTERS[2:5], 
   rand=rnorm(4))
 df"),
