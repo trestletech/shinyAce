@@ -4,7 +4,7 @@
 #' @param outputId The ID associated with this element
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
-aceEditor <- function(outputId, value, mode, theme, height="400px"){
+aceEditor <- function(outputId, value, mode, theme, readOnly=FALSE, height="400px"){
   js <- paste("var editor = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
     js <- paste(js, "editor.setTheme('ace/theme/",theme,"');",sep="")
@@ -15,6 +15,9 @@ aceEditor <- function(outputId, value, mode, theme, height="400px"){
   if (!missing(value)){
     js <- paste(js, "editor.setValue(", jsQuote(value), ", -1);", sep="")
   }  
+  if (readOnly){
+    js <- paste(js, "editor.setReadOnly(", jsQuote(readOnly), ");", sep="")
+  }
   js <- paste(js, "$('#", outputId, "').data('aceEditor',editor);", sep="")
   
   tagList(
