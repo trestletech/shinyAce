@@ -1,0 +1,15 @@
+\name{getAceThemes}
+\alias{getAceThemes}
+\title{Get available themes}
+\usage{
+  getAceThemes()
+}
+\description{
+  Gets all of the available \code{themes} available in the
+  installed version of shinyAce. Themes determine the
+  styling and colors used in the editor.
+}
+\author{
+  Jeff Allen \email{jeff@trestletech.com}
+}
+

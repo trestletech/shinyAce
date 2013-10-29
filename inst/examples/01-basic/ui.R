@@ -1,11 +1,9 @@
 library(shiny)
 library(shinyAce)
 
-modes <- dir(system.file('www/ace', package='shinyAce'), "^mode-.*.js$")
-modes <- sub("^mode-(.*).js$", "\\1", modes)
+modes <- getAceModes()
 
-themes <- dir(system.file('www/ace', package='shinyAce'), "^theme-.*.js$")
-themes <- sub("^theme-(.*).js$", "\\1", themes)
+themes <- getAceThemes()
 
 #' Define UI for application that demonstrates a simple Ace editor
 #' @author Jeff Allen \email{jeff@@trestletech.com}

@@ -20,3 +20,5 @@ Collate:
     'ace-editor.R'
     'js-quote.R'
     'update-ace-editor.R'
+    'get-ace-modes.R'
+    'get-ace-themes.R'
