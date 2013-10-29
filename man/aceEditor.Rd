@@ -3,7 +3,7 @@
 \title{Render Ace}
 \usage{
   aceEditor(outputId, value, mode, theme, readOnly = FALSE,
-    height = "400px")
+    height = "400px", fontSize = 12)
 }
 \arguments{
   \item{outputId}{The ID associated with this element}
@@ -31,6 +31,9 @@
   \item{height}{A number (which will be interpreted as a
   number of pixels) or any valid CSS dimension (such as
   "\code{50\%}", "\code{200px}", or "\code{auto}").}
+
+  \item{fontSize}{Defines the font size (in px) used in the
+  editor and should be an integer. The default is 12.}
 }
 \description{
   Render an Ace editor on an application page.

@@ -13,9 +13,12 @@
 #'   \code{\link{getAceThemes}} to enumerate all the themes available.
 #' @param readOnly If set to \code{TRUE}, Ace will disable client-side editing.
 #'   If \code{FALSE} (the default), it will enable editing.
+#' @param fontSize If set, will update the font size (in px) used in the editor.
+#'   Should be an integer.
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
-updateAceEditor <- function(session, editorId, value, theme, readOnly, mode){
+updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
+                            fontSize){
   if (missing(session) || missing(editorId)){
     stop("Must provide both a session and an editorId to update Ace.")
   }
@@ -33,6 +36,9 @@ updateAceEditor <- function(session, editorId, value, theme, readOnly, mode){
   }
   if (!missing(readOnly)){
     theList["readOnly"] <- readOnly
+  }
+  if (!missing(fontSize)){
+    theList["fontSize"] <- fontSize
   }
   
   session$sendCustomMessage("shinyAce", theList)

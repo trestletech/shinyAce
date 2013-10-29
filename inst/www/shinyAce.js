@@ -51,4 +51,8 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
   if (Object.prototype.hasOwnProperty.call(data, 'readOnly')){
     editor.setReadOnly(data.readOnly);
   }
+  
+  if (data.fontSize){
+    document.getElementById(id).style.fontSize = data.fontSize + 'px';
+  }
 });

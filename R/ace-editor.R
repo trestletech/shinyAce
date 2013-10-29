@@ -15,11 +15,14 @@
 #' @param height A number (which will be interpreted as a number of pixels) or 
 #'   any valid CSS dimension (such as "\code{50\%}", "\code{200px}", or 
 #'   "\code{auto}").
+#' @param fontSize Defines the font size (in px) used in the editor and should 
+#'   be an integer. The default is 12.
 #' @import shiny
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
 aceEditor <- function(outputId, value, mode, theme, 
-                      readOnly=FALSE, height="400px"){
+                      readOnly=FALSE, height="400px",
+                      fontSize=12){
   js <- paste("var editor = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
     js <- paste(js, "editor.setTheme('ace/theme/",theme,"');",sep="")
@@ -32,6 +35,10 @@ aceEditor <- function(outputId, value, mode, theme,
   }  
   if (readOnly){
     js <- paste(js, "editor.setReadOnly(", jsQuote(readOnly), ");", sep="")
+  }
+  if (!is.null(fontSize) && !is.na(as.numeric(fontSize))){
+    js <- paste(js, "document.getElementById('",outputId,"').style.fontSize='",
+                as.numeric(fontSize), "px'; ", sep="")
   }
   js <- paste(js, "$('#", outputId, "').data('aceEditor',editor);", sep="")
   

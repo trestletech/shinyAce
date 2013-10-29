@@ -3,7 +3,7 @@
 \title{Update Ace Editor}
 \usage{
   updateAceEditor(session, editorId, value, theme,
-    readOnly, mode)
+    readOnly, mode, fontSize)
 }
 \arguments{
   \item{session}{The Shiny session to whom the editor
@@ -30,6 +30,9 @@
   \item{readOnly}{If set to \code{TRUE}, Ace will disable
   client-side editing.  If \code{FALSE} (the default), it
   will enable editing.}
+
+  \item{fontSize}{If set, will update the font size (in px)
+  used in the editor.  Should be an integer.}
 }
 \description{
   Update the styling or mode of an aceEditor component.
