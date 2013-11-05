@@ -18,6 +18,10 @@
 #' @param fontSize Defines the font size (in px) used in the editor and should 
 #'   be an integer. The default is 12.
 #' @import shiny
+#' @examples \dontrun{
+#'  aceEditor("myEditor", "Initial text for editor here", mode="r", 
+#'    theme="ambiance")
+#' } 
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
 aceEditor <- function(outputId, value, mode, theme, 

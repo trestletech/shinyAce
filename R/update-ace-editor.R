@@ -15,6 +15,14 @@
 #'   If \code{FALSE} (the default), it will enable editing.
 #' @param fontSize If set, will update the font size (in px) used in the editor.
 #'   Should be an integer.
+#' @examples \dontrun{
+#'  shinyServer(function(input, output, session) {
+#'    observe({
+#'      updateAceEditor(session, "myEditor", "Updated text for editor here", 
+#'        mode="r", theme="ambiance")
+#'    })
+#'  }
+#' } 
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
 updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,

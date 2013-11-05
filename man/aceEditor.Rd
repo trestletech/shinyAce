@@ -38,6 +38,12 @@
 \description{
   Render an Ace editor on an application page.
 }
+\examples{
+\dontrun{
+ aceEditor("myEditor", "Initial text for editor here", mode="r",
+   theme="ambiance")
+}
+}
 \author{
   Jeff Allen \email{jeff@trestletech.com}
 }
