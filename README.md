@@ -34,11 +34,15 @@ Various examples are available in the [`inst/examples`](https://github.com/trest
 
 ### 01-basic ([Live Demo](http://spark.rstudio.com/trestletech/shinyAce1/))
 
+Run example: `runGitHub("shinyAce", "trestletech", subdir="inst/examples/01-basic")`
+
 ![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce.png)
 
 Demonstrates the basic capabilities of shinyAce including the ability to set an initial value, or interactively assign a value, theme, or mode later on in the session.
 
 ### 02-eval
+
+Run example: `runGitHub("shinyAce", "trestletech", subdir="inst/examples/02-eval")`
 
 ![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce-eval.png)
 
@@ -46,11 +50,15 @@ Shows an example of using shinyAce to allow the user to compose R code which wil
 
 ### 03-knitr
 
+Run example: `runGitHub("shinyAce", "trestletech", subdir="inst/examples/03-knitr")`
+
 ![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce-knitr.png)
 
 Demonstrates integrating shinyAce with the [knitR](http://yihui.name/knitr/) package. (Note also that an example of this integration is available [in the knitR package](https://github.com/yihui/knitr/tree/master/inst/shiny) itself and includes features such as R syntax highlighting.)
 
 ### 04-shinyui
+
+Run example: `runGitHub("shinyAce", "trestletech", subdir="inst/examples/04-shinyui")`
 
 ![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce-renderui.png)
 
