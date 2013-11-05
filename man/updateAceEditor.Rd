@@ -37,6 +37,16 @@
 \description{
   Update the styling or mode of an aceEditor component.
 }
+\examples{
+\dontrun{
+ shinyServer(function(input, output, session) {
+   observe({
+     updateAceEditor(session, "myEditor", "Updated text for editor here",
+       mode="r", theme="ambiance")
+   })
+ }
+}
+}
 \author{
   Jeff Allen \email{jeff@trestletech.com}
 }
