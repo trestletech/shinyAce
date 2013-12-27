@@ -31,7 +31,7 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   if (!missing(theme)){
     js <- paste(js, "editor.setTheme('ace/theme/",theme,"');",sep="")
   }
-  if (vimKeyBinding)){
+  if (vimKeyBinding){
     js <- paste(js, "editor.setKeyboardHandler('ace/keyboard/vim');",sep="")
   }
   if (!missing(mode)){
