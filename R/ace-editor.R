@@ -24,16 +24,16 @@
 #' } 
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
-aceEditor <- function(outputId, value, mode, theme, 
+aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE, 
                       readOnly=FALSE, height="400px",
                       fontSize=12){
   js <- paste("var editor = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
     js <- paste(js, "editor.setTheme('ace/theme/",theme,"');",sep="")
   }
-
-  js <- paste(js, "editor.setKeyboardHandler('ace/keyboard/vim');",sep="")
-
+  if (vimKeyBinding)){
+    js <- paste(js, "editor.setKeyboardHandler('ace/keyboard/vim');",sep="")
+  }
   if (!missing(mode)){
     js <- paste(js, "editor.getSession().setMode('ace/mode/",mode,"');", sep="")
   }
