@@ -25,7 +25,7 @@
 #' } 
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
-updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
+updateAceEditor <- function(session, editorId, value, theme, vimKeyBinding, readOnly, mode,
                             fontSize){
   if (missing(session) || missing(editorId)){
     stop("Must provide both a session and an editorId to update Ace.")
@@ -35,6 +35,9 @@ updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
   
   if (!missing(value)){
     theList["value"] <- value
+  }
+  if (!missing(vimKeyBinding)){
+    theList["vimKeyBinding"] <- vimKeyBinding
   }
   if (!missing(theme)){
     theList["theme"] <- theme
