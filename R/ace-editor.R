@@ -17,6 +17,8 @@
 #'   "\code{auto}").
 #' @param fontSize Defines the font size (in px) used in the editor and should 
 #'   be an integer. The default is 12.
+#' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
+#'   Default value is \code{FALSE}.
 #' @import shiny
 #' @examples \dontrun{
 #'  aceEditor("myEditor", "Initial text for editor here", mode="r", 
@@ -26,7 +28,7 @@
 #' @export
 aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE, 
                       readOnly=FALSE, height="400px",
-                      fontSize=12){
+                      fontSize=12, wordWrap=FALSE){
   js <- paste("var editor = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
     js <- paste(js, "editor.setTheme('ace/theme/",theme,"');",sep="")
@@ -46,6 +48,9 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   if (!is.null(fontSize) && !is.na(as.numeric(fontSize))){
     js <- paste(js, "document.getElementById('",outputId,"').style.fontSize='",
                 as.numeric(fontSize), "px'; ", sep="")
+  }
+  if (wordWrap){
+    js <- paste(js, "editor.getSession().setUseWrapMode(true);", sep="")
   }
   js <- paste(js, "$('#", outputId, "').data('aceEditor',editor);", sep="")
   
