@@ -15,10 +15,4 @@ Imports:
 Suggests:
     testthat
 BugReports: https://github.com/trestletech/shinyAce/issues
-Collate:
-    'init.R'
-    'ace-editor.R'
-    'js-quote.R'
-    'update-ace-editor.R'
-    'get-ace-modes.R'
-    'get-ace-themes.R'
+Roxygen: list(wrap = TRUE)
