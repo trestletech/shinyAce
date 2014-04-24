@@ -15,6 +15,8 @@
 #'   If \code{FALSE} (the default), it will enable editing.
 #' @param fontSize If set, will update the font size (in px) used in the editor.
 #'   Should be an integer.
+#' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
+#'   Default value is \code{FALSE}.
 #' @examples \dontrun{
 #'  shinyServer(function(input, output, session) {
 #'    observe({
@@ -26,7 +28,7 @@
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
 updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
-                            fontSize){
+                            fontSize, wordWrap){
   if (missing(session) || missing(editorId)){
     stop("Must provide both a session and an editorId to update Ace.")
   }
@@ -47,6 +49,9 @@ updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
   }
   if (!missing(fontSize)){
     theList["fontSize"] <- fontSize
+  }
+  if (!missing(wordWrap)){
+    theList["wordWrap"] <- wordWrap
   }
   
   session$sendCustomMessage("shinyAce", theList)

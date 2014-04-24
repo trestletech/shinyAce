@@ -21,6 +21,8 @@
 #'   cause the client to withhold update notifications until the user has
 #'   stopped typing for this amount of time. If 0, the server will be notified
 #'   of every keystroke as it happens.
+#' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
+#'   Default value is \code{FALSE}.
 #' @import shiny
 #' @examples \dontrun{
 #'  aceEditor("myEditor", "Initial text for editor here", mode="r", 
@@ -30,7 +32,7 @@
 #' @export
 aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE, 
                       readOnly=FALSE, height="400px",
-                      fontSize=12, debounce=1000){
+                      fontSize=12, debounce=1000, wordWrap=FALSE){
   js <- paste("var editor = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
     js <- paste(js, "editor.setTheme('ace/theme/",theme,"');",sep="")
@@ -51,6 +53,7 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
     js <- paste(js, "document.getElementById('",outputId,"').style.fontSize='",
                 as.numeric(fontSize), "px'; ", sep="")
   }
+
   if (!is.null(debounce) && !is.na(as.numeric(debounce))){
     # I certainly hope there's a more reasonable way to compare versions with an
     # extra field in them...
@@ -67,6 +70,11 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
     }
     js <- paste(js, "$('#",outputId,"').data('debounce',",debounce,");", sep="")
   }
+  
+  if (wordWrap){
+    js <- paste(js, "editor.getSession().setUseWrapMode(true);", sep="")
+  }
+  
   js <- paste(js, "$('#", outputId, "').data('aceEditor',editor);", sep="")
   
   tagList(

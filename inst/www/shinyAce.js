@@ -55,11 +55,15 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     editor.getSession().setValue(data.value, -1);
   }
   
-  if (Object.prototype.hasOwnProperty.call(data, 'readOnly')){
+  if (data.hasOwnProperty('readOnly')){
     editor.setReadOnly(data.readOnly);
   }
   
   if (data.fontSize){
     document.getElementById(id).style.fontSize = data.fontSize + 'px';
+  }
+  
+  if (data.hasOwnProperty('wordWrap')){
+    editor.getSession().setUseWrapMode(data.wordWrap);
   }
 });
