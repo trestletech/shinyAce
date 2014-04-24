@@ -13,7 +13,7 @@ $.extend(shinyAceInputBinding, {
   },
   subscribe: function(el, callback) {
     $(el).data('aceChangeCallback', function(e) {
-      callback();
+      callback(true);
     });
     
     $(el).data('aceEditor').getSession().addEventListener("change", 
@@ -23,6 +23,13 @@ $.extend(shinyAceInputBinding, {
   unsubscribe: function(el) {
     $(el).data('aceEditor').getSession().removeEventListener("change", 
         $(el).data('aceChangeCallback'));
+  }, 
+  getRatePolicy: function(el){
+    if (!el){
+      console.log("Using an older version of Shiny, so unable to set the debounce rate policy.");
+      return(null);
+    }
+    return ({policy: 'debounce', delay: $(el).data('debounce') || 1000 });
   }
 });
 

@@ -17,6 +17,10 @@
 #'   "\code{auto}").
 #' @param fontSize Defines the font size (in px) used in the editor and should 
 #'   be an integer. The default is 12.
+#' @param debounce The number of milliseconds to debounce the input. This will
+#'   cause the client to withhold update notifications until the user has
+#'   stopped typing for this amount of time. If 0, the server will be notified
+#'   of every keystroke as it happens.
 #' @import shiny
 #' @examples \dontrun{
 #'  aceEditor("myEditor", "Initial text for editor here", mode="r", 
@@ -26,7 +30,7 @@
 #' @export
 aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE, 
                       readOnly=FALSE, height="400px",
-                      fontSize=12){
+                      fontSize=12, debounce=1000){
   js <- paste("var editor = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
     js <- paste(js, "editor.setTheme('ace/theme/",theme,"');",sep="")
@@ -46,6 +50,22 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   if (!is.null(fontSize) && !is.na(as.numeric(fontSize))){
     js <- paste(js, "document.getElementById('",outputId,"').style.fontSize='",
                 as.numeric(fontSize), "px'; ", sep="")
+  }
+  if (!is.null(debounce) && !is.na(as.numeric(debounce))){
+    # I certainly hope there's a more reasonable way to compare versions with an
+    # extra field in them...
+    re <- regexpr("^\\d+\\.\\d+\\.\\d+", packageVersion("shiny"))
+    shinyVer <- substr(packageVersion("shiny"), 0, attr(re, "match.length"))
+    
+    minorVer <- as.integer(substr(packageVersion("shiny"), 
+                                  attr(re, "match.length")+2,
+                                  nchar(packageVersion("shiny"))))
+    comp <- compareVersion(shinyVer, "0.9.1")
+    if (comp < 0 || (comp == 0 && minorVer < 9004)){
+      warning(
+       "Shiny version 0.9.1.9004 required to use input debouncing in shinyAce.")
+    }
+    js <- paste(js, "$('#",outputId,"').data('debounce',",debounce,");", sep="")
   }
   js <- paste(js, "$('#", outputId, "').data('aceEditor',editor);", sep="")
   
