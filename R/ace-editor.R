@@ -81,6 +81,9 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
     singleton(tags$head(
       initResourcePaths(),
       tags$script(src = 'shinyAce/shinyAce.js'),
+      tags$link(rel = 'stylesheet',
+                type = 'text/css',
+                href = 'shinyAce/shinyAce.css'),
       tags$script(src = 'shinyAce/ace/ace.js')
     )),
     pre(id=outputId, class="shiny-ace", 

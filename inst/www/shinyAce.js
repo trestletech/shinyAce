@@ -66,4 +66,10 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
   if (data.hasOwnProperty('wordWrap')){
     editor.getSession().setUseWrapMode(data.wordWrap);
   }
+  
+  if (data.border){
+    var classes = ['acenormal', 'aceflash', 'acealert'];
+    $el.removeClass(classes.join(' '));
+    $el.addClass(data.border);
+  }
 });

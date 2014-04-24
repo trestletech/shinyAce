@@ -28,7 +28,8 @@
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
 updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
-                            fontSize, wordWrap){
+                            fontSize, wordWrap, 
+                            border=c("normal", "alert", "flash")){
   if (missing(session) || missing(editorId)){
     stop("Must provide both a session and an editorId to update Ace.")
   }
@@ -53,6 +54,10 @@ updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
   if (!missing(wordWrap)){
     theList["wordWrap"] <- wordWrap
   }
-  
+  if (!missing(border)){
+    border <- match.arg(border)
+    theList["border"] <- paste0("ace", border)
+  }
+    
   session$sendCustomMessage("shinyAce", theList)
 }

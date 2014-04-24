@@ -1,0 +1,32 @@
+.aceflash{  
+  -moz-animation: aceflash 3s ease-out;
+  -moz-animation-iteration-count: infinite;
+  
+  -webkit-animation: aceflash 3s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  
+  -ms-animation: aceflash 3s ease-out;
+  -ms-animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes aceflash {
+  0% { border-color: #CCC;}
+  50% { border-color: #F88;}
+  100% { border-color: #CCC;}
+  }
+  
+@-moz-keyframes aceflash {
+  0% { border-color: #CCC;}
+  50% { border-color: #F88;}
+  100% { border-color: #CCC;}
+}
+  
+@-ms-keyframes aceflash {
+  0% { border-color: #CCC;}
+  50% { border-color: #F88;}
+  100% { border-color: #CCC;}
+}
+
+.acealert{
+  border: 1px solid rgba(255, 50, 50, 0.60);
+}
