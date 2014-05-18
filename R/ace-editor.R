@@ -32,7 +32,7 @@
 #' @export
 aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE, 
                       readOnly=FALSE, height="400px",
-                      fontSize=12, debounce=1000, wordWrap=FALSE){
+                      fontSize=12, debounce=1000, wordWrap=FALSE, selectionId=NULL){
   js <- paste("var editor = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
     js <- paste(js, "editor.setTheme('ace/theme/",theme,"');",sep="")
@@ -76,6 +76,13 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   }
   
   js <- paste(js, "$('#", outputId, "').data('aceEditor',editor);", sep="")
+  if (!is.null(selectionId)){
+    selectJS <- paste("editor.getSelection().on(\"changeSelection\", function(){
+      Shiny.onInputChange(\"",selectionId,
+      "\",editor.getCopyText());})", 
+      sep="")
+    js <- paste(js, selectJS, sep="")
+  }
   
   tagList(
     singleton(tags$head(
