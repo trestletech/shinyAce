@@ -23,31 +23,49 @@
 #'   of every keystroke as it happens.
 #' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
 #'   Default value is \code{FALSE}.
+#' @param cursorId The ID associated with a cursor change.
+#' @param selectionId  The ID associated with a change of selected text
+#' @param keyId A list whose names are ID names and whose elements are the short-cuts of keys (see example) 
 #' @import shiny
 #' @examples \dontrun{
 #'  aceEditor("myEditor", "Initial text for editor here", mode="r", 
 #'    theme="ambiance")
+#'    
+#'  aceEditor("myCodeEditor", "# Enter code", mode="r",
+#'    keyId = list(helpKey="F1",runKey="Ctrl-R|Ctrl-Shift-Enter"),
+#'    wordWrap=TRUE, debounce=10) 
 #' } 
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
 aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE, 
                       readOnly=FALSE, height="400px",
-                      fontSize=12, debounce=1000, wordWrap=FALSE, selectionId=NULL){
-  js <- paste("var editor = ace.edit('",outputId,"');",sep="")
+                      fontSize=12, debounce=1000, wordWrap=FALSE,showLineNumbers = TRUE,highlightActiveLine=TRUE, selectionId=NULL, cursorId=NULL, keyId=NULL){
+  editorVar = paste0("editor__",outputId)
+  #restore.point("aceEditor")
+  #editorVar = "editor"
+  #editorIdVar = paste0("$('#", outputId, "')")
+  js <- paste("var ", editorVar," = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
-    js <- paste(js, "editor.setTheme('ace/theme/",theme,"');",sep="")
+    js <- paste(js, "", editorVar,".setTheme('ace/theme/",theme,"');",sep="")
   }
   if (vimKeyBinding){
-    js <- paste(js, "editor.setKeyboardHandler('ace/keyboard/vim');",sep="")
+    js <- paste(js, "", editorVar,".setKeyboardHandler('ace/keyboard/vim');",sep="")
   }
   if (!missing(mode)){
-    js <- paste(js, "editor.getSession().setMode('ace/mode/",mode,"');", sep="")
+    js <- paste(js, "", editorVar,".getSession().setMode('ace/mode/",mode,"');", sep="")
   }
   if (!missing(value)){
-    js <- paste(js, "editor.setValue(", jsQuote(value), ", -1);", sep="")
+    js <- paste(js, "", editorVar,".setValue(", jsQuote(value), ", -1);", sep="")
   }  
+  if (!showLineNumbers) {
+    js <- paste(js, "", editorVar,".renderer.setShowGutter(false);", sep="")
+  }
+  if (!highlightActiveLine) {
+    js <- paste(js, "", editorVar,".setHighlightActiveLine(false);", sep="")
+  }
+  
   if (readOnly){
-    js <- paste(js, "editor.setReadOnly(", jsQuote(readOnly), ");", sep="")
+    js <- paste(js, "", editorVar,".setReadOnly(", jsQuote(readOnly), ");", sep="")
   }
   if (!is.null(fontSize) && !is.na(as.numeric(fontSize))){
     js <- paste(js, "document.getElementById('",outputId,"').style.fontSize='",
@@ -55,34 +73,53 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   }
 
   if (!is.null(debounce) && !is.na(as.numeric(debounce))){
-    # I certainly hope there's a more reasonable way to compare versions with an
-    # extra field in them...
-    re <- regexpr("^\\d+\\.\\d+\\.\\d+", packageVersion("shiny"))
-    shinyVer <- substr(packageVersion("shiny"), 0, attr(re, "match.length"))
-    
-    minorVer <- as.integer(substr(packageVersion("shiny"), 
-                                  attr(re, "match.length")+2,
-                                  nchar(packageVersion("shiny"))))
-    comp <- compareVersion(shinyVer, "0.9.1")
-    if (comp < 0 || (comp == 0 && minorVer < 9004)){
-      warning(
-       "Shiny version 0.9.1.9004 required to use input debouncing in shinyAce.")
-    }
     js <- paste(js, "$('#",outputId,"').data('debounce',",debounce,");", sep="")
   }
   
   if (wordWrap){
-    js <- paste(js, "editor.getSession().setUseWrapMode(true);", sep="")
+    js <- paste(js, "", editorVar,".getSession().setUseWrapMode(true);", sep="")
   }
-  
-  js <- paste(js, "$('#", outputId, "').data('aceEditor',editor);", sep="")
+  js <- paste(js, "$('#", outputId, "').data('aceEditor',", editorVar,");", sep="")
+
   if (!is.null(selectionId)){
-    selectJS <- paste("editor.getSelection().on(\"changeSelection\", function(){
+    selectJS <- paste("", editorVar,".getSelection().on(\"changeSelection\", function(){
       Shiny.onInputChange(\"",selectionId,
-      "\",editor.getCopyText());})", 
+      "\",", editorVar,".getCopyText());})", 
       sep="")
     js <- paste(js, selectJS, sep="")
   }
+  
+  if (!is.null(cursorId)){    
+    curJS <- paste("\n", editorVar,".getSelection().on(\"changeCursor\", function(){
+      Shiny.onInputChange(\"",cursorId,
+      "\",", editorVar,".selection.getCursor() );}\n);", 
+    sep="")
+    js <- paste(js, curJS, sep="")
+  }
+  
+  for (i in seq_along(keyId)) {
+    shortcut = keyId[[i]]
+    id = names(keyId)[i]
+    code = paste0("
+    ",editorVar,".commands.addCommand({
+        name: '",id,"',
+        bindKey: {win: '",shortcut,"',  mac: '",shortcut,"'},
+        exec: function(",editorVar,") {
+          Shiny.onInputChange(\"",id,
+          "\",{
+            editorId : '",outputId,"',
+            selection: ", editorVar,".session.getTextRange(",editorVar,".getSelectionRange()), 
+            cursor : ", editorVar,".selection.getCursor(),
+            randNum : Math.random()
+          });            
+        },
+        readOnly: true // false if this command should not apply in readOnly mode
+    });    
+    ")
+    js = paste0(js, code)
+  }
+  
+
   
   tagList(
     singleton(tags$head(
@@ -101,4 +138,3 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
     tags$script(type="text/javascript", HTML(js))
   )
 }
-
