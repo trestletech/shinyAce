@@ -53,7 +53,10 @@ aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
   selected text}
 
   \item{keyId}{A list whose names are ID names and whose
-  elements are the short-cuts of keys (see example)}
+  elements are the shortcuts of keys. Shortcuts can either
+  be a simple string or a list with elements 'win' and
+  'mac' that that specifies different shortcuts for win and
+  mac (see example).}
 }
 \description{
 Render an Ace editor on an application page.
@@ -64,7 +67,10 @@ Render an Ace editor on an application page.
    theme="ambiance")
 
  aceEditor("myCodeEditor", "# Enter code", mode="r",
-   keyId = list(helpKey="F1",runKey="Ctrl-R|Ctrl-Shift-Enter"),
+   keyId = list(helpKey="F1",
+                runKey=list(win="Ctrl-R|Ctrl-Shift-Enter",
+                            mac="CMD-ENTER|CMD-SHIFT-ENTER")
+                ),
    wordWrap=TRUE, debounce=10)
 }
 }

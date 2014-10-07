@@ -25,14 +25,17 @@
 #'   Default value is \code{FALSE}.
 #' @param cursorId The ID associated with a cursor change.
 #' @param selectionId  The ID associated with a change of selected text
-#' @param keyId A list whose names are ID names and whose elements are the short-cuts of keys (see example) 
+#' @param keyId A list whose names are ID names and whose elements are the shortcuts of keys. Shortcuts can either be a simple string or a list with elements 'win' and 'mac' that that specifies different shortcuts for win and mac (see example). 
 #' @import shiny
 #' @examples \dontrun{
 #'  aceEditor("myEditor", "Initial text for editor here", mode="r", 
 #'    theme="ambiance")
 #'    
 #'  aceEditor("myCodeEditor", "# Enter code", mode="r",
-#'    keyId = list(helpKey="F1",runKey="Ctrl-R|Ctrl-Shift-Enter"),
+#'    keyId = list(helpKey="F1",
+#'                 runKey=list(win="Ctrl-R|Ctrl-Shift-Enter",
+#'                             mac="CMD-ENTER|CMD-SHIFT-ENTER")
+#'                 ),
 #'    wordWrap=TRUE, debounce=10) 
 #' } 
 #' @author Jeff Allen \email{jeff@@trestletech.com}
@@ -99,11 +102,17 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   
   for (i in seq_along(keyId)) {
     shortcut = keyId[[i]]
+    if (is.list(shortcut)) {
+      shortcut = paste0(names(shortcut),": '", shortcut,"'", collapse=", ")
+    } else {
+      shortcut = paste0("win: '",shortcut,"',  mac: '",shortcut,"'")
+    }
+    
     id = names(keyId)[i]
     code = paste0("
     ",editorVar,".commands.addCommand({
         name: '",id,"',
-        bindKey: {win: '",shortcut,"',  mac: '",shortcut,"'},
+        bindKey: {", shortcut,"},
         exec: function(",editorVar,") {
           Shiny.onInputChange(\"",id,
           "\",{
