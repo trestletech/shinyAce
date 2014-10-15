@@ -25,14 +25,14 @@
 #'   Default value is \code{FALSE}.
 #' @param cursorId The ID associated with a cursor change.
 #' @param selectionId  The ID associated with a change of selected text
-#' @param keyId A list whose names are ID names and whose elements are the shortcuts of keys. Shortcuts can either be a simple string or a list with elements 'win' and 'mac' that that specifies different shortcuts for win and mac (see example). 
+#' @param hotkeys A list whose names are ID names and whose elements are the shortcuts of keys. Shortcuts can either be a simple string or a list with elements 'win' and 'mac' that that specifies different shortcuts for win and mac (see example). 
 #' @import shiny
 #' @examples \dontrun{
 #'  aceEditor("myEditor", "Initial text for editor here", mode="r", 
 #'    theme="ambiance")
 #'    
 #'  aceEditor("myCodeEditor", "# Enter code", mode="r",
-#'    keyId = list(helpKey="F1",
+#'    hotkeys = list(helpKey="F1",
 #'                 runKey=list(win="Ctrl-R|Ctrl-Shift-Enter",
 #'                             mac="CMD-ENTER|CMD-SHIFT-ENTER")
 #'                 ),
@@ -42,9 +42,10 @@
 #' @export
 aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE, 
                       readOnly=FALSE, height="400px",
-                      fontSize=12, debounce=1000, wordWrap=FALSE,showLineNumbers = TRUE,highlightActiveLine=TRUE, selectionId=NULL, cursorId=NULL, keyId=NULL){
+                      fontSize=12, debounce=1000, wordWrap=FALSE,
+                      showLineNumbers = TRUE,highlightActiveLine=TRUE,
+                      selectionId=NULL, cursorId=NULL, hotkeys=NULL){
   editorVar = paste0("editor__",outputId)
-  #restore.point("aceEditor")
   #editorVar = "editor"
   #editorIdVar = paste0("$('#", outputId, "')")
   js <- paste("var ", editorVar," = ace.edit('",outputId,"');",sep="")
@@ -76,7 +77,21 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   }
 
   if (!is.null(debounce) && !is.na(as.numeric(debounce))){
-    js <- paste(js, "$('#",outputId,"').data('debounce',",debounce,");", sep="")
+     # I certainly hope there's a more reasonable way to compare 
+    # versions with an extra field in them...
+    re <- regexpr("^\\d+\\.\\d+\\.\\d+", packageVersion("shiny"))
+    shinyVer <- substr(packageVersion("shiny"), 0, attr(re, "match.length"))
+    minorVer <- as.integer(substr(packageVersion("shiny"),
+    attr(re, "match.length")+2,
+    nchar(packageVersion("shiny"))))
+    comp <- compareVersion(shinyVer, "0.9.1")
+    if (comp < 0 || (comp == 0 && minorVer < 9004)){
+      warning(
+      "Shiny version 0.9.1.9004 required to use input debouncing in shinyAce.")
+    }
+    
+    js <- paste(js, "$('#",outputId,"').data('debounce',",debounce,");",
+                sep="")
   }
   
   if (wordWrap){
@@ -100,15 +115,15 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
     js <- paste(js, curJS, sep="")
   }
   
-  for (i in seq_along(keyId)) {
-    shortcut = keyId[[i]]
+  for (i in seq_along(hotkeys)) {
+    shortcut = hotkeys[[i]]
     if (is.list(shortcut)) {
       shortcut = paste0(names(shortcut),": '", shortcut,"'", collapse=", ")
     } else {
       shortcut = paste0("win: '",shortcut,"',  mac: '",shortcut,"'")
     }
     
-    id = names(keyId)[i]
+    id = names(hotkeys)[i]
     code = paste0("
     ",editorVar,".commands.addCommand({
         name: '",id,"',

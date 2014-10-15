@@ -6,7 +6,7 @@ Date: 2014-08-25
 Author: Trestle Technology, LLC.
 Maintainer: Jeff Allen <jeff@trestletech.com>
 Description: Ace editor bindings to enable a rich text editing environment
-    within Shiny. (Extension by Sebastian Kranz: add listeners for keys and cursor changes)
+    within Shiny.
 License: MIT
 Depends:
     R (>= 2.15.0)
