@@ -6,7 +6,7 @@
 aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
   readOnly = FALSE, height = "400px", fontSize = 12, debounce = 1000,
   wordWrap = FALSE, showLineNumbers = TRUE, highlightActiveLine = TRUE,
-  selectionId = NULL, cursorId = NULL, keyId = NULL)
+  selectionId = NULL, cursorId = NULL, hotkeys = NULL)
 }
 \arguments{
   \item{outputId}{The ID associated with this element}
@@ -52,7 +52,7 @@ aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
   \item{selectionId}{The ID associated with a change of
   selected text}
 
-  \item{keyId}{A list whose names are ID names and whose
+  \item{hotkeys}{A list whose names are ID names and whose
   elements are the shortcuts of keys. Shortcuts can either
   be a simple string or a list with elements 'win' and
   'mac' that that specifies different shortcuts for win and
@@ -67,7 +67,7 @@ Render an Ace editor on an application page.
    theme="ambiance")
 
  aceEditor("myCodeEditor", "# Enter code", mode="r",
-   keyId = list(helpKey="F1",
+   hotkeys = list(helpKey="F1",
                 runKey=list(win="Ctrl-R|Ctrl-Shift-Enter",
                             mac="CMD-ENTER|CMD-SHIFT-ENTER")
                 ),

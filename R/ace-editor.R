@@ -46,8 +46,6 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
                       showLineNumbers = TRUE,highlightActiveLine=TRUE,
                       selectionId=NULL, cursorId=NULL, hotkeys=NULL){
   editorVar = paste0("editor__",outputId)
-  #editorVar = "editor"
-  #editorIdVar = paste0("$('#", outputId, "')")
   js <- paste("var ", editorVar," = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
     js <- paste(js, "", editorVar,".setTheme('ace/theme/",theme,"');",sep="")
@@ -82,8 +80,8 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
     re <- regexpr("^\\d+\\.\\d+\\.\\d+", packageVersion("shiny"))
     shinyVer <- substr(packageVersion("shiny"), 0, attr(re, "match.length"))
     minorVer <- as.integer(substr(packageVersion("shiny"),
-    attr(re, "match.length")+2,
-    nchar(packageVersion("shiny"))))
+      attr(re, "match.length")+2,
+      nchar(packageVersion("shiny"))))
     comp <- compareVersion(shinyVer, "0.9.1")
     if (comp < 0 || (comp == 0 && minorVer < 9004)){
       warning(
