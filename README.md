@@ -68,6 +68,12 @@ Run example: `library(shiny); runApp(system.file("examples/04-shinyui", package=
 
 Demonstrates using shinyAce to allow a user to create a Shiny UI within Shiny itself. The UI can then be rendered on the right half of the page. Could be a great learning tool for teaching how to construct Shiny UIs.
 
+### 05-hotkeys ([Live Demo](https://trestletech.shinyapps.io/shinyAce5/))
+
+Run example: `library(shiny); runApp(system.file("examples/05-hotkeys", package="shinyAce"));`
+
+An example using the `hotkeys` feature of ShinyAce to allow application developers to expose keyboard shortcuts to their users. 
+
 ### Security Note
 
 As with any online application, it is a **genuinely bad idea** to allow arbitrary users to execute code on your server. The above examples show such an environment in which arbitrary R code is being executed on a remote machine. In a trusted environment (such as after authenticating a user or on a network protected by a firewall), this may not be a terrible idea; on a public server without authentication, it most certainly is. So please use the above examples with caution, realizing that without proper security checks in place, allowing unknown users to execute arbitrary R code would make it trivial for an attacker to compromise your server or steal your private data.
@@ -75,8 +81,8 @@ As with any online application, it is a **genuinely bad idea** to allow arbitrar
 Contributors
 ------------
 
-[Jeff Allen](https://github.com/trestletech) - Core project
-[Sebastian Kranz](https://github.com/skranz) - Hotkey feature and cursor listener ([#16](https://github.com/trestletech/shinyAce/pull/16/files))
+ - [Jeff Allen](https://github.com/trestletech) - Core project
+ - [Sebastian Kranz](https://github.com/skranz) - Hotkey feature and cursor listener ([#16](https://github.com/trestletech/shinyAce/pull/16/files))
 
 Known Bugs
 ----------
