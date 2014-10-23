@@ -78,10 +78,12 @@ An example using the `hotkeys` feature of ShinyAce to allow application develope
 
 As with any online application, it is a **genuinely bad idea** to allow arbitrary users to execute code on your server. The above examples show such an environment in which arbitrary R code is being executed on a remote machine. In a trusted environment (such as after authenticating a user or on a network protected by a firewall), this may not be a terrible idea; on a public server without authentication, it most certainly is. So please use the above examples with caution, realizing that without proper security checks in place, allowing unknown users to execute arbitrary R code would make it trivial for an attacker to compromise your server or steal your private data.
 
-Contributors
-------------
+Contributors (In order of first commit)
+---------------------------------------
 
  - [Jeff Allen](https://github.com/trestletech) - Core project
+ - [Vincent Nijs](https://github.com/mostly-harmless) - Vim key bindings ([#9](https://github.com/trestletech/shinyAce/pull/9))
+ - [Nick Carchedi](https://github.com/ncarchedi) - Word wrapping ([#12](https://github.com/trestletech/shinyAce/pull/12))
  - [Sebastian Kranz](https://github.com/skranz) - Hotkey feature and cursor listener ([#16](https://github.com/trestletech/shinyAce/pull/16/files))
 
 Known Bugs
