@@ -34,6 +34,41 @@ $.extend(shinyAceInputBinding, {
 });
 
 Shiny.inputBindings.register(shinyAceInputBinding);
+
+
+var langTools = ace.require("ace/ext/language_tools");
+var staticCompleter = {
+  getCompletions: function(editor, session, pos, prefix, callback) {
+        //if (prefix.length === 0) { callback(null, []); return }
+        var comps = $('#' + editor.container.id).data('autoCompleteList');
+        if(comps){
+          var words = [];
+          
+          Object.keys(comps).forEach(function(key) {
+            words = words.concat(comps[key].map(function(d){
+              return {name: d, value: d, meta: key};
+            }));
+          });
+          
+          callback(null, words);
+        }
+    }
+};
+langTools.addCompleter(staticCompleter);
+
+var rlangCompleter = {
+    getCompletions: function(editor, session, pos, prefix, callback) {
+        //if (prefix.length === 0) { callback(null, []); return }
+        var inputId = editor.container.id;
+        Shiny.onInputChange('shinyAce_' + inputId + '_hint', {
+          linebuffer: session.getLine(pos.row),
+          cursorPosition: pos.column
+        });
+        //store callback for dynamic completion
+        $('#' + inputId).data('autoCompleteCallback', callback);
+    }
+};
+langTools.addCompleter(rlangCompleter);
 })();
 
 
@@ -71,5 +106,23 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     var classes = ['acenormal', 'aceflash', 'acealert'];
     $el.removeClass(classes.join(' '));
     $el.addClass(data.border);
+  }
+  
+  if (data.autoComplete){
+    var value = data.autoComplete;
+    editor.setOption('enableLiveAutocompletion', value === 'live');
+    editor.setOption('enableBasicAutocompletion', value !== 'disabled');
+  }
+  
+  if (data.hasOwnProperty('autoCompleteList')){
+    $el.data('autoCompleteList', data.autoCompleteList);
+  }
+  
+  if (data.codeCompletions) {
+    var words = data.codeCompletions.split(/[ ,]+/).map(function(e) {
+      return {name: e, value: e, meta: 'R'};
+    });
+    var callback = $el.data('autoCompleteCallback');
+    if(callback !== undefined) callback(null, words);
   }
 });

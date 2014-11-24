@@ -17,6 +17,8 @@
 #'   Should be an integer.
 #' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
 #'   Default value is \code{FALSE}.
+#' @param autoComplete Enable/Disable code completion. See \code{\link{aceEditor}} for details.
+#' @param autoCompleteList If set to \code{NULL}, exisitng static completions list will be unset. See \code{\link{aceEditor}} for details.
 #' @examples \dontrun{
 #'  shinyServer(function(input, output, session) {
 #'    observe({
@@ -29,7 +31,9 @@
 #' @export
 updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
                             fontSize, wordWrap, 
-                            border=c("normal", "alert", "flash")){
+                            border=c("normal", "alert", "flash"),
+                            autoComplete=c("disabled", "enabled", "live"), 
+                            autoCompleteList=NULL){
   if (missing(session) || missing(editorId)){
     stop("Must provide both a session and an editorId to update Ace.")
   }
@@ -57,6 +61,14 @@ updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
   if (!missing(border)){
     border <- match.arg(border)
     theList["border"] <- paste0("ace", border)
+  }
+  if (!missing(autoComplete)){
+    autoComplete <- match.arg(autoComplete)
+    theList["autoComplete"] <- autoComplete
+  }
+  if (!missing(autoCompleteList)){
+    #NULL can only be inserted via c()
+    theList <- c(theList, list(autoCompleteList = autoCompleteList))
   }
     
   session$sendCustomMessage("shinyAce", theList)

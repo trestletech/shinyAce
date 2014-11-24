@@ -26,6 +26,14 @@
 #' @param cursorId The ID associated with a cursor change.
 #' @param selectionId  The ID associated with a change of selected text
 #' @param hotkeys A list whose names are ID names and whose elements are the shortcuts of keys. Shortcuts can either be a simple string or a list with elements 'win' and 'mac' that that specifies different shortcuts for win and mac (see example). 
+#' @param autoComplete Enable/Disable auto code completion. Must be one of the following:
+#'  \describe{
+#'    \item{\code{"disabled"}}{Disable Code Autocomplete}
+#'    \item{\code{"enabled"}}{Enable Basic Code Autocomplete. Autocomplete can be triggered using Ctrl-Space, Ctrl-Shift-Space, or Alt-Space.}
+#'    \item{\code{"live"}}{Enable Live Code Autocomplete. In addition to Basic Autocomplete, it will automatically trigger at each key stroke.}
+#'  }
+#'  By default, only local completer is used where all aforementioned code pieces will be considered as candidates. Use \code{autoCompleteList} for static completions and \code{\link{aceAutocomplete}} for dynamic R code compeltions.
+#' @param autoCompleteList A named list that contains static code completions candidates. This can be especially useful for Non-Standard Evaluation (NSE) functions such as those in \code{dplyr} and \code{ggvis}. Each element in list should be a character array whose words will be listed under the element key. For example, to suggests column names from \code{mtcars} and \code{airquality}, you can use \code{list(mtcars = colnames(mtcars), airquality = colnames(airquality))}.
 #' @import shiny
 #' @examples \dontrun{
 #'  aceEditor("myEditor", "Initial text for editor here", mode="r", 
@@ -37,6 +45,10 @@
 #'                             mac="CMD-ENTER|CMD-SHIFT-ENTER")
 #'                 ),
 #'    wordWrap=TRUE, debounce=10) 
+#'    
+#'  aceEditor("mySmartEditor", "plot(wt ~ mpg, data=mtcars)", mode="r",
+#'    autoComplete="live",
+#'    autoCompleteList=list(mtcars=colnames(mtcars)))
 #' } 
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
@@ -44,7 +56,9 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
                       readOnly=FALSE, height="400px",
                       fontSize=12, debounce=1000, wordWrap=FALSE,
                       showLineNumbers = TRUE,highlightActiveLine=TRUE,
-                      selectionId=NULL, cursorId=NULL, hotkeys=NULL){
+                      selectionId=NULL, cursorId=NULL, hotkeys=NULL,
+                      autoComplete=c("disabled", "enabled", "live"), 
+                      autoCompleteList=NULL){
   editorVar = paste0("editor__",outputId)
   js <- paste("var ", editorVar," = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
@@ -141,21 +155,30 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
     js = paste0(js, code)
   }
   
-
+  autoComplete <- match.arg(autoComplete)
+  if(autoComplete != "disabled") {
+    js <- paste(js, "", editorVar,".setOption('enableBasicAutocompletion', true);", sep="")
+  }
+  if(autoComplete == "live") {
+    js <- paste(js, "", editorVar,".setOption('enableLiveAutocompletion', true);", sep="")
+  }
+  
   
   tagList(
     singleton(tags$head(
       initResourcePaths(),
+      tags$script(src = 'shinyAce/ace/ace.js'),
+      tags$script(src = 'shinyAce/ace/ext-language_tools.js'),
       tags$script(src = 'shinyAce/shinyAce.js'),
       tags$link(rel = 'stylesheet',
                 type = 'text/css',
-                href = 'shinyAce/shinyAce.css'),
-      tags$script(src = 'shinyAce/ace/ace.js')
+                href = 'shinyAce/shinyAce.css')
     )),
     pre(id=outputId, class="shiny-ace", 
         style=paste("height:", 
               validateCssUnit(height)
-        )
+        ),
+        `data-autoCompleteList` = autoCompleteList
     ),
     tags$script(type="text/javascript", HTML(js))
   )
