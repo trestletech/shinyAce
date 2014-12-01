@@ -74,6 +74,12 @@ Run example: `library(shiny); runApp(system.file("examples/05-hotkeys", package=
 
 An example using the `hotkeys` feature of ShinyAce to allow application developers to expose keyboard shortcuts to their users. 
 
+### 06-autocomplete ([Live Demo](https://trestletech.shinyapps.io/shinyAce6/))
+
+Run example: `library(shiny); runApp(system.file("examples/06-autocomplete", package="shinyAce"));`
+
+An example using the `autocomplete` feature of ShinyAce to enable Ace to suggest completions as the user types.
+
 ### Security Note
 
 As with any online application, it is a **genuinely bad idea** to allow arbitrary users to execute code on your server. The above examples show such an environment in which arbitrary R code is being executed on a remote machine. In a trusted environment (such as after authenticating a user or on a network protected by a firewall), this may not be a terrible idea; on a public server without authentication, it most certainly is. So please use the above examples with caution, realizing that without proper security checks in place, allowing unknown users to execute arbitrary R code would make it trivial for an attacker to compromise your server or steal your private data.
@@ -85,6 +91,7 @@ Contributors (In order of first commit)
  - [Vincent Nijs](https://github.com/mostly-harmless) - Vim key bindings ([#9](https://github.com/trestletech/shinyAce/pull/9))
  - [Nick Carchedi](https://github.com/ncarchedi) - Word wrapping ([#12](https://github.com/trestletech/shinyAce/pull/12))
  - [Sebastian Kranz](https://github.com/skranz) - Hotkey feature and cursor listener ([#16](https://github.com/trestletech/shinyAce/pull/16/files))
+ - [Forest Fang](https://github.com/saurfang) - Code completion ([#21](https://github.com/trestletech/shinyAce/pull/21))
 
 Known Bugs
 ----------

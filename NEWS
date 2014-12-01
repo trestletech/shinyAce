@@ -1,0 +1,24 @@
+shinyAce 0.2.0
+--------------------------------------------------------------------------------
+
+* Upgrade to Ace 1.1.8
+
+* Add code autocompletion (@saurfang, #21)
+
+
+shinyAce 0.1.1
+--------------------------------------------------------------------------------
+
+* Added input debouncing
+
+* Add shortcut and cursor listeners (@skranz, #16)
+
+* Added word wrapping (@ncarchedi, #12)
+
+* Added vim key bindings (@Vincent, #9)
+
+
+shinyAce 0.1.0
+--------------------------------------------------------------------------------
+
+* Initial release
