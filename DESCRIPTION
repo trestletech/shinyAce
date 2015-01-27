@@ -1,8 +1,8 @@
 Package: shinyAce
 Type: Package
 Title: Ace editor bindings for Shiny
-Version: 0.2.0
-Date: 2014-11-30
+Version: 0.2.1
+Date: 2015-01-26
 Author: Trestle Technology, LLC.
 Maintainer: Jeff Allen <jeff@trestletech.com>
 Description: Ace editor bindings to enable a rich text editing environment

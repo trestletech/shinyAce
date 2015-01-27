@@ -91,7 +91,7 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   if (!is.null(debounce) && !is.na(as.numeric(debounce))){
      # I certainly hope there's a more reasonable way to compare 
     # versions with an extra field in them...
-    re <- regexpr("^\\d+\\.\\d+\\.\\d+", packageVersion("shiny"))
+    re <- regexpr("^\\d+\\.\\d+(\\.\\d+)?", packageVersion("shiny"))
     shinyVer <- substr(packageVersion("shiny"), 0, attr(re, "match.length"))
     minorVer <- as.integer(substr(packageVersion("shiny"),
       attr(re, "match.length")+2,
