@@ -16,9 +16,13 @@ Or view an [interactive example](http://bit.ly/160IgdO).
 Installation
 ------------
 
-You can install the latest version of the code using the `devtools` R package.
-This package uses a new proposed feature in Shiny which must be specifically
-installed, as well.
+shinyAce is available [on CRAN](http://cran.r-project.org/web/packages/shinyAce/), so installation is as simple as:
+
+```
+install.packages("shinyAce")
+```
+
+You can install the latest development version of the code using the `devtools` R package.
 
 ```
 # Install devtools, if you haven't already.
@@ -30,11 +34,11 @@ install_github("shinyAce", "trestletech")
 
 ## Getting Started
 
-Various examples are available in the [`inst/examples`](https://github.com/trestletech/shinyAce/tree/master/inst/examples) directory included in the package. A few examples are described below.
+Various examples are available in the [`inst/examples`](https://github.com/trestletech/shinyAce/tree/master/inst/examples) directory included in the package. A few examples are described below. (Note that the package must be installed before you can run any examples.)
 
 ### 01-basic ([Live Demo](http://spark.rstudio.com/trestletech/shinyAce1/))
 
-Run example: `runGitHub("shinyAce", "trestletech", subdir="inst/examples/01-basic")`
+Run example: `library(shiny); runApp(system.file("examples/01-basic", package="shinyAce"));`
 
 ![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce.png)
 
@@ -42,7 +46,7 @@ Demonstrates the basic capabilities of shinyAce including the ability to set an 
 
 ### 02-eval
 
-Run example: `runGitHub("shinyAce", "trestletech", subdir="inst/examples/02-eval")`
+Run example: `library(shiny); runApp(system.file("examples/02-eval", package="shinyAce"));`
 
 ![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce-eval.png)
 
@@ -50,7 +54,7 @@ Shows an example of using shinyAce to allow the user to compose R code which wil
 
 ### 03-knitr
 
-Run example: `runGitHub("shinyAce", "trestletech", subdir="inst/examples/03-knitr")`
+Run example: `library(shiny); runApp(system.file("examples/03-knitr", package="shinyAce"));`
 
 ![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce-knitr.png)
 
@@ -58,15 +62,41 @@ Demonstrates integrating shinyAce with the [knitR](http://yihui.name/knitr/) pac
 
 ### 04-shinyui
 
-Run example: `runGitHub("shinyAce", "trestletech", subdir="inst/examples/04-shinyui")`
+Run example: `library(shiny); runApp(system.file("examples/04-shinyui", package="shinyAce"));`
 
 ![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce-renderui.png)
 
 Demonstrates using shinyAce to allow a user to create a Shiny UI within Shiny itself. The UI can then be rendered on the right half of the page. Could be a great learning tool for teaching how to construct Shiny UIs.
 
+### 05-hotkeys ([Live Demo](https://trestletech.shinyapps.io/shinyAce5/))
+
+Run example: `library(shiny); runApp(system.file("examples/05-hotkeys", package="shinyAce"));`
+
+An example using the `hotkeys` feature of ShinyAce to allow application developers to expose keyboard shortcuts to their users. 
+
+### 06-autocomplete ([Live Demo](https://trestletech.shinyapps.io/shinyAce6/))
+
+Run example: `library(shiny); runApp(system.file("examples/06-autocomplete", package="shinyAce"));`
+
+An example using the `autocomplete` feature of ShinyAce to enable Ace to suggest completions as the user types.
+
 ### Security Note
 
 As with any online application, it is a **genuinely bad idea** to allow arbitrary users to execute code on your server. The above examples show such an environment in which arbitrary R code is being executed on a remote machine. In a trusted environment (such as after authenticating a user or on a network protected by a firewall), this may not be a terrible idea; on a public server without authentication, it most certainly is. So please use the above examples with caution, realizing that without proper security checks in place, allowing unknown users to execute arbitrary R code would make it trivial for an attacker to compromise your server or steal your private data.
+
+Contributors (In order of first commit)
+---------------------------------------
+
+ - [Jeff Allen](https://github.com/trestletech) - Core project
+ - [Vincent Nijs](https://github.com/mostly-harmless) - Vim key bindings ([#9](https://github.com/trestletech/shinyAce/pull/9))
+ - [Nick Carchedi](https://github.com/ncarchedi) - Word wrapping ([#12](https://github.com/trestletech/shinyAce/pull/12))
+ - [Sebastian Kranz](https://github.com/skranz) - Hotkey feature and cursor listener ([#16](https://github.com/trestletech/shinyAce/pull/16/files))
+ - [Forest Fang](https://github.com/saurfang) - Code completion ([#21](https://github.com/trestletech/shinyAce/pull/21))
+
+Known Bugs
+----------
+
+See the [Issues page](https://github.com/trestletech/shinyAce/issues) for information on outstanding issues. 
 
 License
 -------

@@ -1,10 +1,13 @@
 Package: shinyAce
 Type: Package
-Title: Ace editor bindings for Shiny
-Version: 0.1.0
-Date: 2013-11-04
-Author: Trestle Technology, LLC.
-Maintainer: Jeff Allen <jeff@trestletech.com>
+Title: Ace Editor Bindings for Shiny
+Version: 0.2.1
+Date: 2015-06-28
+Authors@R: c(
+  person(family="Trestle Technology, LLC", role="aut", email="cran@trestletechnology.net"),
+  person("Jeff", "Allen", role="cre", email="cran@trestletechnology.net"),
+  person(family="Institut de Radioprotection et de Sûreté Nucléaire", role=c("cph"), email = "yann.richet@irsn.fr"),
+  person(family="Ajax.org B.V.", role=c("ctb", "cph"), comment="Ace"))
 Description: Ace editor bindings to enable a rich text editing environment
     within Shiny.
 License: MIT + file LICENSE
@@ -13,12 +16,7 @@ Depends:
 Imports:
     shiny (>= 0.7.0)
 Suggests:
-    testthat
+    testthat,
+    dplyr (>= 0.3.0)
 BugReports: https://github.com/trestletech/shinyAce/issues
-Collate:
-    'init.R'
-    'ace-editor.R'
-    'js-quote.R'
-    'update-ace-editor.R'
-    'get-ace-modes.R'
-    'get-ace-themes.R'
+Roxygen: list(wrap = TRUE)

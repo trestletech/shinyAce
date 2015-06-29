@@ -9,6 +9,10 @@ shinyServer(function(input, output, session) {
   })
   
   observe({
+    print(input$selection)
+  })
+  
+  observe({
     updateAceEditor(session, "ace", theme=input$theme, mode=input$mode)
   })
   
