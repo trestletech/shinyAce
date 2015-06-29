@@ -19,4 +19,3 @@ Suggests:
     testthat,
     dplyr (>= 0.3.0)
 BugReports: https://github.com/trestletech/shinyAce/issues
-Roxygen: list(wrap = TRUE)
