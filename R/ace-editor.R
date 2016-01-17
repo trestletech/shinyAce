@@ -32,7 +32,7 @@
 #'    \item{\code{"enabled"}}{Enable Basic Code Autocomplete. Autocomplete can be triggered using Ctrl-Space, Ctrl-Shift-Space, or Alt-Space.}
 #'    \item{\code{"live"}}{Enable Live Code Autocomplete. In addition to Basic Autocomplete, it will automatically trigger at each key stroke.}
 #'  }
-#'  By default, only local completer is used where all aforementioned code pieces will be considered as candidates. Use \code{autoCompleteList} for static completions and \code{\link{aceAutocomplete}} for dynamic R code compeltions.
+#'  By default, only local completer is used where all aforementioned code pieces will be considered as candidates. Use \code{autoCompleteList} for static completions and \code{\link{aceAutocomplete}} for dynamic R code completions.
 #' @param autoCompleteList A named list that contains static code completions candidates. This can be especially useful for Non-Standard Evaluation (NSE) functions such as those in \code{dplyr} and \code{ggvis}. Each element in list should be a character array whose words will be listed under the element key. For example, to suggests column names from \code{mtcars} and \code{airquality}, you can use \code{list(mtcars = colnames(mtcars), airquality = colnames(airquality))}.
 #' @import shiny
 #' @examples \dontrun{

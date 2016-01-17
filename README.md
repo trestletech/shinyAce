@@ -36,7 +36,7 @@ install_github("shinyAce", "trestletech")
 
 Various examples are available in the [`inst/examples`](https://github.com/trestletech/shinyAce/tree/master/inst/examples) directory included in the package. A few examples are described below. (Note that the package must be installed before you can run any examples.)
 
-### 01-basic ([Live Demo](http://spark.rstudio.com/trestletech/shinyAce1/))
+### 01-basic ([Live Demo](https://starkingdom.shinyapps.io/shinyAce-01-basic/))
 
 Run example: `library(shiny); runApp(system.file("examples/01-basic", package="shinyAce"));`
 
@@ -44,7 +44,7 @@ Run example: `library(shiny); runApp(system.file("examples/01-basic", package="s
 
 Demonstrates the basic capabilities of shinyAce including the ability to set an initial value, or interactively assign a value, theme, or mode later on in the session.
 
-### 02-eval
+### 02-eval ([Live Demo](https://starkingdom.shinyapps.io/shinyAce-02-eval/))
 
 Run example: `library(shiny); runApp(system.file("examples/02-eval", package="shinyAce"));`
 
@@ -52,7 +52,7 @@ Run example: `library(shiny); runApp(system.file("examples/02-eval", package="sh
 
 Shows an example of using shinyAce to allow the user to compose R code which will then be evaluated on the server.
 
-### 03-knitr
+### 03-knitr ([Live Demo](https://starkingdom.shinyapps.io/shinyAce-03-knitr/))
 
 Run example: `library(shiny); runApp(system.file("examples/03-knitr", package="shinyAce"));`
 
@@ -60,7 +60,7 @@ Run example: `library(shiny); runApp(system.file("examples/03-knitr", package="s
 
 Demonstrates integrating shinyAce with the [knitR](http://yihui.name/knitr/) package. (Note also that an example of this integration is available [in the knitR package](https://github.com/yihui/knitr/tree/master/inst/shiny) itself and includes features such as R syntax highlighting.)
 
-### 04-shinyui
+### 04-shinyui ([Live Demo](https://starkingdom.shinyapps.io/shinyAce-04-shinyui/))
 
 Run example: `library(shiny); runApp(system.file("examples/04-shinyui", package="shinyAce"));`
 
