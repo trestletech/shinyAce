@@ -23,7 +23,7 @@ shinyUI(
   
   # Show the simple table
   mainPanel(
-    aceEditor("ace", selectionId = "selection", value="createData <- function(rows){
+    aceEditor("ace", value="createData <- function(rows){
   data.frame(col1=1:rows, col2=rnorm(rows))
 }")
   )

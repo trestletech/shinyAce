@@ -4,7 +4,9 @@ library(shinyAce)
 #' Define UI for application that demonstrates a simple Ace editor
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 shinyUI(
-  bootstrapPage(div(
+  bootstrapPage(
+    headerPanel("Shiny Ace Evaluate Code"),
+    div(
     class="container-fluid",
     div(class="row-fluid",
         div(class="span6",

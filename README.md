@@ -11,7 +11,7 @@ editor can easily be pulled from `server.R` using `input$yourEditorsName`.
 
 ![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce.png)
 
-Or view an [interactive example](http://bit.ly/160IgdO).
+Or view an [interactive example](https://starkingdom.shinyapps.io/shinyAce-01-basic/).
 
 Installation
 ------------
@@ -36,7 +36,7 @@ install_github("shinyAce", "trestletech")
 
 Various examples are available in the [`inst/examples`](https://github.com/trestletech/shinyAce/tree/master/inst/examples) directory included in the package. A few examples are described below. (Note that the package must be installed before you can run any examples.)
 
-### 01-basic ([Live Demo](http://spark.rstudio.com/trestletech/shinyAce1/))
+### 01-basic ([Live Demo](https://starkingdom.shinyapps.io/shinyAce-01-basic/))
 
 Run example: `library(shiny); runApp(system.file("examples/01-basic", package="shinyAce"));`
 
