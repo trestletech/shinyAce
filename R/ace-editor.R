@@ -63,7 +63,7 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
                       selectionId=NULL, cursorId=NULL, hotkeys=NULL,
                       autoComplete=c("disabled", "enabled", "live"), 
                       autoCompleteList=NULL){
-  editorVar = paste0("editor__",outputId)
+  editorVar = paste0("editor__",sanitizeId(outputId))
   js <- paste("var ", editorVar," = ace.edit('",outputId,"');",sep="")
   if (!missing(theme)){
     js <- paste(js, "", editorVar,".setTheme('ace/theme/",theme,"');",sep="")
@@ -186,4 +186,8 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
     ),
     tags$script(type="text/javascript", HTML(js))
   )
+}
+
+sanitizeId <- function(id){
+  gsub("[^[:alnum:]]", "", id)
 }
