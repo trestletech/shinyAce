@@ -90,7 +90,7 @@ Contributors (In order of first commit)
 ---------------------------------------
 
  - [Jeff Allen](https://github.com/trestletech) - Core project
- - [Vincent Nijs](https://github.com/mostly-harmless) - Vim key bindings ([#9](https://github.com/trestletech/shinyAce/pull/9))
+ - [Vincent Nijs](https://github.com/mostly-harmless) - Vim key bindings, package maintenance ([#9](https://github.com/trestletech/shinyAce/pull/9), [#35](https://github.com/trestletech/shinyAce/pull/35))
  - [Nick Carchedi](https://github.com/ncarchedi) - Word wrapping ([#12](https://github.com/trestletech/shinyAce/pull/12))
  - [Sebastian Kranz](https://github.com/skranz) - Hotkey feature and cursor listener ([#16](https://github.com/trestletech/shinyAce/pull/16/files))
  - [Forest Fang](https://github.com/saurfang) - Code completion ([#21](https://github.com/trestletech/shinyAce/pull/21))
