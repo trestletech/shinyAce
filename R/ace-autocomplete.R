@@ -22,8 +22,11 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
     value <- session$input[[paste0("shinyAce_", inputId, "_hint")]]
     if(is.null(value)) return(NULL)
     
+    utilEnv <- environment(utils::alarm)
+    w32 <- get(".win32consoleCompletion", utilEnv)
+    
     comps <- list(id = inputId,
-                  codeCompletions = utils:::.win32consoleCompletion(value$linebuffer, value$cursorPosition)$comps)
+                  codeCompletions = w32(value$linebuffer, value$cursorPosition)$comps)
     
     session$sendCustomMessage('shinyAce', comps)
   })
