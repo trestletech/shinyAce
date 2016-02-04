@@ -10,7 +10,7 @@ Authors@R: c(
   person(family="Ajax.org B.V.", role=c("ctb", "cph"), comment="Ace"))
 Description: Ace editor bindings to enable a rich text editing environment
     within Shiny.
-License: MIT
+License: MIT + file LICENSE
 Depends:
     R (>= 2.15.0)
 Imports:
@@ -19,4 +19,3 @@ Suggests:
     testthat,
     dplyr (>= 0.3.0)
 BugReports: https://github.com/trestletech/shinyAce/issues
-License: MIT + file LICENSE
