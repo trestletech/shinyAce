@@ -1,6 +1,8 @@
 shinyAce
 ==========
 
+[![Build Status](https://travis-ci.org/trestletech/shinyAce.svg?branch=master)](https://travis-ci.org/trestletech/shinyAce)
+
 The `shinyAce` package enables Shiny application developers to use the 
 [Ace text editor](http://ace.c9.io/#nav=about) in their applications. All
 current modes (languages) and themes are supported in this package. The 

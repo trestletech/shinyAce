@@ -4,5 +4,4 @@ r_binary_packages:
   - shiny
   - dplyr
   - testthat
-r_packages:
 warnings_are_errors: true
