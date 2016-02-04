@@ -33,6 +33,8 @@ Should be an integer.}
 \item{wordWrap}{If set to \code{TRUE}, Ace will enable word wrapping.
 Default value is \code{FALSE}.}
 
+\item{border}{Set the \code{border} 'normal', 'alert', or 'flash'.}
+
 \item{autoComplete}{Enable/Disable code completion. See \code{\link{aceEditor}} for details.}
 
 \item{autoCompleteList}{If set to \code{NULL}, exisitng static completions list will be unset. See \code{\link{aceEditor}} for details.}

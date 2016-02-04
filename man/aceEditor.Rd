@@ -24,6 +24,9 @@ determines things like syntax highlighting and code folding. Use the
 in Ace determines the styling and coloring of the editor. Use 
 \code{\link{getAceThemes}} to enumerate all the themes available.}
 
+\item{vimKeyBinding}{If set to \code{TRUE}, Ace will enable vim-keybindings.
+Default value is \code{FALSE}.}
+
 \item{readOnly}{If set to \code{TRUE}, Ace will disable client-side editing.
 If \code{FALSE} (the default), it will enable editing.}
 
@@ -41,6 +44,10 @@ of every keystroke as it happens.}
 
 \item{wordWrap}{If set to \code{TRUE}, Ace will enable word wrapping.
 Default value is \code{FALSE}.}
+
+\item{showLineNumbers}{If set to \code{TRUE}, Ace will show line numbers.}
+
+\item{highlightActiveLine}{If set to \code{TRUE}, Ace will highlight the active line.}
 
 \item{selectionId}{The ID associated with a change of selected text}
 

@@ -10,6 +10,8 @@
 #' @param theme The Ace \code{theme} to be used by the editor. The \code{theme}
 #'   in Ace determines the styling and coloring of the editor. Use 
 #'   \code{\link{getAceThemes}} to enumerate all the themes available.
+#' @param vimKeyBinding If set to \code{TRUE}, Ace will enable vim-keybindings.
+#'   Default value is \code{FALSE}.
 #' @param readOnly If set to \code{TRUE}, Ace will disable client-side editing.
 #'   If \code{FALSE} (the default), it will enable editing.
 #' @param height A number (which will be interpreted as a number of pixels) or 
@@ -23,6 +25,8 @@
 #'   of every keystroke as it happens.
 #' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
 #'   Default value is \code{FALSE}.
+#' @param showLineNumbers If set to \code{TRUE}, Ace will show line numbers.
+#' @param highlightActiveLine If set to \code{TRUE}, Ace will highlight the active line.
 #' @param cursorId The ID associated with a cursor change.
 #' @param selectionId  The ID associated with a change of selected text
 #' @param hotkeys A list whose names are ID names and whose elements are the shortcuts of keys. Shortcuts can either be a simple string or a list with elements 'win' and 'mac' that that specifies different shortcuts for win and mac (see example). 
@@ -55,7 +59,7 @@
 aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE, 
                       readOnly=FALSE, height="400px",
                       fontSize=12, debounce=1000, wordWrap=FALSE,
-                      showLineNumbers = TRUE,highlightActiveLine=TRUE,
+                      showLineNumbers = TRUE, highlightActiveLine=TRUE,
                       selectionId=NULL, cursorId=NULL, hotkeys=NULL,
                       autoComplete=c("disabled", "enabled", "live"), 
                       autoCompleteList=NULL){
