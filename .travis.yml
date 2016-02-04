@@ -1,0 +1,7 @@
+language: r
+sudo: required
+r_binary_packages:
+  - shiny
+  - dplyr
+  - testthat
+warnings_are_errors: true
