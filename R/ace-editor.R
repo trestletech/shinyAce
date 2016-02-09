@@ -113,7 +113,11 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   if (wordWrap){
     js <- paste(js, "", editorVar,".getSession().setUseWrapMode(true);", sep="")
   }
-  js <- paste(js, "$('#", outputId, "').data('aceEditor',", editorVar,");", sep="")
+  
+  # https://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
+  escapedId <- gsub("\\.", "\\\\\\\\.", outputId)
+  escapedId <- gsub("\\:", "\\\\\\\\:", escapedId)
+  js <- paste(js, "$('#",escapedId,"').data('aceEditor',", editorVar,");", sep="")
 
   if (!is.null(selectionId)){
     selectJS <- paste("", editorVar,".getSelection().on(\"changeSelection\", function(){
