@@ -39,6 +39,8 @@
 #'  By default, only local completer is used where all aforementioned code pieces will be considered as candidates. Use \code{autoCompleteList} for static completions and \code{\link{aceAutocomplete}} for dynamic R code completions.
 #' @param autoCompleteList A named list that contains static code completions candidates. This can be especially useful for Non-Standard Evaluation (NSE) functions such as those in \code{dplyr} and \code{ggvis}. Each element in list should be a character array whose words will be listed under the element key. For example, to suggests column names from \code{mtcars} and \code{airquality}, you can use \code{list(mtcars = colnames(mtcars), airquality = colnames(airquality))}.
 #' @import shiny
+#' @importFrom utils compareVersion
+#' @importFrom utils packageVersion
 #' @examples \dontrun{
 #'  aceEditor("myEditor", "Initial text for editor here", mode="r", 
 #'    theme="ambiance")
@@ -95,12 +97,12 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   if (!is.null(debounce) && !is.na(as.numeric(debounce))){
      # I certainly hope there's a more reasonable way to compare 
     # versions with an extra field in them...
-    re <- regexpr("^\\d+\\.\\d+(\\.\\d+)?", packageVersion("shiny"))
-    shinyVer <- substr(packageVersion("shiny"), 0, attr(re, "match.length"))
-    minorVer <- as.integer(substr(packageVersion("shiny"),
+    re <- regexpr("^\\d+\\.\\d+(\\.\\d+)?", utils::packageVersion("shiny"))
+    shinyVer <- substr(utils::packageVersion("shiny"), 0, attr(re, "match.length"))
+    minorVer <- as.integer(substr(utils::packageVersion("shiny"),
       attr(re, "match.length")+2,
-      nchar(packageVersion("shiny"))))
-    comp <- compareVersion(shinyVer, "0.9.1")
+      nchar(utils::packageVersion("shiny"))))
+    comp <- utils::compareVersion(shinyVer, "0.9.1")
     if (comp < 0 || (comp == 0 && minorVer < 9004)){
       warning(
       "Shiny version 0.9.1.9004 required to use input debouncing in shinyAce.")
