@@ -18,7 +18,7 @@ Or view an [interactive example](https://starkingdom.shinyapps.io/shinyAce-01-ba
 Installation
 ------------
 
-shinyAce is available [on CRAN](http://cran.r-project.org/web/packages/shinyAce/), so installation is as simple as:
+shinyAce is available [on CRAN](https://cran.r-project.org/package=shinyAce), so installation is as simple as:
 
 ```
 install.packages("shinyAce")
