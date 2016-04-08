@@ -62,7 +62,11 @@ var rlangCompleter = {
         var inputId = editor.container.id;
         Shiny.onInputChange('shinyAce_' + inputId + '_hint', {
           linebuffer: session.getLine(pos.row),
-          cursorPosition: pos.column
+          cursorPosition: pos.column,
+          // nonce causes autcomplement event to trigger
+          // on R side even if Ctrl-Space is pressed twice
+          // with the same linebuffer and cursorPosition
+          nonce: random() 
         });
         //store callback for dynamic completion
         $('#' + inputId).data('autoCompleteCallback', callback);
