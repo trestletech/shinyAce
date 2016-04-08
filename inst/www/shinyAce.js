@@ -66,7 +66,7 @@ var rlangCompleter = {
           // nonce causes autcomplement event to trigger
           // on R side even if Ctrl-Space is pressed twice
           // with the same linebuffer and cursorPosition
-          nonce: random() 
+          nonce: Math.random() 
         });
         //store callback for dynamic completion
         $('#' + inputId).data('autoCompleteCallback', callback);
