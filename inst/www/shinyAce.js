@@ -138,8 +138,15 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     editor.navigateTo(row, col );
   } 
   
-  if (data.highlightRange){ 
-    var highlightRows = data.highlightRange.split(",");
+  if(data.highlight===null){
+    while(HighlightedLines.length>0){
+      var highlightedLine = HighlightedLines.pop();
+      editor.getSession().removeMarker(highlightedLine);
+    }      
+  }
+    
+  if ( data.highlight ){
+    var highlightRows = data.highlight.split(",");
     var row1 = highlightRows[0]; 
     var row2 = highlightRows[1]; 
     var Range = ace.require("ace/range").Range;
@@ -147,14 +154,5 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
       'ace_highlight-marker', 'fullLine');
     HighlightedLines.push(highlightLine); 
   } 
-  
-  if(data.clearHighlights ){
-    while(HighlightedLines.length>0){
-      var highlightedLine = HighlightedLines.pop();
-      editor.getSession().removeMarker(highlightedLine);
-    }
-  }
-  
-  
-  
+
 });

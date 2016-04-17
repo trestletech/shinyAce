@@ -17,6 +17,11 @@
 #'   Should be an integer.
 #' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
 #'   Default value is \code{FALSE}.
+#' @param highlight \code{NULL} or an integer vector denoting a range >0. 
+#' If set and NULL, will clear all highlighted markers.
+#' If set and a single integer >0, will highlight the correspond row.
+#' If set and a non-decreasing pair of integers >0, will highlight the corresponding range of rows 
+#' determined by the pair.
 #' @param border Set the \code{border} 'normal', 'alert', or 'flash'.
 #' @param autoComplete Enable/Disable code completion. See \code{\link{aceEditor}} for details.
 #' @param autoCompleteList If set to \code{NULL}, exisitng static completions list will be unset. See \code{\link{aceEditor}} for details.
@@ -31,8 +36,7 @@
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
 updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
-                            fontSize, wordWrap, cursorPos, highlightRange, 
-                            clearHighlights, 
+                            fontSize, wordWrap, cursorPos,  highlight,
                             border=c("normal", "alert", "flash"),
                             autoComplete=c("disabled", "enabled", "live"), 
                             autoCompleteList=NULL
@@ -80,16 +84,19 @@ updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
       theList <- c(theList, list(cursorPos = cursorPos)) 
     } 
   } 
-  if (!missing(highlightRange)){ 
-    if(length( highlightRange)==2 && is.numeric(highlightRange)){
-      highlightRange<-highlightRange-1
-      highlightRange<-paste0(highlightRange,collapse=",")
-      theList <- c(theList, list(highlightRange = highlightRange)) 
+  if(!missing(highlight)){
+    if(length( highlight)==0){
+      theList <- c(theList, list(highlight = highlight)) 
+    } else if( is.numeric(highlight)){
+      stopifnot(highlight[1]>0)
+      if(length(highlight)==1){
+        highlight<-c(highlight,highlight)
+      }
+      highlight<-highlight-1
+      stopifnot(highlight[2]>=highlight[1] )
+      highlight<-paste0(highlight[1:2],collapse=",")
+      theList <- c(theList, list(highlight = highlight)) 
     } 
-  }
-  
-  if (!missing(clearHighlights)){ 
-      theList <- c(theList, list(clearHighlights = TRUE)) 
   }
   
   

@@ -21,9 +21,8 @@ shinyServer(function(input, output, session) {
       return(NULL)
     }
     isolate({
-      lineNo<-as.integer(input$line2highlight)
-      updateAceEditor(session, "ace",
-                      highlightRange=c(lineNo,lineNo) )
+      lineNo<-as.integer(input$chosenline)
+      updateAceEditor(session, "ace",highlight=c(lineNo) )
     })
  }) 
   
@@ -32,9 +31,8 @@ shinyServer(function(input, output, session) {
       return(NULL)
     }
     isolate({
-      lineNo<-as.integer(input$line2highlight)
-      updateAceEditor(session, "ace",
-                      cursorPos=c(lineNo,1) )
+      lineNo<-as.integer(input$chosenline)
+      updateAceEditor(session, "ace",cursorPos=c(lineNo,1) )
     })
   }) 
   
@@ -42,8 +40,9 @@ shinyServer(function(input, output, session) {
     if (input$unhighlight == 0){
       return(NULL)
     }
-    updateAceEditor(session, "ace",
-                    clearHighlights=1 )
+    updateAceEditor(session, "ace", highlight=NULL )
+    # updateAceEditor(session, "ace", 
+    #                 clearHighlights=1 )
     })
   
   
