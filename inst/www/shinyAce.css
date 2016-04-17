@@ -30,3 +30,9 @@
 .acealert{
   border: 1px solid rgba(255, 50, 50, 0.60);
 }
+
+.ace_highlight-marker {
+   position: absolute; 
+   background: #FF0000; 
+   z-index: 1000; 
+}

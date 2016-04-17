@@ -31,10 +31,12 @@
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
 updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
-                            fontSize, wordWrap, 
+                            fontSize, wordWrap, cursorPos, highLightRange, 
+                            unHighLightRange,
                             border=c("normal", "alert", "flash"),
                             autoComplete=c("disabled", "enabled", "live"), 
-                            autoCompleteList=NULL){
+                            autoCompleteList=NULL
+                            ){
   if (missing(session) || missing(editorId)){
     stop("Must provide both a session and an editorId to update Ace.")
   }
@@ -71,6 +73,24 @@ updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
     #NULL can only be inserted via c()
     theList <- c(theList, list(autoCompleteList = autoCompleteList))
   }
-    
+  if (!missing(cursorPos)){
+    if(length(cursorPos)==2 && is.numeric(cursorPos)){
+      cursorPos<-paste0(cursorPos,collapse=",")
+      theList <- c(theList, list(cursorPos = cursorPos)) 
+    } 
+  } 
+  
+  if (!missing(highLightRange)){ 
+    if(length( highLightRange)==2 && is.numeric(highLightRange)){
+      highLightRange<-highLightRange-1
+      highLightRange<-paste0(highLightRange,collapse=",")
+      theList <- c(theList, list(highLightRange = highLightRange)) 
+    } 
+  }
+  
+  if (!missing(unHighLightRange)){ 
+      theList <- c(theList, list(unHighLightRange = 1)) 
+  }
+
   session$sendCustomMessage("shinyAce", theList)
 }
