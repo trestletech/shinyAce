@@ -71,7 +71,7 @@ var rlangCompleter = {
 langTools.addCompleter(rlangCompleter);
 })();
 
-var erroneousLines=0;
+var HighlightedLines=[];
 
 Shiny.addCustomMessageHandler('shinyAce', function(data) {
   var id = data.id;
@@ -134,19 +134,23 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     editor.navigateTo(row, col );
   } 
   
-  if (data.highLightRange){ 
-    var highLightRows = data.highLightRange.split(",");
-    var row1 = highLightRows[0]; //Number(res[0]);
-    var row2 = highLightRows[1]; //Number(res[1]);
+  if (data.highlightRange){ 
+    var highlightRows = data.highlightRange.split(",");
+    var row1 = highlightRows[0]; 
+    var row2 = highlightRows[1]; 
     var Range = ace.require("ace/range").Range;
-    erroneousLines = editor.session.addMarker(new Range(row1, 0, row2, 1), 
+    var highlightLine = editor.session.addMarker(new Range(row1, 0, row2, 1), 
       'ace_highlight-marker', 'fullLine');
+    HighlightedLines.push(highlightLine); 
   } 
   
-  if(data.unHighLightRange){
-    if(erroneousLines!=0){
-      editor.getSession().removeMarker(erroneousLines);
+  if(data.clearHighlights ){
+    while(HighlightedLines.length>0){
+      var highlightedLine = HighlightedLines.pop();
+      editor.getSession().removeMarker(highlightedLine);
     }
   }
+  
+  
   
 });
