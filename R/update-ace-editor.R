@@ -31,8 +31,8 @@
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
 updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
-                            fontSize, wordWrap, cursorPos, highLightRange, 
-                            unHighLightRange,
+                            fontSize, wordWrap, cursorPos, highlightRange, 
+                            clearHighlights, 
                             border=c("normal", "alert", "flash"),
                             autoComplete=c("disabled", "enabled", "live"), 
                             autoCompleteList=NULL
@@ -75,22 +75,24 @@ updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
   }
   if (!missing(cursorPos)){
     if(length(cursorPos)==2 && is.numeric(cursorPos)){
+      cursorPos<-cursorPos-1
       cursorPos<-paste0(cursorPos,collapse=",")
       theList <- c(theList, list(cursorPos = cursorPos)) 
     } 
   } 
-  
-  if (!missing(highLightRange)){ 
-    if(length( highLightRange)==2 && is.numeric(highLightRange)){
-      highLightRange<-highLightRange-1
-      highLightRange<-paste0(highLightRange,collapse=",")
-      theList <- c(theList, list(highLightRange = highLightRange)) 
+  if (!missing(highlightRange)){ 
+    if(length( highlightRange)==2 && is.numeric(highlightRange)){
+      highlightRange<-highlightRange-1
+      highlightRange<-paste0(highlightRange,collapse=",")
+      theList <- c(theList, list(highlightRange = highlightRange)) 
     } 
   }
   
-  if (!missing(unHighLightRange)){ 
-      theList <- c(theList, list(unHighLightRange = 1)) 
+  if (!missing(clearHighlights)){ 
+      theList <- c(theList, list(clearHighlights = TRUE)) 
   }
+  
+  
 
   session$sendCustomMessage("shinyAce", theList)
 }

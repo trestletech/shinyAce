@@ -20,14 +20,22 @@ shinyServer(function(input, output, session) {
     if (input$highlight == 0){
       return(NULL)
     }
-    updateAceEditor(session, "ace",
-                    unHighLightRange=1 )
-
-    lineNo<-as.integer(input$line2highlight)
-    updateAceEditor(session, "ace",
-                    highLightRange=c(lineNo,lineNo) )
-    # updateAceEditor(session, "ace", 
-    #                 cursorPos=c(5,1) )
+    isolate({
+      lineNo<-as.integer(input$line2highlight)
+      updateAceEditor(session, "ace",
+                      highlightRange=c(lineNo,lineNo) )
+    })
+ }) 
+  
+  observe({
+    if (input$setCursorPos == 0){
+      return(NULL)
+    }
+    isolate({
+      lineNo<-as.integer(input$line2highlight)
+      updateAceEditor(session, "ace",
+                      cursorPos=c(lineNo,1) )
+    })
   }) 
   
   observe({
@@ -35,6 +43,8 @@ shinyServer(function(input, output, session) {
       return(NULL)
     }
     updateAceEditor(session, "ace",
-                    unHighLightRange=1 )
+                    clearHighlights=1 )
     })
+  
+  
 }) 
