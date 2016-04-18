@@ -22,6 +22,8 @@
 #' If set and a single integer >0, will highlight the correspond row.
 #' If set and a non-decreasing pair of integers >0, will highlight the corresponding range of rows 
 #' determined by the pair.
+#' @param cursorPos A vector consisting of intervalues for the row and column of the new
+#' intended cursor position
 #' @param border Set the \code{border} 'normal', 'alert', or 'flash'.
 #' @param autoComplete Enable/Disable code completion. See \code{\link{aceEditor}} for details.
 #' @param autoCompleteList If set to \code{NULL}, exisitng static completions list will be unset. See \code{\link{aceEditor}} for details.
