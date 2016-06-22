@@ -31,7 +31,7 @@ You can install the latest development version of the code using the `devtools` 
 install.packages("devtools")
 
 library(devtools)
-install_github("shinyAce", "trestletech")
+install_github("trestletech/shinyAce")
 ```
 
 ## Getting Started
