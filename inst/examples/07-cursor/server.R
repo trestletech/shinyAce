@@ -46,4 +46,12 @@ shinyServer(function(input, output, session) {
     })
   
   
+  output$result <- renderText({
+      if(!is.null(input$mydata)){
+        txt<-input$mydata
+      } else {
+        txt<-"hello"
+      }
+    txt
+    })
 }) 

@@ -36,3 +36,14 @@
    background: #FF0000; 
    z-index: 1000; 
 }
+
+.ace_svgRAN {color:  rgb(255,140,0); }
+.ace_svgRME {color:  rgb(112,128,144); }
+.ace_svgRFE {color:  rgb(0,255,255); }
+.ace_svgRGR {color:  rgb(255,0,255); }
+.ace_svgRSH {color:  rgb(0,0,205); }
+.ace_svgRCO {color:  rgb(72,61,139); }
+.ace_svgRTX {color:  rgb(178,34,34);}
+.ace_svgRFI {color:  rgb(0,128,0); }
+.ace_svgRMM {color:  rgb(160,82,45); }
+

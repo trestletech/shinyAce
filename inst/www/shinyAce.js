@@ -75,8 +75,6 @@ var rlangCompleter = {
 langTools.addCompleter(rlangCompleter);
 })();
 
-var HighlightedLines=[];
-
 Shiny.addCustomMessageHandler('shinyAce', function(data) {
   var id = data.id;
   var $el = $('#' + id);
@@ -89,6 +87,7 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
   
   if (data.mode){
     editor.getSession().setMode("ace/mode/" + data.mode);
+    
   }
   
   if (data.value){
@@ -117,6 +116,12 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     var value = data.autoComplete;
     editor.setOption('enableLiveAutocompletion', value === 'live');
     editor.setOption('enableBasicAutocompletion', value !== 'disabled');
+    //editor.setOption("behavioursEnabled", true);
+  }
+  
+  if(data.behaviours){
+    //var value = data.autoComplete;
+    editor.setOption("behavioursEnabled", data.behaviours==='enable');
   }
   
   if (data.hasOwnProperty('autoCompleteList')){
@@ -131,6 +136,7 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     if(callback !== undefined) callback(null, words);
   }
   
+  // STARTING EDITING HERE
   if (data.cursorPos){
     var res = data.cursorPos.split(",");
     var row = Number(res[0]);
@@ -138,21 +144,69 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     editor.navigateTo(row, col );
   } 
   
-  if(data.highlight===null){
-    while(HighlightedLines.length>0){
-      var highlightedLine = HighlightedLines.pop();
-      editor.getSession().removeMarker(highlightedLine);
+  
+  if(data.clearHighlights){
+    //var HighlightedLines=editor.getSession().$backMarkers;
+    var clearLines=data.clearHighlights;
+    //console.log( HighlightedLines );
+    while(clearLines.length>0){
+      var cline = clearLines.pop();
+      // NEED TO CHANGE THIS APPROACH, SHOULD TRY TO USE 
+      // EditSession.getMarkers(Boolean inFront) INSTEAD 
+      // FOR REMOVING MARKERS
+      
+      editor.getSession().removeMarker(cline);
     }      
   }
+  
+  if(data.clearAllHighlights){
+    var HighlightedLines=editor.getSession().getMarkers(true)
+    //$backMarkers;
+    //var clearLines=data.clearHighlights;
+    console.log( HighlightedLines );
+    while(HighlightedLines.length>0){
+      var cline = HighlightedLines.pop();
+      console.log(cline);
+      // NEED TO CHANGE THIS APPROACH, SHOULD TRY TO USE 
+      // EditSession.getMarkers(Boolean inFront) INSTEAD 
+      // FOR REMOVING MARKERS
+      
+      //editor.getSession().removeMarker(cline);
+    }      
+  }
+  
+  if(data.removeMarkers){
+    var markers = editor.getSession().getMarkers(false);
+    for (var idm in markers) {
+      // All language analysis' markers are prefixed with language_highlight
+      if (markers[id].clazz.indexOf('language_highlight_') === 0) {
+          session.removeMarker(id);
+        }
+      }
+    //  for (var i = 0; i < session.markerAnchors.length; i++) {
+    //      session.markerAnchors[i].detach();
+    //  }
+    //  session.markerAnchors = [];
+  }
+
+  
     
   if ( data.highlight ){
-    var highlightRows = data.highlight.split(",");
+    var highlightRows = data.highlight;
     var row1 = highlightRows[0]; 
     var row2 = highlightRows[1]; 
     var Range = ace.require("ace/range").Range;
-    var highlightLine = editor.session.addMarker(new Range(row1, 0, row2, 1), 
-      'ace_highlight-marker', 'fullLine');
-    HighlightedLines.push(highlightLine); 
+    var highlightLine = 
+       editor.session.addMarker(new Range(row1, 0, row2, 1), 
+      'ace_highlight-marker', 
+      'fullLine');
+    //alert(highlightLine);
+    //HighlightedLines.push(highlightLine); 
+    // NEED TO CHANGE THIS APPROACH, SHOULD TRY TO USE 
+    // EditSession.getMarkers(Boolean inFront) INSTEAD 
+    // FOR REMOVING MARKERS
+    Shiny.onInputChange("mydata", highlightLine);
   } 
+  // END EDITING HERE
 
 });
