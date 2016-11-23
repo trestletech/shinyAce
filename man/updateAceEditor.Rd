@@ -5,7 +5,7 @@
 \title{Update Ace Editor}
 \usage{
 updateAceEditor(session, editorId, value, theme, readOnly, mode, fontSize,
-  wordWrap, border = c("normal", "alert", "flash"),
+  wordWrap, cursorPos, highlight, border = c("normal", "alert", "flash"),
   autoComplete = c("disabled", "enabled", "live"), autoCompleteList = NULL)
 }
 \arguments{
@@ -32,6 +32,15 @@ Should be an integer.}
 
 \item{wordWrap}{If set to \code{TRUE}, Ace will enable word wrapping.
 Default value is \code{FALSE}.}
+
+\item{cursorPos}{A vector consisting of intervalues for the row and column of the new
+intended cursor position}
+
+\item{highlight}{\code{NULL} or an integer vector denoting a range >0. 
+If set and NULL, will clear all highlighted markers.
+If set and a single integer >0, will highlight the correspond row.
+If set and a non-decreasing pair of integers >0, will highlight the corresponding range of rows 
+determined by the pair.}
 
 \item{border}{Set the \code{border} 'normal', 'alert', or 'flash'.}
 

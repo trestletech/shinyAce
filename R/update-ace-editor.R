@@ -17,6 +17,13 @@
 #'   Should be an integer.
 #' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
 #'   Default value is \code{FALSE}.
+#' @param highlight \code{NULL} or an integer vector denoting a range >0. 
+#' If set and NULL, will clear all highlighted markers.
+#' If set and a single integer >0, will highlight the correspond row.
+#' If set and a non-decreasing pair of integers >0, will highlight the corresponding range of rows 
+#' determined by the pair.
+#' @param cursorPos A vector consisting of intervalues for the row and column of the new
+#' intended cursor position
 #' @param border Set the \code{border} 'normal', 'alert', or 'flash'.
 #' @param autoComplete Enable/Disable code completion. See \code{\link{aceEditor}} for details.
 #' @param autoCompleteList If set to \code{NULL}, exisitng static completions list will be unset. See \code{\link{aceEditor}} for details.
@@ -31,10 +38,11 @@
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
 updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
-                            fontSize, wordWrap, 
+                            fontSize, wordWrap, cursorPos,  highlight,
                             border=c("normal", "alert", "flash"),
                             autoComplete=c("disabled", "enabled", "live"), 
-                            autoCompleteList=NULL){
+                            autoCompleteList=NULL
+                            ){
   if (missing(session) || missing(editorId)){
     stop("Must provide both a session and an editorId to update Ace.")
   }
@@ -71,6 +79,29 @@ updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
     #NULL can only be inserted via c()
     theList <- c(theList, list(autoCompleteList = autoCompleteList))
   }
-    
+  if (!missing(cursorPos)){
+    if(length(cursorPos)==2 && is.numeric(cursorPos)){
+      cursorPos<-cursorPos-1
+      cursorPos<-paste0(cursorPos,collapse=",")
+      theList <- c(theList, list(cursorPos = cursorPos)) 
+    } 
+  } 
+  if(!missing(highlight)){
+    if(length( highlight)==0){
+      theList <- c(theList, list(highlight = highlight)) 
+    } else if( is.numeric(highlight)){
+      stopifnot(highlight[1]>0)
+      if(length(highlight)==1){
+        highlight<-c(highlight,highlight)
+      }
+      highlight<-highlight-1
+      stopifnot(highlight[2]>=highlight[1] )
+      highlight<-paste0(highlight[1:2],collapse=",")
+      theList <- c(theList, list(highlight = highlight)) 
+    } 
+  }
+  
+  
+
   session$sendCustomMessage("shinyAce", theList)
 }
