@@ -35,7 +35,6 @@ $.extend(shinyAceInputBinding, {
 
 Shiny.inputBindings.register(shinyAceInputBinding);
 
-
 var langTools = ace.require("ace/ext/language_tools");
 var staticCompleter = {
   getCompletions: function(editor, session, pos, prefix, callback) {
@@ -130,3 +129,11 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     if(callback !== undefined) callback(null, words);
   }
 });
+
+// Allow toggle of the search-replace box in Ace
+// see https://github.com/ajaxorg/ace/issues/3552
+var toggle_search_replace = ace.require("ace/ext/searchbox").SearchBox.prototype.$searchBarKb.bindKey( "Ctrl-f|Command-f|Ctrl-H|Command-Option-F", function(sb) {
+    var isReplace = sb.isReplace = !sb.isReplace;
+    sb.replaceBox.style.display = isReplace ? "" : "none";
+    sb[isReplace ? "replaceInput" : "searchInput"].focus();
+})
