@@ -38,6 +38,9 @@
 #'  }
 #'  By default, only local completer is used where all aforementioned code pieces will be considered as candidates. Use \code{autoCompleteList} for static completions and \code{\link{aceAutocomplete}} for dynamic R code completions.
 #' @param autoCompleteList A named list that contains static code completions candidates. This can be especially useful for Non-Standard Evaluation (NSE) functions such as those in \code{dplyr} and \code{ggvis}. Each element in list should be a character array whose words will be listed under the element key. For example, to suggests column names from \code{mtcars} and \code{airquality}, you can use \code{list(mtcars = colnames(mtcars), airquality = colnames(airquality))}.
+#' @param tabSize Tab size (e.g., 4)
+#' @param useSoftTabs Replace tabs by spases
+#' @param showInvisibles Show spaces and tabs
 #' @import shiny
 #' @importFrom utils compareVersion
 #' @importFrom utils packageVersion
@@ -58,105 +61,164 @@
 #' } 
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
-aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE, 
-                      readOnly=FALSE, height="400px",
-                      fontSize=12, debounce=1000, wordWrap=FALSE,
-                      showLineNumbers = TRUE, highlightActiveLine=TRUE,
-                      selectionId=NULL, cursorId=NULL, hotkeys=NULL,
-                      autoComplete=c("disabled", "enabled", "live"), 
-                      autoCompleteList=NULL){
-  editorVar = paste0("editor__",sanitizeId(outputId))
-  js <- paste("var ", editorVar," = ace.edit('",outputId,"');",sep="")
-  if (!missing(theme)){
-    js <- paste(js, "", editorVar,".setTheme('ace/theme/",theme,"');",sep="")
+aceEditor <- function(outputId, value, mode, theme, 
+                      vimKeyBinding = FALSE, 
+                      readOnly = FALSE, 
+                      height = "400px",
+                      fontSize = 12, 
+                      debounce = 1000, 
+                      wordWrap = FALSE,
+                      showLineNumbers = TRUE, 
+                      highlightActiveLine = TRUE,
+                      selectionId = NULL, 
+                      cursorId = NULL, 
+                      hotkeys = NULL,
+                      autoComplete = c("disabled", "enabled", "live"), 
+                      autoCompleteList = NULL,
+                      tabSize = 4,
+                      useSoftTabs = TRUE, 
+                      showInvisibles = FALSE) {
+  
+  editorVar <- paste0("editor__", sanitizeId(outputId))
+  js <- paste("var ", editorVar," = ace.edit('", outputId, "');", sep = "")
+  if (!missing(theme)) {
+    js <- paste(js, "", editorVar, ".setTheme('ace/theme/", theme, "');", sep = "")
   }
-  if (vimKeyBinding){
-    js <- paste(js, "", editorVar,".setKeyboardHandler('ace/keyboard/vim');",sep="")
+  if (vimKeyBinding) {
+    js <- paste(js, "", editorVar, ".setKeyboardHandler('ace/keyboard/vim');", sep = "")
   }
-  if (!missing(mode)){
-    js <- paste(js, "", editorVar,".getSession().setMode('ace/mode/",mode,"');", sep="")
+  if (!missing(mode)) {
+    js <- paste(js, "", editorVar, ".getSession().setMode('ace/mode/", mode,"');", sep = "")
   }
-  if (!missing(value)){
-    js <- paste(js, "", editorVar,".setValue(", jsQuote(value), ", -1);", sep="")
+  if (!missing(value)) {
+    js <- paste(js, "", editorVar, ".setValue(", jsQuote(value), ", -1);", sep = "")
   }  
   if (!showLineNumbers) {
-    js <- paste(js, "", editorVar,".renderer.setShowGutter(false);", sep="")
+    js <- paste(js, "", editorVar, ".renderer.setShowGutter(false);", sep = "")
   }
   if (!highlightActiveLine) {
-    js <- paste(js, "", editorVar,".setHighlightActiveLine(false);", sep="")
+    js <- paste(js, "", editorVar, ".setHighlightActiveLine(false);", sep = "")
   }
-  
-  if (readOnly){
-    js <- paste(js, "", editorVar,".setReadOnly(", jsQuote(readOnly), ");", sep="")
+  if (readOnly) {
+    js <- paste(js, "", editorVar, ".setReadOnly(", jsQuote(readOnly), ");", sep = "")
   }
-  if (!is.null(fontSize) && !is.na(as.numeric(fontSize))){
-    js <- paste(js, "document.getElementById('",outputId,"').style.fontSize='",
-                as.numeric(fontSize), "px'; ", sep="")
+  if (!is.null(fontSize) && !is.na(as.numeric(fontSize))) {
+    js <- paste(js, "document.getElementById('", outputId, "').style.fontSize='",
+                as.numeric(fontSize), "px'; ", sep = "")
   }
-
-  if (!is.null(debounce) && !is.na(as.numeric(debounce))){
+  if (!is.null(debounce) && !is.na(as.numeric(debounce))) {
      # I certainly hope there's a more reasonable way to compare 
     # versions with an extra field in them...
     re <- regexpr("^\\d+\\.\\d+(\\.\\d+)?", utils::packageVersion("shiny"))
     shinyVer <- substr(utils::packageVersion("shiny"), 0, attr(re, "match.length"))
     minorVer <- as.integer(substr(utils::packageVersion("shiny"),
-      attr(re, "match.length")+2,
+      attr(re, "match.length") + 2,
       nchar(utils::packageVersion("shiny"))))
     comp <- utils::compareVersion(shinyVer, "0.9.1")
-    if (comp < 0 || (comp == 0 && minorVer < 9004)){
+    if (comp < 0 || (comp == 0 && minorVer < 9004)) {
       warning(
       "Shiny version 0.9.1.9004 required to use input debouncing in shinyAce.")
     }
     
-    js <- paste(js, "$('#",outputId,"').data('debounce',",debounce,");",
-                sep="")
+    js <- paste(js, "$('#", outputId ,"').data('debounce',", debounce,");", sep = "")
   }
   
-  if (wordWrap){
-    js <- paste(js, "", editorVar,".getSession().setUseWrapMode(true);", sep="")
+  if (wordWrap) {
+    js <- paste(js, "", editorVar,".getSession().setUseWrapMode(true);", sep = "")
   }
   
   # https://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
   escapedId <- gsub("\\.", "\\\\\\\\.", outputId)
   escapedId <- gsub("\\:", "\\\\\\\\:", escapedId)
-  js <- paste(js, "$('#",escapedId,"').data('aceEditor',", editorVar,");", sep="")
+  js <- paste(js, "$('#", escapedId, "').data('aceEditor',", editorVar, ");", sep = "")
 
-  if (!is.null(selectionId)){
-    selectJS <- paste("", editorVar,".getSelection().on(\"changeSelection\", function(){
-      Shiny.onInputChange(\"",selectionId,
-      "\",", editorVar,".getCopyText());})", 
-      sep="")
-    js <- paste(js, selectJS, sep="")
+  if (!is.null(selectionId)) {
+    selectJS <- paste("", editorVar, ".getSelection().on(\"changeSelection\", function(){
+      Shiny.onInputChange(\"", selectionId,
+      "\",", editorVar, ".getCopyText());})", 
+      sep = "")
+    js <- paste(js, selectJS, sep = "")
   }
   
-  if (!is.null(cursorId)){    
-    curJS <- paste("\n", editorVar,".getSelection().on(\"changeCursor\", function(){
-      Shiny.onInputChange(\"",cursorId,
-      "\",", editorVar,".selection.getCursor() );}\n);", 
-    sep="")
-    js <- paste(js, curJS, sep="")
+  if (!is.null(cursorId)) {    
+    curJS <- paste("\n", editorVar, ".getSelection().on(\"changeCursor\", function(){
+      Shiny.onInputChange(\"", cursorId,
+      "\",", editorVar, ".selection.getCursor() );}\n);", 
+    sep = "")
+    js <- paste(js, curJS, sep = "")
   }
   
   for (i in seq_along(hotkeys)) {
     shortcut = hotkeys[[i]]
     if (is.list(shortcut)) {
-      shortcut = paste0(names(shortcut),": '", shortcut,"'", collapse=", ")
+      shortcut = paste0(names(shortcut), ": '", shortcut, "'", collapse = ", ")
     } else {
-      shortcut = paste0("win: '",shortcut,"',  mac: '",shortcut,"'")
+      shortcut = paste0("win: '", shortcut, "',  mac: '", shortcut, "'")
     }
     
     id = names(hotkeys)[i]
     code = paste0("
-    ",editorVar,".commands.addCommand({
-        name: '",id,"',
+    ", editorVar,".commands.addCommand({
+        name: '", id,"',
         bindKey: {", shortcut,"},
-        exec: function(",editorVar,") {
-          Shiny.onInputChange(\"",id,
+        exec: function(", editorVar,") {
+
+          var selection = ", editorVar, ".session.getTextRange();
+          var range = ", editorVar, ".selection.getRange();
+          var imax = ", editorVar, ".session.getLength() - range.end.row;
+                  
+          if(selection === '') {
+            var i = 1;
+            var line = ", editorVar, ".session.getLine(range.end.row);
+            var next_line = ", editorVar, ".session.getLine(range.end.row + i);
+
+            if (/^```\\{.*\\}\\s*$/.test(line)) {
+              // run R-code chunk
+              while(/\\n```\\s*$/.test(line) === false & i < imax + 1) {
+                i++;
+                line = line.concat('\\n', next_line);
+                next_line = ", editorVar, ".session.getLine(range.end.row + i);
+                // console.log(next_line, i, imax);
+              }
+              if (i === imax + 1) {
+                line = '<h4>Code chunk not properly closed. Code chunks must end in &#96 &#96 &#96</h4>';
+              } 
+            } else if (/^\\$\\$\\s*$/.test(line)) {
+              // evaluate equation
+              while(/\\n\\$\\$\\s*$/.test(line) === false & i < imax + 1) {
+                i++;
+                line = line.concat('\\n', next_line);
+                next_line = ", editorVar, ".session.getLine(range.end.row + i);
+              }
+              if (i === imax + 1) {
+                line = '<h4>Equation not properly closed. Display equations must start and end with $$</h4>';
+              } 
+            } else {
+              rexpr = /(%>%|\\+|\\-|\\(|\\{|\\,)\\s*$/;
+              rxeval = rexpr.test(line);
+              while((rxeval | /^\\s*(\\#|$)/.test(next_line)) & i < imax) {
+                rxeval = rexpr.test(line);
+                if (rxeval | /^\\s*(\\}|\\))/.test(next_line)) {
+                  line = line.concat('\\n', next_line);
+                }
+                i++;
+                next_line = ", editorVar, ".session.getLine(range.end.row + i);
+                // console.log(next_line, i, imax)
+              }
+            }
+            ", editorVar, ".gotoLine(range.end.row + i + 1);
+            if (line === '') {
+              line = ' ';  // ensure whole report is not rendered
+            }
+          }
+
+          Shiny.onInputChange(\"", id,
           "\",{
-            editorId : '",outputId,"',
-            selection: ", editorVar,".session.getTextRange(",editorVar,".getSelectionRange()), 
-            cursor : ", editorVar,".selection.getCursor(),
-            randNum : Math.random()
+            editorId: '", outputId,"',
+            selection: selection,
+            range: range,
+            line: line,
+            randNum: Math.random()
           });            
         },
         readOnly: true // false if this command should not apply in readOnly mode
@@ -166,31 +228,38 @@ aceEditor <- function(outputId, value, mode, theme, vimKeyBinding = FALSE,
   }
   
   autoComplete <- match.arg(autoComplete)
-  if(autoComplete != "disabled") {
-    js <- paste(js, "", editorVar,".setOption('enableBasicAutocompletion', true);", sep="")
+  if (autoComplete != "disabled") {
+    js <- paste(js, "", editorVar, ".setOption('enableBasicAutocompletion', true);", sep = "")
   }
-  if(autoComplete == "live") {
-    js <- paste(js, "", editorVar,".setOption('enableLiveAutocompletion', true);", sep="")
+  if (autoComplete == "live") {
+    js <- paste(js, "", editorVar, ".setOption('enableLiveAutocompletion', true);", sep = "")
   }
-  
-  
+  if (useSoftTabs) {
+    js <- paste(js, "", editorVar, ".setOption('useSoftTabs', true);", sep = "")
+  }
+  js <- paste(js, "", editorVar, ".setOption('tabSize', ", tabSize, ");", sep = "")
+  if (showInvisibles) {
+    js <- paste(js, "", editorVar, ".setOption('showInvisibles', true);", sep = "")
+  }
+    
   tagList(
     singleton(tags$head(
       initResourcePaths(),
       tags$script(src = 'shinyAce/ace/ace.js'),
       tags$script(src = 'shinyAce/ace/ext-language_tools.js'),
+      tags$script(src = 'shinyAce/ace/ext-searchbox.js'),
       tags$script(src = 'shinyAce/shinyAce.js'),
       tags$link(rel = 'stylesheet',
                 type = 'text/css',
                 href = 'shinyAce/shinyAce.css')
     )),
-    pre(id=outputId, class="shiny-ace", 
-        style=paste("height:", 
+    pre(id = outputId, class = "shiny-ace", 
+        style = paste("height:", 
               validateCssUnit(height)
         ),
         `data-autoCompleteList` = autoCompleteList
     ),
-    tags$script(type="text/javascript", HTML(js))
+    tags$script(type = "text/javascript", HTML(js))
   )
 }
 
