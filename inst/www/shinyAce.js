@@ -121,15 +121,15 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     editor.setOption('tabSize', data.tabSize);
   } 
   
-  if (data.useSoftTabs) {
-    editor.setOption('useSoftTabs', true);
-  } else{
+  if (data.useSoftTabs === false) {
     editor.setOption('useSoftTabs', false);
+  } else if (data.useSoftTabs === true) {
+    editor.setOption('useSoftTabs', true);
   }
-  
-  if (data.showInvisibles) {
+ 
+  if (data.showInvisibles === true) {
     editor.setOption('showInvisibles', true);
-  } else{
+  } else if (data.showInvisibles === false) {
     editor.setOption('showInvisibles', false);
   }
   
