@@ -9,6 +9,16 @@ test_that("newline works", {
   expect_match(jsQuote(string), "^['\"]text\\\\nhere['\"]$")
 })
 
+test_that("esc r works", {  
+  string <- "text\rhere"
+  expect_match(jsQuote(string), "^['\"]text\\\\rhere['\"]$")
+})
+
+test_that("esc f works", {  
+  string <- "text\fhere"
+  expect_match(jsQuote(string), "^['\"]text\\\\fhere['\"]$")
+})
+
 context("sanitize")
 test_that("sanitization works", {
   expect_equal(sanitizeId("test"), "test")

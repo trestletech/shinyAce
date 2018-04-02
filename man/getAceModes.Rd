@@ -15,4 +15,3 @@ code folding.
 \author{
 Jeff Allen \email{jeff@trestletech.com}
 }
-

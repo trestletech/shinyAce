@@ -17,9 +17,14 @@
 #'   Should be an integer.
 #' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
 #'   Default value is \code{FALSE}.
+#' @param tabSize Set tab size (e.g., 4)
+#' @param useSoftTabs Replace tabs by spaces
+#' @param showInvisibles Show invisible characters (e.g., spaces, tabs, newline characters)
 #' @param border Set the \code{border} 'normal', 'alert', or 'flash'.
-#' @param autoComplete Enable/Disable code completion. See \code{\link{aceEditor}} for details.
-#' @param autoCompleteList If set to \code{NULL}, exisitng static completions list will be unset. See \code{\link{aceEditor}} for details.
+#' @param autoComplete Enable/Disable code completion. See \code{\link{aceEditor}} 
+#'   for details.
+#' @param autoCompleteList If set to \code{NULL}, exisitng static completions 
+#'   list will be unset. See \code{\link{aceEditor}} for details.
 #' @examples \dontrun{
 #'  shinyServer(function(input, output, session) {
 #'    observe({
@@ -30,44 +35,56 @@
 #' } 
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 #' @export
-updateAceEditor <- function(session, editorId, value, theme, readOnly, mode,
-                            fontSize, wordWrap, 
-                            border=c("normal", "alert", "flash"),
-                            autoComplete=c("disabled", "enabled", "live"), 
-                            autoCompleteList=NULL){
-  if (missing(session) || missing(editorId)){
+updateAceEditor <- function(
+  session, editorId, value, theme, readOnly, mode,
+  fontSize, wordWrap, useSoftTabs, tabSize, showInvisibles,
+  border = c("normal", "alert", "flash"),
+  autoComplete = c("disabled", "enabled", "live"), 
+  autoCompleteList = NULL
+) {
+  
+  if (missing(session) || missing(editorId)) {
     stop("Must provide both a session and an editorId to update Ace.")
   }
   
-  theList <- list(id=editorId)
+  theList <- list(id = editorId)
   
-  if (!missing(value)){
+  if (!missing(value)) {
     theList["value"] <- value
   }
-  if (!missing(theme)){
+  if (!missing(theme)) {
     theList["theme"] <- theme
   }
-  if (!missing(mode)){
+  if (!missing(mode)) {
     theList["mode"] <- mode
   }
-  if (!missing(readOnly)){
+  if (!missing(readOnly)) {
     theList["readOnly"] <- readOnly
   }
-  if (!missing(fontSize)){
+  if (!missing(fontSize)) {
     theList["fontSize"] <- fontSize
   }
-  if (!missing(wordWrap)){
+  if (!missing(wordWrap)) {
     theList["wordWrap"] <- wordWrap
   }
-  if (!missing(border)){
+  if (!missing(tabSize)) {
+    theList["tabSize"] <- tabSize
+  }
+  if (!missing(useSoftTabs)) {
+    theList["useSoftTabs"] <- useSoftTabs
+  }
+  if (!missing(showInvisibles)) {
+    theList["showInvisibles"] <- showInvisibles
+  }
+  if (!missing(border)) {
     border <- match.arg(border)
     theList["border"] <- paste0("ace", border)
   }
-  if (!missing(autoComplete)){
+  if (!missing(autoComplete)) {
     autoComplete <- match.arg(autoComplete)
     theList["autoComplete"] <- autoComplete
   }
-  if (!missing(autoCompleteList)){
+  if (!missing(autoCompleteList)) {
     #NULL can only be inserted via c()
     theList <- c(theList, list(autoCompleteList = autoCompleteList))
   }

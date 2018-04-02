@@ -35,7 +35,6 @@ $.extend(shinyAceInputBinding, {
 
 Shiny.inputBindings.register(shinyAceInputBinding);
 
-
 var langTools = ace.require("ace/ext/language_tools");
 var staticCompleter = {
   getCompletions: function(editor, session, pos, prefix, callback) {
@@ -90,35 +89,51 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     editor.getSession().setMode("ace/mode/" + data.mode);
   }
   
-  if (data.value){
+  if (data.value !== undefined){
     editor.getSession().setValue(data.value, -1);
   }
   
-  if (data.hasOwnProperty('readOnly')){
+  if (data.hasOwnProperty('readOnly')) {
     editor.setReadOnly(data.readOnly);
   }
   
-  if (data.fontSize){
+  if (data.fontSize) {
     document.getElementById(id).style.fontSize = data.fontSize + 'px';
   }
   
-  if (data.hasOwnProperty('wordWrap')){
+  if (data.hasOwnProperty('wordWrap')) {
     editor.getSession().setUseWrapMode(data.wordWrap);
   }
   
-  if (data.border){
+  if (data.border) {
     var classes = ['acenormal', 'aceflash', 'acealert'];
     $el.removeClass(classes.join(' '));
     $el.addClass(data.border);
   }
   
-  if (data.autoComplete){
+  if (data.autoComplete) {
     var value = data.autoComplete;
     editor.setOption('enableLiveAutocompletion', value === 'live');
     editor.setOption('enableBasicAutocompletion', value !== 'disabled');
   }
   
-  if (data.hasOwnProperty('autoCompleteList')){
+  if (data.tabSize) {
+    editor.setOption('tabSize', data.tabSize);
+  } 
+  
+  if (data.useSoftTabs === false) {
+    editor.setOption('useSoftTabs', false);
+  } else if (data.useSoftTabs === true) {
+    editor.setOption('useSoftTabs', true);
+  }
+ 
+  if (data.showInvisibles === true) {
+    editor.setOption('showInvisibles', true);
+  } else if (data.showInvisibles === false) {
+    editor.setOption('showInvisibles', false);
+  }
+  
+  if (data.hasOwnProperty('autoCompleteList')) {
     $el.data('autoCompleteList', data.autoCompleteList);
   }
   
@@ -130,3 +145,11 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     if(callback !== undefined) callback(null, words);
   }
 });
+
+// Allow toggle of the search-replace box in Ace
+// see https://github.com/ajaxorg/ace/issues/3552
+var toggle_search_replace = ace.require("ace/ext/searchbox").SearchBox.prototype.$searchBarKb.bindKey( "Ctrl-f|Command-f|Ctrl-H|Command-Option-F", function(sb) {
+    var isReplace = sb.isReplace = !sb.isReplace;
+    sb.replaceBox.style.display = isReplace ? "" : "none";
+    sb[isReplace ? "replaceInput" : "searchInput"].focus();
+})

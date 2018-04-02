@@ -13,4 +13,3 @@ of shinyAce. Themes determine the styling and colors used in the editor.
 \author{
 Jeff Allen \email{jeff@trestletech.com}
 }
-

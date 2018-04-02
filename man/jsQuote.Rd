@@ -15,4 +15,3 @@ Escape a String to be sent to JavaScript
 \author{
 Jeff Allen \email{jeff@trestletech.com}
 }
-
