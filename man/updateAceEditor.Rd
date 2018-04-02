@@ -5,8 +5,9 @@
 \title{Update Ace Editor}
 \usage{
 updateAceEditor(session, editorId, value, theme, readOnly, mode, fontSize,
-  wordWrap, border = c("normal", "alert", "flash"),
-  autoComplete = c("disabled", "enabled", "live"), autoCompleteList = NULL)
+  wordWrap, useSoftTabs, tabSize, showInvisibles, border = c("normal",
+  "alert", "flash"), autoComplete = c("disabled", "enabled", "live"),
+  autoCompleteList = NULL)
 }
 \arguments{
 \item{session}{The Shiny session to whom the editor belongs}
@@ -33,11 +34,19 @@ Should be an integer.}
 \item{wordWrap}{If set to \code{TRUE}, Ace will enable word wrapping.
 Default value is \code{FALSE}.}
 
+\item{useSoftTabs}{Replace tabs by spaces}
+
+\item{tabSize}{Set tab size (e.g., 4)}
+
+\item{showInvisibles}{Show invisible characters (e.g., spaces, tabs, newline characters)}
+
 \item{border}{Set the \code{border} 'normal', 'alert', or 'flash'.}
 
-\item{autoComplete}{Enable/Disable code completion. See \code{\link{aceEditor}} for details.}
+\item{autoComplete}{Enable/Disable code completion. See \code{\link{aceEditor}} 
+for details.}
 
-\item{autoCompleteList}{If set to \code{NULL}, exisitng static completions list will be unset. See \code{\link{aceEditor}} for details.}
+\item{autoCompleteList}{If set to \code{NULL}, exisitng static completions 
+list will be unset. See \code{\link{aceEditor}} for details.}
 }
 \description{
 Update the styling or mode of an aceEditor component.
@@ -55,4 +64,3 @@ Update the styling or mode of an aceEditor component.
 \author{
 Jeff Allen \email{jeff@trestletech.com}
 }
-

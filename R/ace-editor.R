@@ -26,58 +26,82 @@
 #' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
 #'   Default value is \code{FALSE}.
 #' @param showLineNumbers If set to \code{TRUE}, Ace will show line numbers.
-#' @param highlightActiveLine If set to \code{TRUE}, Ace will highlight the active line.
+#' @param highlightActiveLine If set to \code{TRUE}, Ace will highlight the active 
+#'   line.
 #' @param cursorId The ID associated with a cursor change.
 #' @param selectionId  The ID associated with a change of selected text
-#' @param hotkeys A list whose names are ID names and whose elements are the shortcuts of keys. Shortcuts can either be a simple string or a list with elements 'win' and 'mac' that that specifies different shortcuts for win and mac (see example). 
+#' @param hotkeys A list whose names are ID names and whose elements are the 
+#'   shortcuts of keys. Shortcuts can either be a simple string or a list with 
+#'   elements 'win' and 'mac' that that specifies different shortcuts for win and 
+#'   mac (see example). 
 #' @param autoComplete Enable/Disable auto code completion. Must be one of the following:
 #'  \describe{
 #'    \item{\code{"disabled"}}{Disable Code Autocomplete}
-#'    \item{\code{"enabled"}}{Enable Basic Code Autocomplete. Autocomplete can be triggered using Ctrl-Space, Ctrl-Shift-Space, or Alt-Space.}
-#'    \item{\code{"live"}}{Enable Live Code Autocomplete. In addition to Basic Autocomplete, it will automatically trigger at each key stroke.}
+#'    \item{\code{"enabled"}}{Enable Basic Code Autocomplete. Autocomplete can be 
+#'      triggered using Ctrl-Space, Ctrl-Shift-Space, or Alt-Space.}
+#'    \item{\code{"live"}}{Enable Live Code Autocomplete. In addition to Basic 
+#'      Autocomplete, it will automatically trigger at each key stroke.}
 #'  }
-#'  By default, only local completer is used where all aforementioned code pieces will be considered as candidates. Use \code{autoCompleteList} for static completions and \code{\link{aceAutocomplete}} for dynamic R code completions.
-#' @param autoCompleteList A named list that contains static code completions candidates. This can be especially useful for Non-Standard Evaluation (NSE) functions such as those in \code{dplyr} and \code{ggvis}. Each element in list should be a character array whose words will be listed under the element key. For example, to suggests column names from \code{mtcars} and \code{airquality}, you can use \code{list(mtcars = colnames(mtcars), airquality = colnames(airquality))}.
-#' @param tabSize Tab size (e.g., 4)
-#' @param useSoftTabs Replace tabs by spases
-#' @param showInvisibles Show spaces and tabs
+#'  By default, only local completer is used where all aforementioned code pieces 
+#'    will be considered as candidates. Use \code{autoCompleteList} for static 
+#'    completions and \code{\link{aceAutocomplete}} for dynamic R code completions.
+#' @param autoCompleteList A named list that contains static code completions 
+#'   candidates. This can be especially useful for Non-Standard Evaluation (NSE) 
+#'   functions such as those in \code{dplyr} and \code{ggvis}. Each element in list 
+#'   should be a character array whose words will be listed under the element key. 
+#'   For example, to suggests column names from \code{mtcars} and \code{airquality}, 
+#'   you can use \code{list(mtcars = colnames(mtcars), airquality = colnames(airquality))}.
+#' @param tabSize Set tab size (e.g., 4)
+#' @param useSoftTabs Replace tabs by spaces
+#' @param showInvisibles Show invisible characters (e.g., spaces, tabs, newline characters)
+#' 
 #' @import shiny
 #' @importFrom utils compareVersion
 #' @importFrom utils packageVersion
+#' 
 #' @examples \dontrun{
-#'  aceEditor("myEditor", "Initial text for editor here", mode="r", 
-#'    theme="ambiance")
+#'  aceEditor(
+#'    outputId = "myEditor", 
+#'    value = "Initial text for editor here", 
+#'    mode = "r", 
+#'    theme = "ambiance"
+#'  )
 #'    
-#'  aceEditor("myCodeEditor", "# Enter code", mode="r",
-#'    hotkeys = list(helpKey="F1",
-#'                 runKey=list(win="Ctrl-R|Ctrl-Shift-Enter",
-#'                             mac="CMD-ENTER|CMD-SHIFT-ENTER")
-#'                 ),
-#'    wordWrap=TRUE, debounce=10) 
+#'  aceEditor(
+#'    outputId = "myCodeEditor", 
+#'    value = "# Enter code", 
+#'    mode = "r",
+#'    hotkeys = list(
+#'      helpKey = "F1",
+#'      runKey = list(
+#'        win = "Ctrl-R|Ctrl-Shift-Enter",
+#'        mac = "CMD-ENTER|CMD-SHIFT-ENTER"
+#'      )
+#'    ),
+#'    wordWrap = TRUE, debounce = 10
+#'  ) 
 #'    
-#'  aceEditor("mySmartEditor", "plot(wt ~ mpg, data=mtcars)", mode="r",
-#'    autoComplete="live",
-#'    autoCompleteList=list(mtcars=colnames(mtcars)))
+#'  aceEditor(
+#'    outputId = "mySmartEditor", 
+#'    value = "plot(wt ~ mpg, data = mtcars)", 
+#'    mode = "r",
+#'    autoComplete = "live",
+#'    autoCompleteList = list(mtcars = colnames(mtcars))
+#'  )
 #' } 
+#' 
 #' @author Jeff Allen \email{jeff@@trestletech.com}
+#' 
 #' @export
-aceEditor <- function(outputId, value, mode, theme, 
-                      vimKeyBinding = FALSE, 
-                      readOnly = FALSE, 
-                      height = "400px",
-                      fontSize = 12, 
-                      debounce = 1000, 
-                      wordWrap = FALSE,
-                      showLineNumbers = TRUE, 
-                      highlightActiveLine = TRUE,
-                      selectionId = NULL, 
-                      cursorId = NULL, 
-                      hotkeys = NULL,
-                      autoComplete = c("disabled", "enabled", "live"), 
-                      autoCompleteList = NULL,
-                      tabSize = 4,
-                      useSoftTabs = TRUE, 
-                      showInvisibles = FALSE) {
+aceEditor <- function(
+  outputId, value, mode, theme,  
+  vimKeyBinding = FALSE, readOnly = FALSE, height = "400px", fontSize = 12,  
+  debounce = 1000,  wordWrap = FALSE, showLineNumbers = TRUE, 
+  highlightActiveLine = TRUE, selectionId = NULL,  cursorId = NULL, 
+  hotkeys = NULL, autoComplete = c("disabled", "enabled", "live"), 
+  autoCompleteList = NULL, tabSize = 4, useSoftTabs = TRUE, 
+  showInvisibles = FALSE
+) {
   
   editorVar <- paste0("editor__", sanitizeId(outputId))
   js <- paste("var ", editorVar," = ace.edit('", outputId, "');", sep = "")
@@ -107,7 +131,7 @@ aceEditor <- function(outputId, value, mode, theme,
                 as.numeric(fontSize), "px'; ", sep = "")
   }
   if (!is.null(debounce) && !is.na(as.numeric(debounce))) {
-     # I certainly hope there's a more reasonable way to compare 
+    # I certainly hope there's a more reasonable way to compare 
     # versions with an extra field in them...
     re <- regexpr("^\\d+\\.\\d+(\\.\\d+)?", utils::packageVersion("shiny"))
     shinyVer <- substr(utils::packageVersion("shiny"), 0, attr(re, "match.length"))
@@ -116,10 +140,8 @@ aceEditor <- function(outputId, value, mode, theme,
       nchar(utils::packageVersion("shiny"))))
     comp <- utils::compareVersion(shinyVer, "0.9.1")
     if (comp < 0 || (comp == 0 && minorVer < 9004)) {
-      warning(
-      "Shiny version 0.9.1.9004 required to use input debouncing in shinyAce.")
+      warning("Shiny version 0.9.1.9004 required to use input debouncing in shinyAce.")
     }
-    
     js <- paste(js, "$('#", outputId ,"').data('debounce',", debounce,");", sep = "")
   }
   
@@ -133,7 +155,7 @@ aceEditor <- function(outputId, value, mode, theme,
   js <- paste(js, "$('#", escapedId, "').data('aceEditor',", editorVar, ");", sep = "")
 
   if (!is.null(selectionId)) {
-    selectJS <- paste("", editorVar, ".getSelection().on(\"changeSelection\", function(){
+    selectJS <- paste("", editorVar, ".getSelection().on(\"changeSelection\", function() {
       Shiny.onInputChange(\"", selectionId,
       "\",", editorVar, ".getCopyText());})", 
       sep = "")
@@ -141,7 +163,7 @@ aceEditor <- function(outputId, value, mode, theme,
   }
   
   if (!is.null(cursorId)) {    
-    curJS <- paste("\n", editorVar, ".getSelection().on(\"changeCursor\", function(){
+    curJS <- paste("\n", editorVar, ".getSelection().on(\"changeCursor\", function() {
       Shiny.onInputChange(\"", cursorId,
       "\",", editorVar, ".selection.getCursor() );}\n);", 
     sep = "")
@@ -234,8 +256,8 @@ aceEditor <- function(outputId, value, mode, theme,
   if (autoComplete == "live") {
     js <- paste(js, "", editorVar, ".setOption('enableLiveAutocompletion', true);", sep = "")
   }
-  if (useSoftTabs) {
-    js <- paste(js, "", editorVar, ".setOption('useSoftTabs', true);", sep = "")
+  if (!useSoftTabs) {
+    js <- paste(js, "", editorVar, ".setOption('useSoftTabs', false);", sep = "")
   }
   js <- paste(js, "", editorVar, ".setOption('tabSize', ", tabSize, ");", sep = "")
   if (showInvisibles) {
@@ -249,20 +271,22 @@ aceEditor <- function(outputId, value, mode, theme,
       tags$script(src = 'shinyAce/ace/ext-language_tools.js'),
       tags$script(src = 'shinyAce/ace/ext-searchbox.js'),
       tags$script(src = 'shinyAce/shinyAce.js'),
-      tags$link(rel = 'stylesheet',
-                type = 'text/css',
-                href = 'shinyAce/shinyAce.css')
+      tags$link(
+        rel = 'stylesheet',
+        type = 'text/css',
+        href = 'shinyAce/shinyAce.css'
+      )
     )),
-    pre(id = outputId, class = "shiny-ace", 
-        style = paste("height:", 
-              validateCssUnit(height)
-        ),
-        `data-autoCompleteList` = autoCompleteList
+    pre(
+      id = outputId, 
+      class = "shiny-ace", 
+      style = paste("height:", validateCssUnit(height)),
+      `data-autoCompleteList` = autoCompleteList
     ),
     tags$script(type = "text/javascript", HTML(js))
   )
 }
 
-sanitizeId <- function(id){
+sanitizeId <- function(id) {
   gsub("[^[:alnum:]]", "", id)
 }

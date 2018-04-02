@@ -89,35 +89,51 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     editor.getSession().setMode("ace/mode/" + data.mode);
   }
   
-  if (data.value){
+  if (data.value !== undefined){
     editor.getSession().setValue(data.value, -1);
   }
   
-  if (data.hasOwnProperty('readOnly')){
+  if (data.hasOwnProperty('readOnly')) {
     editor.setReadOnly(data.readOnly);
   }
   
-  if (data.fontSize){
+  if (data.fontSize) {
     document.getElementById(id).style.fontSize = data.fontSize + 'px';
   }
   
-  if (data.hasOwnProperty('wordWrap')){
+  if (data.hasOwnProperty('wordWrap')) {
     editor.getSession().setUseWrapMode(data.wordWrap);
   }
   
-  if (data.border){
+  if (data.border) {
     var classes = ['acenormal', 'aceflash', 'acealert'];
     $el.removeClass(classes.join(' '));
     $el.addClass(data.border);
   }
   
-  if (data.autoComplete){
+  if (data.autoComplete) {
     var value = data.autoComplete;
     editor.setOption('enableLiveAutocompletion', value === 'live');
     editor.setOption('enableBasicAutocompletion', value !== 'disabled');
   }
   
-  if (data.hasOwnProperty('autoCompleteList')){
+  if (data.tabSize) {
+    editor.setOption('tabSize', data.tabSize);
+  } 
+  
+  if (data.useSoftTabs) {
+    editor.setOption('useSoftTabs', true);
+  } else{
+    editor.setOption('useSoftTabs', false);
+  }
+  
+  if (data.showInvisibles) {
+    editor.setOption('showInvisibles', true);
+  } else{
+    editor.setOption('showInvisibles', false);
+  }
+  
+  if (data.hasOwnProperty('autoCompleteList')) {
     $el.data('autoCompleteList', data.autoCompleteList);
   }
   
