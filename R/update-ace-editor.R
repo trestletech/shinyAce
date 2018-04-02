@@ -17,9 +17,10 @@
 #'   Should be an integer.
 #' @param wordWrap If set to \code{TRUE}, Ace will enable word wrapping.
 #'   Default value is \code{FALSE}.
-#' @param tabSize Set tab size (e.g., 4)
-#' @param useSoftTabs Replace tabs by spaces
-#' @param showInvisibles Show invisible characters (e.g., spaces, tabs, newline characters)
+#' @param tabSize Set tab size. Default value is 4
+#' @param useSoftTabs Replace tabs by spaces. Default value is TRUE
+#' @param showInvisibles Show invisible characters (e.g., spaces, tabs, newline characters).
+#'    Default value is FALSE
 #' @param border Set the \code{border} 'normal', 'alert', or 'flash'.
 #' @param autoComplete Enable/Disable code completion. See \code{\link{aceEditor}} 
 #'   for details.

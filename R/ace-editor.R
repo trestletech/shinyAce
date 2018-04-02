@@ -51,9 +51,10 @@
 #'   should be a character array whose words will be listed under the element key. 
 #'   For example, to suggests column names from \code{mtcars} and \code{airquality}, 
 #'   you can use \code{list(mtcars = colnames(mtcars), airquality = colnames(airquality))}.
-#' @param tabSize Set tab size (e.g., 4)
-#' @param useSoftTabs Replace tabs by spaces
-#' @param showInvisibles Show invisible characters (e.g., spaces, tabs, newline characters)
+#' @param tabSize Set tab size. Default value is 4
+#' @param useSoftTabs Replace tabs by spaces. Default value is TRUE
+#' @param showInvisibles Show invisible characters (e.g., spaces, tabs, newline characters).
+#'   Default value is FALSE
 #' 
 #' @import shiny
 #' @importFrom utils compareVersion
