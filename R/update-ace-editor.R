@@ -50,7 +50,6 @@ updateAceEditor <- function(
   theList <- list(id = editorId)
   
   if (!missing(value)) {
-    print(value)
     theList["value"] <- value
   }
   if (!missing(theme)) {
