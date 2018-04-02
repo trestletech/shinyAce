@@ -1,22 +1,23 @@
 Package: shinyAce
 Type: Package
 Title: Ace Editor Bindings for Shiny
-Version: 0.2.2
-Date: 2018-03-31
+Version: 0.3.0
+Date: 2018-04-02
 Authors@R: c(
-  person(family="Trestle Technology, LLC", role="aut", email="cran@trestletechnology.net"),
-  person("Jeff", "Allen", role="cre", email="cran@trestletechnology.net"),
-  person(family="Institut de Radioprotection et de Surete Nucleaire", role=c("cph"), email = "yann.richet@irsn.fr"),
-  person(family="Ajax.org B.V.", role=c("ctb", "cph"), comment="Ace"))
+  person("Vincent", "Nijs", role = c("aut", "cre"), email = "radiant@rady.ucsd.edu"),
+  person(family = "Trestle Technology, LLC", role = "aut", email = "cran@trestletechnology.net"),
+  person("Jeff", "Allen", role = "aut", email = "cran@trestletechnology.net"),
+  person(family = "Institut de Radioprotection et de Surete Nucleaire", role = c("cph"), email = "yann.richet@irsn.fr"),
+  person(family = "Ajax.org B.V.", role = c("ctb", "cph"), comment = "Ace"))
 Description: Ace editor bindings to enable a rich text editing environment
     within Shiny.
 License: MIT + file LICENSE
 Depends:
-    R (>= 2.15.0)
+    R (>= 3.4.0)
 Imports:
-    shiny (>= 0.7.0)
+    shiny (>= 1.0.5)
 Suggests:
-    testthat,
-    dplyr (>= 0.3.0)
+    testthat (>= 2.0.0),
+    dplyr (>= 0.7.4)
 BugReports: https://github.com/trestletech/shinyAce/issues
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

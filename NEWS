@@ -1,13 +1,17 @@
-shinyAce 0.2.2
+shinyAce 0.3.0
 --------------------------------------------------------------------------------
 
 * Keyboard shortcuts for to execute code blocks, code chunks, and equations in display form using CTRL-enter (CMD-enter on macOS)
 
-* Added options to set tab size (tabSize), replace tabs by spaces (useSoftTabs), and show invisible characters (showInvisibles)
+* Added options to set tab size (tabSize), replace tabs by spaces (useSoftTabs), and show invisible characters (showInvisibles). See 
 
 * Upgrade to Ace 1.3.0 (https://github.com/ajaxorg/ace-builds/releases)
 
 * Allow toggling of search-replace using CMD-f (CTRL-f on Windows). See https://github.com/ajaxorg/ace/issues/3552)
+
+* Clear editor using "" (@dmenne, #30)
+
+* Fix when ace is initialize with \r or \f (@The-Dub, #46)
 
 shinyAce 0.2.0
 --------------------------------------------------------------------------------
