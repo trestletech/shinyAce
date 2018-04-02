@@ -28,4 +28,3 @@ where <editorId> is the \code{aceEditor} id. The input contains
  \item \code{cursorPosition}: Current cursor position at this line
 }
 }
-
