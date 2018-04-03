@@ -12,9 +12,9 @@ shinyUI(fluidPage(
                Use Ctrl+Space for code completion when enabled."),
       radioButtons("dataset", "Dataset: ", c("mtcars", "airquality"), inline = TRUE),
       tags$pre("  %>%"),
-      aceEditor("mutate", mode="r", value="select(wt, mpg) \n", height = "50px"),
-      tags$pre("  %>% function(data) {"),
-      aceEditor("plot", mode="r", value="plot(data) \n", height = "50px"),
+      aceEditor("mutate", mode = "r", value = "select(wt, mpg) \n", height = "50px"),
+      tags$pre("  %>% {"),
+      aceEditor("plot", mode = "r", value = "plot(.) \n", height = "50px"),
       tags$pre("  }"),
       div(actionButton("eval", "Eval"), class = "pull-right"),
       br(), #pad the above pull-right

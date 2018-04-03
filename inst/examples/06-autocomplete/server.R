@@ -15,8 +15,8 @@ shinyServer(function(input, output, session) {
   
   ### Auto Compeltion ####
   observe({
-    autoComplete <- if(input$enableAutocomplete) {
-      if(input$enableLiveCompletion) "live" else "enabled"
+    autoComplete <- if (input$enableAutocomplete) {
+      if (input$enableLiveCompletion) "live" else "enabled"
     } else {
       "disabled"
     }
@@ -27,7 +27,7 @@ shinyServer(function(input, output, session) {
   
   #Update static autocomplete list according to dataset
   observe({
-    comps <- if(input$enableNameCompletion) structure(list(colnames(dataset())), names = input$dataset)
+    comps <- if (input$enableNameCompletion) structure(list(colnames(dataset())), names = input$dataset)
     updateAceEditor(session, "mutate", autoCompleteList = comps)
   })
   
@@ -35,7 +35,7 @@ shinyServer(function(input, output, session) {
   mutateOb <- aceAutocomplete("mutate")
   plotOb <- aceAutocomplete("plot")
   observe({
-    if(input$enableRCompletion) {
+    if (input$enableRCompletion) {
       mutateOb$resume()
       plotOb$resume()
     } else {
@@ -54,7 +54,7 @@ shinyServer(function(input, output, session) {
       code1 <- gsub("\\s+$", "", isolate(input$mutate))
       code2 <- gsub("\\s+$", "", isolate(input$plot))
       
-      eval(parse(text = isolate(paste(input$dataset, "%>%", code1, "%>% function(data) {", code2, "}"))))
+      eval(parse(text = isolate(paste(input$dataset, "%>%", code1, "%>% {", code2, "}"))))
     }, error = function(ex) {
       output$error <- renderPrint(ex)
       

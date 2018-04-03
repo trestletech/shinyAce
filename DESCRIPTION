@@ -15,7 +15,8 @@ License: MIT + file LICENSE
 Depends:
     R (>= 3.4.0)
 Imports:
-    shiny (>= 1.0.5)
+    shiny (>= 1.0.5),
+    jsonlite
 Suggests:
     testthat (>= 2.0.0),
     dplyr (>= 0.7.4)
