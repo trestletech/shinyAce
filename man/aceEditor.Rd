@@ -79,11 +79,12 @@ should be a character array whose words will be listed under the element key.
 For example, to suggests column names from \code{mtcars} and \code{airquality}, 
 you can use \code{list(mtcars = colnames(mtcars), airquality = colnames(airquality))}.}
 
-\item{tabSize}{Set tab size (e.g., 4)}
+\item{tabSize}{Set tab size. Default value is 4}
 
-\item{useSoftTabs}{Replace tabs by spaces}
+\item{useSoftTabs}{Replace tabs by spaces. Default value is TRUE}
 
-\item{showInvisibles}{Show invisible characters (e.g., spaces, tabs, newline characters)}
+\item{showInvisibles}{Show invisible characters (e.g., spaces, tabs, newline characters).
+Default value is FALSE}
 }
 \description{
 Render an Ace editor on an application page.

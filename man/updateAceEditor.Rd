@@ -34,11 +34,12 @@ Should be an integer.}
 \item{wordWrap}{If set to \code{TRUE}, Ace will enable word wrapping.
 Default value is \code{FALSE}.}
 
-\item{useSoftTabs}{Replace tabs by spaces}
+\item{useSoftTabs}{Replace tabs by spaces. Default value is TRUE}
 
-\item{tabSize}{Set tab size (e.g., 4)}
+\item{tabSize}{Set tab size. Default value is 4}
 
-\item{showInvisibles}{Show invisible characters (e.g., spaces, tabs, newline characters)}
+\item{showInvisibles}{Show invisible characters (e.g., spaces, tabs, newline characters).
+Default value is FALSE}
 
 \item{border}{Set the \code{border} 'normal', 'alert', or 'flash'.}
 
