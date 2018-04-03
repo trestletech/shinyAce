@@ -11,7 +11,7 @@ shinyAce 0.3.0
 
 * Clear editor using "" (@dmenne, #30)
 
-* Fix when ace is initialize with \r or \f (@The-Dub, #46)
+* Fix when ace is initialized with \r or \f (@The-Dub, #46)
 
 shinyAce 0.2.0
 --------------------------------------------------------------------------------
