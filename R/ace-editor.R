@@ -282,7 +282,7 @@ aceEditor <- function(
       id = outputId, 
       class = "shiny-ace", 
       style = paste("height:", validateCssUnit(height)),
-      `data-autoCompleteList` = autoCompleteList
+      `data-auto-complete-list` = jsonlite::toJSON(autoCompleteList)
     ),
     tags$script(type = "text/javascript", HTML(js))
   )

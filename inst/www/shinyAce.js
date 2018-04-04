@@ -39,7 +39,7 @@ var langTools = ace.require("ace/ext/language_tools");
 var staticCompleter = {
   getCompletions: function(editor, session, pos, prefix, callback) {
         //if (prefix.length === 0) { callback(null, []); return }
-        var comps = $('#' + editor.container.id).data('autoCompleteList');
+        var comps = $('#' + editor.container.id).data('auto-complete-list');
         if(comps){
           var words = [];
           
@@ -134,7 +134,7 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
   }
   
   if (data.hasOwnProperty('autoCompleteList')) {
-    $el.data('autoCompleteList', data.autoCompleteList);
+    $el.data('auto-complete-list', data.autoCompleteList);
   }
   
   if (data.codeCompletions) {
