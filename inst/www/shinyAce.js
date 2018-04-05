@@ -59,7 +59,7 @@ var rlangCompleter = {
     getCompletions: function(editor, session, pos, prefix, callback) {
         //if (prefix.length === 0) { callback(null, []); return }
         var inputId = editor.container.id;
-        Shiny.onInputChange('shinyAce_' + inputId + '_hint', {
+        Shiny.onInputChange(inputId + '_hint', {
           linebuffer: session.getLine(pos.row),
           cursorPosition: pos.column,
           // nonce causes autcomplement event to trigger
