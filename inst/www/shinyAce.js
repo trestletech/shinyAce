@@ -59,10 +59,13 @@ var rlangCompleter = {
     getCompletions: function(editor, session, pos, prefix, callback) {
         //if (prefix.length === 0) { callback(null, []); return }
         var inputId = editor.container.id;
+        // TODO: consider dropping onInputChange hook when completer is disabled for performance
         Shiny.onInputChange('shinyAce_' + inputId + '_hint', {
+          // TODO: add an option to disable full document passing for performance
+          document: session.getValue(),
           linebuffer: session.getLine(pos.row),
-          cursorPosition: pos.column,
-          // nonce causes autcomplement event to trigger
+          cursorPosition: pos,
+          // nonce causes autocomplete event to trigger
           // on R side even if Ctrl-Space is pressed twice
           // with the same linebuffer and cursorPosition
           nonce: Math.random() 
@@ -70,10 +73,9 @@ var rlangCompleter = {
         //store callback for dynamic completion
         $('#' + inputId).data('autoCompleteCallback', callback);
     }
+    // TODO: add option to include optional getDocTooltip for suggestion context 
 };
 langTools.addCompleter(rlangCompleter);
-})();
-
 
 Shiny.addCustomMessageHandler('shinyAce', function(data) {
   var id = data.id;
@@ -117,6 +119,35 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
     editor.setOption('enableBasicAutocompletion', value !== 'disabled');
   }
   
+  if (data.hasOwnProperty('autoCompleters')) {
+    var completers = data.autoCompleters;
+    editor.completers = [];
+    if (completers) {
+      if (!Array.isArray(completers)) {
+        completers = [completers];
+      }
+      completers.forEach(function(completer) {
+        switch (completer) {
+          case 'snippet':
+            editor.completers.push(langTools.snippetCompleter);
+            break;
+          case 'text':
+            editor.completers.push(langTools.textCompleter);
+            break;
+          case 'keyword':
+            editor.completers.push(langTools.keyWordCompleter);
+            break;
+          case 'static':
+            editor.completers.push(staticCompleter);
+            break;
+          case 'rlang':
+            editor.completers.push(rlangCompleter);
+            break;
+        }
+      });
+    }
+  }
+  
   if (data.tabSize) {
     editor.setOption('tabSize', data.tabSize);
   } 
@@ -138,11 +169,8 @@ Shiny.addCustomMessageHandler('shinyAce', function(data) {
   }
   
   if (data.codeCompletions) {
-    var words = data.codeCompletions.split(/[ ,]+/).map(function(e) {
-      return {name: e, value: e, meta: 'R'};
-    });
     var callback = $el.data('autoCompleteCallback');
-    if(callback !== undefined) callback(null, words);
+    if(callback !== undefined) callback(null, data.codeCompletions);
   }
 });
 
@@ -152,4 +180,6 @@ var toggle_search_replace = ace.require("ace/ext/searchbox").SearchBox.prototype
     var isReplace = sb.isReplace = !sb.isReplace;
     sb.replaceBox.style.display = isReplace ? "" : "none";
     sb[isReplace ? "replaceInput" : "searchInput"].focus();
-})
+});
+
+})();
