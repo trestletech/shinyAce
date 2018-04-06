@@ -55,6 +55,8 @@
 #' @param useSoftTabs Replace tabs by spaces. Default value is TRUE
 #' @param showInvisibles Show invisible characters (e.g., spaces, tabs, newline characters).
 #'   Default value is FALSE
+#' @param setBehavioursEnabled Determines if the auto-pairing of special characters, like 
+#'   quotation marks, parenthesis, or brackets should be enabeled. Default value is TRUE.
 #' 
 #' @import shiny
 #' @importFrom utils compareVersion
@@ -101,7 +103,7 @@ aceEditor <- function(
   highlightActiveLine = TRUE, selectionId = NULL,  cursorId = NULL, 
   hotkeys = NULL, autoComplete = c("disabled", "enabled", "live"), 
   autoCompleteList = NULL, tabSize = 4, useSoftTabs = TRUE, 
-  showInvisibles = FALSE
+  showInvisibles = FALSE, setBehavioursEnabled = TRUE
 ) {
   
   editorVar <- paste0("editor__", sanitizeId(outputId))
@@ -263,6 +265,9 @@ aceEditor <- function(
   js <- paste(js, "", editorVar, ".setOption('tabSize', ", tabSize, ");", sep = "")
   if (showInvisibles) {
     js <- paste(js, "", editorVar, ".setOption('showInvisibles', true);", sep = "")
+  }
+  if (!setBehavioursEnabled) {
+    js <- paste(js, "", editorVar, ".setBehavioursEnabled(false);", sep = "")
   }
     
   tagList(

@@ -9,7 +9,8 @@ aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
   wordWrap = FALSE, showLineNumbers = TRUE, highlightActiveLine = TRUE,
   selectionId = NULL, cursorId = NULL, hotkeys = NULL,
   autoComplete = c("disabled", "enabled", "live"), autoCompleteList = NULL,
-  tabSize = 4, useSoftTabs = TRUE, showInvisibles = FALSE)
+  tabSize = 4, useSoftTabs = TRUE, showInvisibles = FALSE,
+  setBehavioursEnabled = TRUE)
 }
 \arguments{
 \item{outputId}{The ID associated with this element}
@@ -85,6 +86,9 @@ you can use \code{list(mtcars = colnames(mtcars), airquality = colnames(airquali
 
 \item{showInvisibles}{Show invisible characters (e.g., spaces, tabs, newline characters).
 Default value is FALSE}
+
+\item{setBehavioursEnabled}{Determines if the auto-pairing of special characters, like 
+quotation marks, parenthesis, or brackets should be enabeled. Default value is TRUE.}
 }
 \description{
 Render an Ace editor on an application page.
