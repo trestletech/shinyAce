@@ -44,6 +44,23 @@ shinyServer(function(input, output, session) {
     }
   })
   
+  #Enable/Disable completers
+  observe({
+    completers <- c()
+    if (input$enableLocalCompletion) {
+      completers <- c(completers, "text")
+    }
+    if (input$enableNameCompletion) {
+      completers <- c(completers, "static")
+    }
+    if (input$enableRCompletion) {
+      completers <- c(completers, "rlang")
+    }
+    
+    updateAceEditor(session, "mutate", autoCompleters = completers)
+    updateAceEditor(session, "plot", autoCompleters = completers)
+  })
+  
   output$plot <- renderPlot({ 
     input$eval
     

@@ -24,7 +24,8 @@ shinyUI(fluidPage(
         wellPanel(
           checkboxInput("enableLiveCompletion", "Live auto completion", TRUE),
           checkboxInput("enableNameCompletion", list("Dataset column names completion in", tags$i("mutate")), TRUE),
-          checkboxInput("enableRCompletion", "R code completion", TRUE)
+          checkboxInput("enableRCompletion", "R code completion", TRUE),
+          checkboxInput("enableLocalCompletion", "Local text completion", TRUE)
         )
       ),
       textOutput("error")

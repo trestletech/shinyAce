@@ -7,6 +7,7 @@
 updateAceEditor(session, editorId, value, theme, readOnly, mode, fontSize,
   wordWrap, useSoftTabs, tabSize, showInvisibles, border = c("normal",
   "alert", "flash"), autoComplete = c("disabled", "enabled", "live"),
+  autoCompleters = c("snippet", "text", "keyword", "static", "rlang"),
   autoCompleteList = NULL)
 }
 \arguments{
@@ -17,14 +18,14 @@ updateAceEditor(session, editorId, value, theme, readOnly, mode, fontSize,
 \item{value}{The initial text to be contained in the editor.}
 
 \item{theme}{The Ace \code{theme} to be used by the editor. The \code{theme}
-in Ace determines the styling and coloring of the editor. Use 
+in Ace determines the styling and coloring of the editor. Use
 \code{\link{getAceThemes}} to enumerate all the themes available.}
 
 \item{readOnly}{If set to \code{TRUE}, Ace will disable client-side editing.
 If \code{FALSE} (the default), it will enable editing.}
 
 \item{mode}{The Ace \code{mode} to be used by the editor. The \code{mode}
-in Ace is often the programming or markup language that you're using and 
+in Ace is often the programming or markup language that you're using and
 determines things like syntax highlighting and code folding. Use the
 \code{\link{getAceModes}} function to enumerate all the modes available.}
 
@@ -43,10 +44,13 @@ Default value is FALSE}
 
 \item{border}{Set the \code{border} 'normal', 'alert', or 'flash'.}
 
-\item{autoComplete}{Enable/Disable code completion. See \code{\link{aceEditor}} 
+\item{autoComplete}{Enable/Disable code completion. See \code{\link{aceEditor}}
 for details.}
 
-\item{autoCompleteList}{If set to \code{NULL}, exisitng static completions 
+\item{autoCompleters}{List of completers to enable. If set to \code{NULL},
+all completers will be disabled.}
+
+\item{autoCompleteList}{If set to \code{NULL}, exisitng static completions
 list will be unset. See \code{\link{aceEditor}} for details.}
 }
 \description{
@@ -56,11 +60,11 @@ Update the styling or mode of an aceEditor component.
 \dontrun{
  shinyServer(function(input, output, session) {
    observe({
-     updateAceEditor(session, "myEditor", "Updated text for editor here", 
+     updateAceEditor(session, "myEditor", "Updated text for editor here",
        mode="r", theme="ambiance")
    })
  }
-} 
+}
 }
 \author{
 Jeff Allen \email{jeff@trestletech.com}
