@@ -4,7 +4,7 @@ library(dplyr)
 
 shinyServer(function(input, output, session) {
   
-  ### Dataset Selection ####
+  # Dataset Selection
   dataset <- reactive({
     eval(parse(text = input$dataset))
   })
@@ -13,7 +13,7 @@ shinyServer(function(input, output, session) {
     dataset()
   })
   
-  ### Auto Compeltion ####
+  # Auto completion
   observe({
     autoComplete <- if (input$enableAutocomplete) {
       if (input$enableLiveCompletion) "live" else "enabled"
@@ -25,13 +25,15 @@ shinyServer(function(input, output, session) {
     updateAceEditor(session, "plot", autoComplete = autoComplete)
   })
   
-  #Update static autocomplete list according to dataset
-  observe({
-    comps <- if (input$enableNameCompletion) structure(list(colnames(dataset())), names = input$dataset)
+  # Update static auto complete list according to dataset
+  observeEvent(input$enableNameCompletion, {
+    comps <- list()
+    comps[[input$dataset]] <- colnames(dataset())
     updateAceEditor(session, "mutate", autoCompleteList = comps)
+    updateAceEditor(session, "plot", autoCompleteList = list(one = "one"))
   })
   
-  #Enable/Disable R code completion
+  # Enable/Disable R code completion
   mutateOb <- aceAutocomplete("mutate")
   plotOb <- aceAutocomplete("plot")
   observe({
@@ -44,7 +46,7 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  #Enable/Disable completers
+  # Enable/disable completers
   observe({
     completers <- c()
     if (input$enableLocalCompletion) {
@@ -56,25 +58,20 @@ shinyServer(function(input, output, session) {
     if (input$enableRCompletion) {
       completers <- c(completers, "rlang")
     }
-    
     updateAceEditor(session, "mutate", autoCompleters = completers)
     updateAceEditor(session, "plot", autoCompleters = completers)
   })
   
   output$plot <- renderPlot({ 
     input$eval
-    
     tryCatch({
-      #clear error
+      # Clear error
       output$error <- renderPrint(invisible())
-      
       code1 <- gsub("\\s+$", "", isolate(input$mutate))
       code2 <- gsub("\\s+$", "", isolate(input$plot))
-      
       eval(parse(text = isolate(paste(input$dataset, "%>%", code1, "%>% {", code2, "}"))))
     }, error = function(ex) {
       output$error <- renderPrint(ex)
-      
       NULL
     })
   })

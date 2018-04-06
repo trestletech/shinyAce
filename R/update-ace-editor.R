@@ -1,6 +1,7 @@
 #' Update Ace Editor
 #'
 #' Update the styling or mode of an aceEditor component.
+#'
 #' @param session The Shiny session to whom the editor belongs
 #' @param editorId The ID associated with this element
 #' @param value The initial text to be contained in the editor.
@@ -36,7 +37,9 @@
 #'    })
 #'  }
 #' }
+#'
 #' @author Jeff Allen \email{jeff@@trestletech.com}
+#'
 #' @export
 updateAceEditor <- function(
   session, editorId, value, theme, readOnly, mode,
@@ -48,46 +51,31 @@ updateAceEditor <- function(
 ) {
 
   if (missing(session) || missing(editorId)) {
-    stop("Must provide both a session and an editorId to update Ace.")
+    stop("Must provide both a session and an editorId to update Ace editor settings")
   }
 
   theList <- list(id = editorId)
 
-  if (!missing(value)) {
-    theList["value"] <- value
-  }
-  if (!missing(theme)) {
-    theList["theme"] <- theme
-  }
-  if (!missing(mode)) {
-    theList["mode"] <- mode
-  }
-  if (!missing(readOnly)) {
-    theList["readOnly"] <- readOnly
-  }
-  if (!missing(fontSize)) {
-    theList["fontSize"] <- fontSize
-  }
-  if (!missing(wordWrap)) {
-    theList["wordWrap"] <- wordWrap
-  }
-  if (!missing(tabSize)) {
-    theList["tabSize"] <- tabSize
-  }
-  if (!missing(useSoftTabs)) {
-    theList["useSoftTabs"] <- useSoftTabs
-  }
-  if (!missing(showInvisibles)) {
-    theList["showInvisibles"] <- showInvisibles
-  }
+  if (!missing(value)) theList["value"] <- value
+  if (!missing(theme)) theList["theme"] <- theme
+  if (!missing(mode)) theList["mode"] <- mode
+  if (!missing(readOnly)) theList["readOnly"] <- readOnly
+  if (!missing(fontSize)) theList["fontSize"] <- fontSize
+  if (!missing(wordWrap)) theList["wordWrap"] <- wordWrap
+  if (!missing(tabSize)) theList["tabSize"] <- tabSize
+  if (!missing(useSoftTabs)) theList["useSoftTabs"] <- useSoftTabs
+  if (!missing(showInvisibles)) theList["showInvisibles"] <- showInvisibles
+
   if (!missing(border)) {
     border <- match.arg(border)
     theList["border"] <- paste0("ace", border)
   }
+
   if (!missing(autoComplete)) {
     autoComplete <- match.arg(autoComplete)
     theList["autoComplete"] <- autoComplete
   }
+
   # TODO: add autoCompleters to aceEditor constructors
   if (!missing(autoCompleters)) {
     if (!is.null(autoCompleters)) {
@@ -95,8 +83,9 @@ updateAceEditor <- function(
     }
     theList <- c(theList, list(autoCompleters = autoCompleters))
   }
+
   if (!missing(autoCompleteList)) {
-    #NULL can only be inserted via c()
+    # NULL can only be inserted via c()
     theList <- c(theList, list(autoCompleteList = autoCompleteList))
   }
 
