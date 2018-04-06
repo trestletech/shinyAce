@@ -19,7 +19,7 @@
 #' @export
 aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
   shiny::observe({
-    value <- session$input[[paste0("shinyAce_", inputId, "_hint")]]
+    value <- session$input[[paste0(inputId, "_shinyAce_hint")]]
     if (is.null(value)) return(NULL)
 
     utilEnv <- environment(utils::alarm)
@@ -34,7 +34,6 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
       id = inputId,
       codeCompletions = jsonlite::toJSON(codeCompletions, auto_unbox = TRUE)
     )
-
     session$sendCustomMessage('shinyAce', comps)
   })
 }

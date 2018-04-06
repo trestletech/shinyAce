@@ -60,7 +60,7 @@ var rlangCompleter = {
         //if (prefix.length === 0) { callback(null, []); return }
         var inputId = editor.container.id;
         // TODO: consider dropping onInputChange hook when completer is disabled for performance
-        Shiny.onInputChange('shinyAce_' + inputId + '_hint', {
+        Shiny.onInputChange(inputId + '_shinyAce_hint', {
           // TODO: add an option to disable full document passing for performance
           document: session.getValue(),
           linebuffer: session.getLine(pos.row),
