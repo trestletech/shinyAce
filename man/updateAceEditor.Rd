@@ -65,6 +65,7 @@ Update the styling or mode of an aceEditor component.
    })
  }
 }
+
 }
 \author{
 Jeff Allen \email{jeff@trestletech.com}
