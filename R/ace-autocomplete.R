@@ -13,9 +13,11 @@
 #'
 #' @param inputId The id of the input object
 #' @param session The \code{session} object passed to function given to shinyServer
+#' 
 #' @return An observer reference class object that is responsible for offering code completion.
 #' See \code{\link[shiny]{observe}} for more details. You can use \code{suspend} or \code{destroy}
 #' to pause to stop dynamic code completion.
+#' 
 #' @export
 aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
   shiny::observe({
@@ -31,7 +33,7 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
     })
 
     comps <- list(
-      id = inputId,
+      id = session$ns(inputId),
       codeCompletions = jsonlite::toJSON(codeCompletions, auto_unbox = TRUE)
     )
     session$sendCustomMessage('shinyAce', comps)

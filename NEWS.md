@@ -1,4 +1,4 @@
-shinyAce 0.3.0
+shinyAce 0.3.0.1
 --------------------------------------------------------------------------------
 
 * Keyboard shortcuts for to execute code blocks, code chunks, and equations in display form using CTRL-enter (CMD-enter on macOS)
@@ -9,9 +9,18 @@ shinyAce 0.3.0
 
 * Allow toggling of search-replace using CMD-f (CTRL-f on Windows). See https://github.com/ajaxorg/ace/issues/3552)
 
-* Clear editor using "" (@dmenne, #30)
+* Clear editor using "" (@dmenne #30)
 
-* Fix when ace is initialized with \r or \f (@The-Dub, #46)
+* Fix when ace is initialized with \r or \f (@The-Dub #46)
+
+* Fix for auto complete in shiny modules (@GregorDeCillia #47 and [PR54](https://github.com/trestletech/shinyAce/pull/54))
+
+Note: This fix required a breaking change (i.e., the `aceAutocomplete` function now uses `inputid_shinAce_hint` rather than the the old `shinyAce_inputid_hint`)
+
+* Fix for auto complete lists (@Ping2016 #48 and @saurfang  [PR52](https://github.com/trestletech/shinyAce/pull/52))
+
+* Enhanced configurability of auto completers by @saurfang ([PR53]https://github.com/trestletech/shinyAce/pull/53))
+
 
 shinyAce 0.2.0
 --------------------------------------------------------------------------------

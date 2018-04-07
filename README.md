@@ -90,10 +90,12 @@ Contributors (In order of first commit)
 ---------------------------------------
 
  - [Jeff Allen](https://github.com/trestletech) - Core project
- - [Vincent Nijs](https://github.com/vnijs) - Vim key bindings, package maintenance ([#9](https://github.com/trestletech/shinyAce/pull/9), [#35](https://github.com/trestletech/shinyAce/pull/35))
+ - [Vincent Nijs](https://github.com/vnijs) - Vim key bindings, keyboard shortcuts to run code chunks, expanded access to various Ace editor options, package maintenance ([#9](https://github.com/trestletech/shinyAce/pull/9), [#35](https://github.com/trestletech/shinyAce/pull/35), [#51](https://github.com/trestletech/shinyAce/pull/51))
  - [Nick Carchedi](https://github.com/ncarchedi) - Word wrapping ([#12](https://github.com/trestletech/shinyAce/pull/12))
  - [Sebastian Kranz](https://github.com/skranz) - Hotkey feature and cursor listener ([#16](https://github.com/trestletech/shinyAce/pull/16/files))
- - [Forest Fang](https://github.com/saurfang) - Code completion ([#21](https://github.com/trestletech/shinyAce/pull/21))
+ - [Forest Fang](https://github.com/saurfang) - Code completion ([#21](https://github.com/trestletech/shinyAce/pull/21), [#52](https://github.com/trestletech/shinyAce/pull/52),  [#53](https://github.com/trestletech/shinyAce/pull/53)) 
+  - [Gregor De Cillia](https://github.com/GregorDeCillia) - Auto completion with shiny modules ([#54](https://github.com/trestletech/shinyAce/pull/54))
+
 
 Known Bugs
 ----------
