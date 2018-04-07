@@ -17,7 +17,7 @@ shinyAce 0.3.0.1
 
 Note: This fix required a breaking change (i.e., the `aceAutocomplete` function now uses `inputid_shinAce_hint` rather than the the old `shinyAce_inputid_hint`)
 
-* Fix for auto complete lists (@Ping2016 #48 and @saurfang  [PR52](https://github.com/trestletech/shinyAce/pull/52))
+* Fix for auto complete lists (@Ping2016 #48 and @saurfang  ([PR52](https://github.com/trestletech/shinyAce/pull/52))
 
 * Enhanced configurability of auto completers by @saurfang ([PR53]https://github.com/trestletech/shinyAce/pull/53))
 
