@@ -26,7 +26,8 @@ shinyServer(function(input, output, session) {
   })
   
   # Update static auto complete list according to dataset
-  observeEvent(input$enableNameCompletion, {
+  observe({
+    req(input$enableNameCompletion)
     comps <- list()
     comps[[input$dataset]] <- colnames(dataset())
     updateAceEditor(session, "mutate", autoCompleteList = comps)

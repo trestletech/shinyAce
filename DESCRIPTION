@@ -2,9 +2,10 @@ Package: shinyAce
 Type: Package
 Title: Ace Editor Bindings for Shiny
 Version: 0.3.0.1
-Date: 2018-04-07
+Date: 2018-04-20
 Authors@R: c(
   person("Vincent", "Nijs", role = c("aut", "cre"), email = "radiant@rady.ucsd.edu"),
+  person("Forest", "Fang", role = "aut", email = "forest.fang@outlook.com"),
   person(family = "Trestle Technology, LLC", role = "aut", email = "cran@trestletechnology.net"),
   person("Jeff", "Allen", role = "aut", email = "cran@trestletechnology.net"),
   person(family = "Institut de Radioprotection et de Surete Nucleaire", role = c("cph"), email = "yann.richet@irsn.fr"),
