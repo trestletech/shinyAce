@@ -22,7 +22,7 @@ shinyServer(function(input, output, session) {
       value = "select(wt, mpg)\n",
       height = "500px",
       autoComplete = "live",
-      autoCompleteList = comps()
+      autoCompleteList = isolate(comps())
     )
   })
   
