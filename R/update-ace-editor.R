@@ -33,7 +33,7 @@
 #'  shinyServer(function(input, output, session) {
 #'    observe({
 #'      updateAceEditor(session, "myEditor", "Updated text for editor here",
-#'        mode="r", theme="ambiance")
+#'        mode = "r", theme = "ambiance")
 #'    })
 #'  }
 #' }
