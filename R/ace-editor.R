@@ -45,6 +45,8 @@
 #'  By default, only local completer is used where all aforementioned code pieces 
 #'    will be considered as candidates. Use \code{autoCompleteList} for static 
 #'    completions and \code{\link{aceAutocomplete}} for dynamic R code completions.
+#' @param autoCompleters List of completers to enable. If set to \code{NULL},
+#'   all completers will be disabled.
 #' @param autoCompleteList A named list that contains static code completions 
 #'   candidates. This can be especially useful for Non-Standard Evaluation (NSE) 
 #'   functions such as those in \code{dplyr} and \code{ggvis}. Each element in list 
@@ -101,8 +103,11 @@ aceEditor <- function(
   vimKeyBinding = FALSE, readOnly = FALSE, height = "400px", fontSize = 12,  
   debounce = 1000,  wordWrap = FALSE, showLineNumbers = TRUE, 
   highlightActiveLine = TRUE, selectionId = NULL,  cursorId = NULL, 
-  hotkeys = NULL, autoComplete = c("disabled", "enabled", "live"), 
-  autoCompleteList = NULL, tabSize = 4, useSoftTabs = TRUE, 
+  hotkeys = NULL, 
+  autoComplete = c("disabled", "enabled", "live"),
+  autoCompleters = c("snippet", "text", "keyword", "static", "rlang"),
+  autoCompleteList = NULL,
+  tabSize = 4, useSoftTabs = TRUE, 
   showInvisibles = FALSE, setBehavioursEnabled = TRUE
 ) {
   
@@ -259,6 +264,25 @@ aceEditor <- function(
   if (autoComplete == "live") {
     js <- paste(js, "", editorVar, ".setOption('enableLiveAutocompletion', true);", sep = "")
   }
+
+  if (length(autoCompleters) > 0) {
+    if ("snippet" %in% autoCompleters) {
+      js <- paste(js, "", editorVar, ".completers.push(langTools.snippetCompleter);", sep = "")
+    } 
+    if ("text" %in% autoCompleters) {
+      js <- paste(js, "", editorVar, ".completers.push(langTools.textCompleter);", sep = "")
+    } 
+    if ("keyword" %in% autoCompleters) {
+      js <- paste(js, "", editorVar, ".completers.push(langTools.keywordCompleter);", sep = "")
+    } 
+    if ("static" %in% autoCompleters) {
+      js <- paste(js, "", editorVar, ".completers.push(staticCompleter);", sep = "")
+    } 
+    if ("rlang" %in% autoCompleters) {
+      js <- paste(js, "", editorVar, ".completers.push(rlangCompleter);", sep = "")
+    } 
+  }
+
   if (!useSoftTabs) {
     js <- paste(js, "", editorVar, ".setOption('useSoftTabs', false);", sep = "")
   }
