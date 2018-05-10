@@ -8,9 +8,10 @@ aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
   readOnly = FALSE, height = "400px", fontSize = 12, debounce = 1000,
   wordWrap = FALSE, showLineNumbers = TRUE, highlightActiveLine = TRUE,
   selectionId = NULL, cursorId = NULL, hotkeys = NULL,
-  autoComplete = c("disabled", "enabled", "live"), autoCompleteList = NULL,
-  tabSize = 4, useSoftTabs = TRUE, showInvisibles = FALSE,
-  setBehavioursEnabled = TRUE)
+  autoComplete = c("disabled", "enabled", "live"),
+  autoCompleters = c("snippet", "text", "keyword", "static", "rlang"),
+  autoCompleteList = NULL, tabSize = 4, useSoftTabs = TRUE,
+  showInvisibles = FALSE, setBehavioursEnabled = TRUE)
 }
 \arguments{
 \item{outputId}{The ID associated with this element}
@@ -72,6 +73,9 @@ mac (see example).}
 By default, only local completer is used where all aforementioned code pieces 
   will be considered as candidates. Use \code{autoCompleteList} for static 
   completions and \code{\link{aceAutocomplete}} for dynamic R code completions.}
+
+\item{autoCompleters}{List of completers to enable. If set to \code{NULL},
+all completers will be disabled.}
 
 \item{autoCompleteList}{A named list that contains static code completions 
 candidates. This can be especially useful for Non-Standard Evaluation (NSE) 
