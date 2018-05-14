@@ -16,6 +16,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$ace_editor <- renderUI({
+    ## initially, only show completions in 'comps' (i.e., dplyr and selected dataset)
     shinyAce::aceEditor(
       "editor",
       mode = "r",
@@ -23,16 +24,21 @@ shinyServer(function(input, output, session) {
       height = "500px",
       autoComplete = "live",
       autoCompleters = "static",
-      autoCompleteList = isolate(comps()),
+      autoCompleteList = isolate(comps())
     )
   })
   
-  ## Update static auto complete list according to dataset
+  ## Update static auto complete list according to dataset and add local completions
   observe({
     shinyAce::updateAceEditor(session,
       "editor",
-      autoCompleters = "static",
+      autoCompleters = c("static", "text", "rlang"),
       autoCompleteList = comps()
     )
   })
+  
+  ## adding an observer for R-language code completion
+  ## will become active after the first switch to another
+  ## dataset
+  rlang <- aceAutocomplete("editor")
 })

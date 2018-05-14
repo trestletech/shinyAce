@@ -1,4 +1,4 @@
-shinyAce 0.3.0.1
+shinyAce 0.3.1.0
 --------------------------------------------------------------------------------
 
 * Keyboard shortcuts for to execute code blocks, code chunks, and equations in display form using CTRL-enter (CMD-enter on macOS)

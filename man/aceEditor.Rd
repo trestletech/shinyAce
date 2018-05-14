@@ -8,8 +8,7 @@ aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
   readOnly = FALSE, height = "400px", fontSize = 12, debounce = 1000,
   wordWrap = FALSE, showLineNumbers = TRUE, highlightActiveLine = TRUE,
   selectionId = NULL, cursorId = NULL, hotkeys = NULL,
-  autoComplete = c("disabled", "enabled", "live"),
-  autoCompleters = c("snippet", "text", "keyword", "static", "rlang"),
+  autoComplete = c("disabled", "enabled", "live"), autoCompleters = "",
   autoCompleteList = NULL, tabSize = 4, useSoftTabs = TRUE,
   showInvisibles = FALSE, setBehavioursEnabled = TRUE)
 }
@@ -75,7 +74,9 @@ By default, only local completer is used where all aforementioned code pieces
   completions and \code{\link{aceAutocomplete}} for dynamic R code completions.}
 
 \item{autoCompleters}{List of completers to enable. If set to \code{NULL},
-all completers will be disabled.}
+all completers will be disabled. Select one or more of "snippet", "text", "static", 
+and "keyword" to control which completers to use. Default option is an empty character
+vector which does not effect default completion options}
 
 \item{autoCompleteList}{A named list that contains static code completions 
 candidates. This can be especially useful for Non-Standard Evaluation (NSE) 

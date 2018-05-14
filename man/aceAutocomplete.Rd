@@ -21,7 +21,7 @@ This function dynamically auto complete R code pieces using built-in function
 \code{utils:::.win32consoleCompletion}. Please see \code{\link[utils]{rcompgen}} for details.
 }
 \details{
-You can implement your own code completer by listening to \code{input$shinyAce_<editorId>_hint}
+You can implement your own code completer by listening to \code{input$<editorId>_shinyAce_hint}
 where <editorId> is the \code{aceEditor} id. The input contains
 \itemize{
  \item \code{linebuffer}: Code/Text at current editing line

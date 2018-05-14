@@ -46,7 +46,9 @@
 #'    will be considered as candidates. Use \code{autoCompleteList} for static 
 #'    completions and \code{\link{aceAutocomplete}} for dynamic R code completions.
 #' @param autoCompleters List of completers to enable. If set to \code{NULL},
-#'   all completers will be disabled.
+#'   all completers will be disabled. Select one or more of "snippet", "text", "static", 
+#'   and "keyword" to control which completers to use. Default option is an empty character
+#'   vector which does not effect default completion options
 #' @param autoCompleteList A named list that contains static code completions 
 #'   candidates. This can be especially useful for Non-Standard Evaluation (NSE) 
 #'   functions such as those in \code{dplyr} and \code{ggvis}. Each element in list 
@@ -105,7 +107,7 @@ aceEditor <- function(
   highlightActiveLine = TRUE, selectionId = NULL,  cursorId = NULL, 
   hotkeys = NULL, 
   autoComplete = c("disabled", "enabled", "live"),
-  autoCompleters = c("snippet", "text", "keyword", "static", "rlang"),
+  autoCompleters = "",
   autoCompleteList = NULL,
   tabSize = 4, useSoftTabs = TRUE, 
   showInvisibles = FALSE, setBehavioursEnabled = TRUE
@@ -254,7 +256,7 @@ aceEditor <- function(
         readOnly: true // false if this command should not apply in readOnly mode
     });    
     ")
-    js = paste0(js, code)
+    js <- paste0(js, code)
   }
   
   autoComplete <- match.arg(autoComplete)
@@ -266,21 +268,44 @@ aceEditor <- function(
   }
 
   if (length(autoCompleters) > 0) {
-    if ("snippet" %in% autoCompleters) {
-      js <- paste(js, "", editorVar, ".completers.push(langTools.snippetCompleter);", sep = "")
-    } 
-    if ("text" %in% autoCompleters) {
-      js <- paste(js, "", editorVar, ".completers.push(langTools.textCompleter);", sep = "")
-    } 
-    if ("keyword" %in% autoCompleters) {
-      js <- paste(js, "", editorVar, ".completers.push(langTools.keywordCompleter);", sep = "")
-    } 
-    if ("static" %in% autoCompleters) {
-      js <- paste(js, "", editorVar, ".completers.push(staticCompleter);", sep = "")
-    } 
-    if ("rlang" %in% autoCompleters) {
-      js <- paste(js, "", editorVar, ".completers.push(rlangCompleter);", sep = "")
-    } 
+    if (sum(autoCompleters %in% c("snippet", "text", "static", "keyword")) > 0) {
+      js <- paste(js, 'var langTools = ace.require("ace/ext/language_tools");')
+      js <- paste(js, "", editorVar, ".completers = [];", sep = "")
+      if ("snippet" %in% autoCompleters) {
+        js <- paste(js, "", editorVar, ".completers.push(langTools.snippetCompleter);", sep = "")
+      }
+      if ("text" %in% autoCompleters) {
+        js <- paste(js, "", editorVar, ".completers.push(langTools.textCompleter);", sep = "")
+      }
+      if ("keyword" %in% autoCompleters) {
+        js <- paste(js, "", editorVar, ".completers.push(langTools.keywordCompleter);", sep = "")
+      }
+      if ("static" %in% autoCompleters) {
+        code <- 'var staticCompleter = {
+            getCompletions: function(editor, session, pos, prefix, callback) {
+              var comps = $("#" + editor.container.id).data("auto-complete-list");
+              if(comps) {
+                var words = [];
+                Object.keys(comps).forEach(function(key) {
+                  var comps_key = comps[key];
+                  if (!Array.isArray(comps[key])) {
+                    comps_key = [comps_key];
+                  }
+                  words = words.concat(comps_key.map(function(d) {
+                    return {name: d, value: d, meta: key};
+                  }));
+                });
+                callback(null, words);
+              }
+            }
+          };
+          langTools.addCompleter(staticCompleter);'
+        js <- paste0(js, code)
+        js <- paste(js, "", editorVar, ".completers.push(staticCompleter);", sep = "")
+      }
+    }
+  } else {
+    js <- paste(js, "", editorVar, ".completers = [];", sep = "")
   }
 
   if (!useSoftTabs) {
