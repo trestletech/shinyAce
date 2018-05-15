@@ -100,7 +100,8 @@ Contributors (In order of first commit)
 Known Bugs
 ----------
 
-See the [Issues page](https://github.com/trestletech/shinyAce/issues) for information on outstanding issues. 
+See the [Issues page](https://github.com/trestletech/shinyAce/issues) for
+information on outstanding issues. 
 
 License
 -------

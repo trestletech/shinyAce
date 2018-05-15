@@ -22,4 +22,5 @@ Suggests:
     testthat (>= 2.0.0),
     dplyr (>= 0.7.4)
 BugReports: https://github.com/trestletech/shinyAce/issues
+Encoding: UTF-8
 RoxygenNote: 6.0.1
