@@ -4,14 +4,14 @@ shinyAce
 [![Build Status](https://travis-ci.org/trestletech/shinyAce.svg?branch=master)](https://travis-ci.org/trestletech/shinyAce)
 
 The `shinyAce` package enables Shiny application developers to use the 
-[Ace text editor](http://ace.c9.io/#nav=about) in their applications. All
+[Ace text editor](https://ace.c9.io/#nav=about) in their applications. All
 current modes (languages) and themes are supported in this package. The 
 mode, theme, and current text can be defined when the element is initialized 
 in `ui.R` or afterwards using the `updateAceEditor()` function. The editor
 registers itself as a reactive Shiny input, so the current value of the
 editor can easily be pulled from `server.R` using `input$yourEditorsName`.
 
-![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce.png)
+![shinyAce](https://trestletech.github.io/shinyAce/images/shinyAce.png)
 
 Or view an [interactive example](https://starkingdom.shinyapps.io/shinyAce-01-basic/).
 
@@ -42,7 +42,7 @@ Various examples are available in the [`inst/examples`](https://github.com/trest
 
 Run example: `library(shiny); runApp(system.file("examples/01-basic", package="shinyAce"));`
 
-![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce.png)
+![shinyAce](https://trestletech.github.io/shinyAce/images/shinyAce.png)
 
 Demonstrates the basic capabilities of shinyAce including the ability to set an initial value, or interactively assign a value, theme, or mode later on in the session.
 
@@ -50,7 +50,7 @@ Demonstrates the basic capabilities of shinyAce including the ability to set an 
 
 Run example: `library(shiny); runApp(system.file("examples/02-eval", package="shinyAce"));`
 
-![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce-eval.png)
+![shinyAce](https://trestletech.github.io/shinyAce/images/shinyAce-eval.png)
 
 Shows an example of using shinyAce to allow the user to compose R code which will then be evaluated on the server.
 
@@ -58,15 +58,15 @@ Shows an example of using shinyAce to allow the user to compose R code which wil
 
 Run example: `library(shiny); runApp(system.file("examples/03-knitr", package="shinyAce"));`
 
-![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce-knitr.png)
+![shinyAce](https://trestletech.github.io/shinyAce/images/shinyAce-knitr.png)
 
-Demonstrates integrating shinyAce with the [knitR](http://yihui.name/knitr/) package. (Note also that an example of this integration is available [in the knitR package](https://github.com/yihui/knitr/tree/master/inst/shiny) itself and includes features such as R syntax highlighting.)
+Demonstrates integrating shinyAce with the [knitR](https://yihui.name/knitr/) package. (Note also that an example of this integration is available [in the knitR package](https://github.com/yihui/knitr/tree/master/inst/shiny) itself and includes features such as R syntax highlighting.)
 
 ### 04-shinyui
 
 Run example: `library(shiny); runApp(system.file("examples/04-shinyui", package="shinyAce"));`
 
-![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce-renderui.png)
+![shinyAce](https://trestletech.github.io/shinyAce/images/shinyAce-renderui.png)
 
 Demonstrates using shinyAce to allow a user to create a Shiny UI within Shiny itself. The UI can then be rendered on the right half of the page. Could be a great learning tool for teaching how to construct Shiny UIs.
 
@@ -107,8 +107,8 @@ License
 -------
 
 The development of this project was generously sponsored by the [Institut de 
-Radioprotection et de Sûreté Nucléaire](http://www.irsn.fr/EN/Pages/home.aspx) 
-and performed by [Jeff Allen](http://trestletech.com). The code is
+Radioprotection et de Sûreté Nucléaire](https://www.irsn.fr/EN/Pages/home.aspx) 
+and performed by [Jeff Allen](https://trestletech.com). The code is
 licensed under The MIT License (MIT).
 
 Copyright (c) 2013 Institut de Radioprotection et de Sûreté Nucléaire
