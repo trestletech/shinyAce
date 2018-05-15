@@ -1,6 +1,5 @@
 language: r
 r:
-  - oldrelease
   - release
   - devel
 sudo: required
