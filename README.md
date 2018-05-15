@@ -1,6 +1,8 @@
 shinyAce
 ==========
 
+[![Build Status](https://travis-ci.org/trestletech/shinyAce.svg?branch=master)](https://travis-ci.org/trestletech/shinyAce)
+
 The `shinyAce` package enables Shiny application developers to use the 
 [Ace text editor](http://ace.c9.io/#nav=about) in their applications. All
 current modes (languages) and themes are supported in this package. The 
@@ -11,12 +13,12 @@ editor can easily be pulled from `server.R` using `input$yourEditorsName`.
 
 ![shinyAce](http://trestletech.github.io/shinyAce/images/shinyAce.png)
 
-Or view an [interactive example](http://bit.ly/160IgdO).
+Or view an [interactive example](https://starkingdom.shinyapps.io/shinyAce-01-basic/).
 
 Installation
 ------------
 
-shinyAce is available [on CRAN](http://cran.r-project.org/web/packages/shinyAce/), so installation is as simple as:
+shinyAce is available [on CRAN](https://cran.r-project.org/package=shinyAce), so installation is as simple as:
 
 ```
 install.packages("shinyAce")
@@ -29,14 +31,14 @@ You can install the latest development version of the code using the `devtools` 
 install.packages("devtools")
 
 library(devtools)
-install_github("shinyAce", "trestletech")
+install_github("trestletech/shinyAce")
 ```
 
 ## Getting Started
 
 Various examples are available in the [`inst/examples`](https://github.com/trestletech/shinyAce/tree/master/inst/examples) directory included in the package. A few examples are described below. (Note that the package must be installed before you can run any examples.)
 
-### 01-basic ([Live Demo](http://spark.rstudio.com/trestletech/shinyAce1/))
+### 01-basic ([Live Demo](https://starkingdom.shinyapps.io/shinyAce-01-basic/))
 
 Run example: `library(shiny); runApp(system.file("examples/01-basic", package="shinyAce"));`
 
@@ -88,10 +90,12 @@ Contributors (In order of first commit)
 ---------------------------------------
 
  - [Jeff Allen](https://github.com/trestletech) - Core project
- - [Vincent Nijs](https://github.com/mostly-harmless) - Vim key bindings ([#9](https://github.com/trestletech/shinyAce/pull/9))
+ - [Vincent Nijs](https://github.com/vnijs) - Vim key bindings, keyboard shortcuts to run code chunks, expanded access to various Ace editor options, package maintenance ([#9](https://github.com/trestletech/shinyAce/pull/9), [#35](https://github.com/trestletech/shinyAce/pull/35), [#51](https://github.com/trestletech/shinyAce/pull/51))
  - [Nick Carchedi](https://github.com/ncarchedi) - Word wrapping ([#12](https://github.com/trestletech/shinyAce/pull/12))
  - [Sebastian Kranz](https://github.com/skranz) - Hotkey feature and cursor listener ([#16](https://github.com/trestletech/shinyAce/pull/16/files))
- - [Forest Fang](https://github.com/saurfang) - Code completion ([#21](https://github.com/trestletech/shinyAce/pull/21))
+ - [Forest Fang](https://github.com/saurfang) - Code completion ([#21](https://github.com/trestletech/shinyAce/pull/21), [#52](https://github.com/trestletech/shinyAce/pull/52),  [#53](https://github.com/trestletech/shinyAce/pull/53)) 
+  - [Gregor De Cillia](https://github.com/GregorDeCillia) - Auto completion with shiny modules ([#54](https://github.com/trestletech/shinyAce/pull/54))
+
 
 Known Bugs
 ----------

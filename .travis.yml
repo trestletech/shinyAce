@@ -1,0 +1,11 @@
+language: r
+r:
+  - release
+  - devel
+sudo: required
+dist: trusty
+r_binary_packages:
+  - shiny
+  - dplyr
+  - testthat
+warnings_are_errors: true

@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+.travis.yml
+^revdep$
+^build$
+^docs$
+cran-comments.md

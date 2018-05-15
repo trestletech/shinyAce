@@ -4,12 +4,14 @@ library(shinyAce)
 #' Define UI for application that demonstrates a simple Ace editor
 #' @author Jeff Allen \email{jeff@@trestletech.com}
 shinyUI(
-  bootstrapPage(div(
+  bootstrapPage(
+    headerPanel("Shiny Ace knitr Example"),
+    div(
     class="container-fluid",
     div(class="row-fluid",
         div(class="span6",
             h2("Source R-Markdown"),  
-            aceEditor("rmd", mode="markdown", value='### Sample KnitR Doc
+            aceEditor("rmd", mode="markdown", value='### Sample knitr Doc
 
 This is some markdown text. It may also have embedded R code
 which will be executed.

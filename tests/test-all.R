@@ -1,2 +1,2 @@
 library(testthat)
-test_package("shinyAce")
+test_check("shinyAce")

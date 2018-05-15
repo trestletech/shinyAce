@@ -30,3 +30,10 @@
 .acealert{
   border: 1px solid rgba(255, 50, 50, 0.60);
 }
+
+/* likely due to bootstrap css, font set to white
+with dark themes against a white background
+see https://github.com/ajaxorg/ace/issues/3071 */
+.ace_replace_form, .ace_search_field, .ace_replacebtn, .ace_searchbtn {
+  color: black;
+}
