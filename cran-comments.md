@@ -4,10 +4,10 @@ This is a resubmission. The new maintainer of the shinyAce package is Vincent Ni
 
 ## Test environments
 
-* local macOS install, R 3.4.4
-* local Windows install, R 3.4.4
-* ubuntu on travis-ci, R 3.4.4
-* win-builder, R version 3.5.0 alpha (2018-03-30 r74499)
+* local macOS install, R 3.5.0
+* local Windows install, R 3.5.0
+* ubuntu on travis-ci, R release and devel
+* win-builder
 
 ## R CMD check results
 
