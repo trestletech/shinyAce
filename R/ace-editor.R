@@ -60,7 +60,7 @@
 #' @param showInvisibles Show invisible characters (e.g., spaces, tabs, newline characters).
 #'   Default value is FALSE
 #' @param setBehavioursEnabled Determines if the auto-pairing of special characters, like 
-#'   quotation marks, parenthesis, or brackets should be enabeled. Default value is TRUE.
+#'   quotation marks, parenthesis, or brackets should be enabled. Default value is TRUE.
 #' 
 #' @import shiny
 #' @importFrom utils compareVersion

@@ -50,7 +50,7 @@ for details.}
 \item{autoCompleters}{List of completers to enable. If set to \code{NULL},
 all completers will be disabled.}
 
-\item{autoCompleteList}{If set to \code{NULL}, exisitng static completions
+\item{autoCompleteList}{If set to \code{NULL}, existing static completions
 list will be unset. See \code{\link{aceEditor}} for details.}
 }
 \description{
