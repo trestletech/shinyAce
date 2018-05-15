@@ -4,3 +4,4 @@
 ^revdep$
 ^build$
 ^docs$
+cran-comments.md

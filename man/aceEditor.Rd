@@ -93,7 +93,7 @@ you can use \code{list(mtcars = colnames(mtcars), airquality = colnames(airquali
 Default value is FALSE}
 
 \item{setBehavioursEnabled}{Determines if the auto-pairing of special characters, like 
-quotation marks, parenthesis, or brackets should be enabeled. Default value is TRUE.}
+quotation marks, parenthesis, or brackets should be enabled. Default value is TRUE.}
 }
 \description{
 Render an Ace editor on an application page.

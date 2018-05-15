@@ -27,7 +27,7 @@
 #'   for details.
 #' @param autoCompleters List of completers to enable. If set to \code{NULL},
 #'   all completers will be disabled.
-#' @param autoCompleteList If set to \code{NULL}, exisitng static completions
+#' @param autoCompleteList If set to \code{NULL}, existing static completions
 #'   list will be unset. See \code{\link{aceEditor}} for details.
 #' @examples \dontrun{
 #'  shinyServer(function(input, output, session) {
@@ -76,7 +76,6 @@ updateAceEditor <- function(
     theList["autoComplete"] <- autoComplete
   }
 
-  # TODO: add autoCompleters to aceEditor constructors
   if (!missing(autoCompleters)) {
     if (!is.null(autoCompleters)) {
       autoCompleters <- match.arg(autoCompleters, several.ok = TRUE)

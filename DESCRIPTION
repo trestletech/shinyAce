@@ -1,7 +1,7 @@
 Package: shinyAce
 Type: Package
 Title: Ace Editor Bindings for Shiny
-Version: 0.3.1.0
+Version: 0.3.1
 Date: 2018-05-13
 Authors@R: c(
   person("Vincent", "Nijs", role = c("aut", "cre"), email = "radiant@rady.ucsd.edu"),
@@ -22,4 +22,5 @@ Suggests:
     testthat (>= 2.0.0),
     dplyr (>= 0.7.4)
 BugReports: https://github.com/trestletech/shinyAce/issues
+Encoding: UTF-8
 RoxygenNote: 6.0.1

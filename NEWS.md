@@ -19,7 +19,7 @@ Note: This fix required a breaking change (i.e., the `aceAutocomplete` function 
 
 * Fix for auto complete lists (@Ping2016 #48 and @saurfang  ([PR52](https://github.com/trestletech/shinyAce/pull/52))
 
-* Enhanced configurability of auto completers by @saurfang ([PR53]https://github.com/trestletech/shinyAce/pull/53))
+* Improved configuration options for auto completers by @saurfang ([PR53]https://github.com/trestletech/shinyAce/pull/53))
 
 
 shinyAce 0.2.0
