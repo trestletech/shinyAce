@@ -165,9 +165,9 @@ aceEditor <- function(
   js <- paste(js, "$('#", escapedId, "').data('aceEditor',", editorVar, ");", sep = "")
 
   if (!is.null(selectionId)) {
-    selectJS <- paste("", editorVar, ".getSelection().on(\"changeSelection\", function() {
+    selectJS <- paste("\n", editorVar, ".getSelection().on(\"changeSelection\", function() {
       Shiny.onInputChange(\"", selectionId,
-      "\",", editorVar, ".getCopyText());})", 
+      "\",", editorVar, ".getCopyText());\n});", 
       sep = "")
     js <- paste(js, selectJS, sep = "")
   }
