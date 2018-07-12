@@ -1,3 +1,8 @@
+shinyAce 0.3.2
+--------------------------------------------------------------------
+
+* Using `selectionId` in the call to `shinyAce::aceEditor` can cause javascript errors (@laderast)
+
 shinyAce 0.3.1
 --------------------------------------------------------------------
 
