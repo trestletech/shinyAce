@@ -1,8 +1,8 @@
 ## could this ensure inst/rstudio/*.dcf are ignored during build?
 ## see https://stackoverflow.com/a/42907049/1974918
 # devtools::use_build_ignore(c("inst/rstudio"))
-
 curr <- getwd()
+pkg <- basename(curr)
 
 ## building shinyAce packages for mac and windows
 rv <- R.Version()
@@ -32,14 +32,14 @@ rem_old <- function(app) {
   unlink(paste0(dirwin, "/", app, "*"))
 }
 
-sapply("shinyAce", rem_old)
+sapply(pkg, rem_old)
 
 ## avoid 'loaded namespace' stuff when building for mac
-system(paste0(Sys.which("R"), " -e \"setwd('", getwd(), "'); source('build/build_mac.R')\""))
+system(paste0(Sys.which("R"), " -e \"setwd('", getwd(), "'); app <- '", pkg, "'; source('build/build_mac.R')\""))
 
 win <- readline(prompt = "Did you build on Windows? y/n: ")
 if (grepl("[yY]", win)) {
-
+  
   ## move packages to radiant_miniCRAN. must package in Windows first
   path <- normalizePath("../")
   sapply(list.files(path, pattern = "*.tar.gz", full.names = TRUE), file.copy, dirsrc)
@@ -48,15 +48,15 @@ if (grepl("[yY]", win)) {
   unlink("../*.tgz")
   sapply(list.files(path, pattern = "*.zip", full.names = TRUE), file.copy, dirwin)
   unlink("../*.zip")
-
+  
   tools::write_PACKAGES(dirmac, type = "mac.binary")
   tools::write_PACKAGES(dirwin, type = "win.binary")
   tools::write_PACKAGES(dirsrc, type = "source")
-
+  
   # commit to repo
   setwd("../minicran")
   system("git add --all .")
-  mess <- paste0("shinyAce package update: ", format(Sys.Date(), format = "%m-%d-%Y"))
+  mess <- paste0(pkg, " package update: ", format(Sys.Date(), format = "%m-%d-%Y"))
   system(paste0("git commit -m '", mess, "'"))
   system("git push")
 }
