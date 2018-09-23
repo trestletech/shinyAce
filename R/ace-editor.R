@@ -124,7 +124,7 @@ aceEditor <- function(
   if (!missing(mode)) {
     if(grepl("mode-.*\\.js",mode)){
       samd <- paste0(system.file('www', package='shinyAce'),"/ace/")
-      if(!file.exists(paste0(samd,mode)) && file.access(samd,2)==0){
+      if(file.access(samd,2)==0){
         file.copy(mode,paste0(samd,mode))
       }else{
         warning("custom mode could not be implemented")
