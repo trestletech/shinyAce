@@ -5,12 +5,13 @@
 \title{Render Ace}
 \usage{
 aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
-  readOnly = FALSE, height = "400px", fontSize = 12, debounce = 1000,
-  wordWrap = FALSE, showLineNumbers = TRUE, highlightActiveLine = TRUE,
-  selectionId = NULL, cursorId = NULL, hotkeys = NULL,
-  autoComplete = c("disabled", "enabled", "live"), autoCompleters = "",
-  autoCompleteList = NULL, tabSize = 4, useSoftTabs = TRUE,
-  showInvisibles = FALSE, setBehavioursEnabled = TRUE)
+  readOnly = FALSE, height = "400px", fontSize = 12,
+  debounce = 1000, wordWrap = FALSE, showLineNumbers = TRUE,
+  highlightActiveLine = TRUE, selectionId = NULL, cursorId = NULL,
+  hotkeys = NULL, autoComplete = c("disabled", "enabled", "live"),
+  autoCompleters = "", autoCompleteList = NULL, tabSize = 4,
+  useSoftTabs = TRUE, showInvisibles = FALSE,
+  setBehavioursEnabled = TRUE)
 }
 \arguments{
 \item{outputId}{The ID associated with this element}
