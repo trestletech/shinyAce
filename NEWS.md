@@ -1,3 +1,9 @@
+shinyAce 0.3.3
+--------------------------------------------------------------------
+
+* Enhanced keyboard shortcuts to execute code blocks by jumping to matching bracket using CTRL-enter (CMD-enter on macOS) (@vnijs)
+* Arguments `autoScrollEditorIntoView`, `maxLines`, and `minLines` added that allow the editor window to resize as extra lines are added by the user. The editor size starts at `minLines` and will not expand beyond `maxLines`. See `inst/examples/08-resize` for an example (@vnijs)
+
 shinyAce 0.3.2
 --------------------------------------------------------------------
 
@@ -44,7 +50,7 @@ shinyAce 0.1.1
 
 * Added word wrapping (@ncarchedi, #12)
 
-* Added vim key bindings (@Vincent, #9)
+* Added vim key bindings (@vnijs, #9)
 
 
 shinyAce 0.1.0

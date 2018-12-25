@@ -61,6 +61,9 @@
 #'   Default value is FALSE
 #' @param setBehavioursEnabled Determines if the auto-pairing of special characters, like 
 #'   quotation marks, parenthesis, or brackets should be enabled. Default value is TRUE.
+#' @param autoScrollEditorIntoView If TRUE, expands the size of the editor window as new lines are added
+#' @param maxLines Maximum number of lines the editor window will expand to when autoScrollEditorIntoView is TRUE
+#' @param minLines Minimum number of lines in the editor window when autoScrollEditorIntoView is TRUE
 #' 
 #' @import shiny
 #' @importFrom utils compareVersion
@@ -110,7 +113,8 @@ aceEditor <- function(
   autoCompleters = "",
   autoCompleteList = NULL,
   tabSize = 4, useSoftTabs = TRUE, 
-  showInvisibles = FALSE, setBehavioursEnabled = TRUE
+  showInvisibles = FALSE, setBehavioursEnabled = TRUE,
+  autoScrollEditorIntoView = FALSE, maxLines = NULL, minLines = NULL
 ) {
   
   editorVar <- paste0("editor__", sanitizeId(outputId))
@@ -225,6 +229,16 @@ aceEditor <- function(
               if (i === imax + 1) {
                 line = '<h4>Equation not properly closed. Display equations must start and end with $$</h4>';
               } 
+            } else if (/(\\(|\\{|\\[)\\s*$/.test(line)) {
+              ", editorVar, ".navigateLineEnd();
+              ", editorVar, ".jumpToMatching();
+              match_line = ", editorVar, ".selection.getCursor();
+              if (match_line.row === range.end.row) {
+                line = '#### Bracket not properly closed. Fix and try again';
+              } else {
+                line = ", editorVar, ".session.getLines(range.end.row, match_line.row).join('\\n');
+                i = match_line.row - range.end.row + 1
+              } 
             } else {
               rexpr = /(%>%|\\+|\\-|\\(|\\{|\\,)\\s*$/;
               rxeval = rexpr.test(line);
@@ -318,7 +332,17 @@ aceEditor <- function(
   if (!setBehavioursEnabled) {
     js <- paste(js, "", editorVar, ".setBehavioursEnabled(false);", sep = "")
   }
-    
+  
+  if (autoScrollEditorIntoView) {
+    js <- paste(js, "", editorVar, ".setOption('autoScrollEditorIntoView', true);", sep = "")
+    if (!is.null(maxLines)) {
+      js <- paste(js, "", editorVar, ".setOption('maxLines', ", maxLines, ");", sep = "")
+    }
+    if (!is.null(minLines)) {
+      js <- paste(js, "", editorVar, ".setOption('minLines', ", minLines, ");", sep = "")
+    }
+  }
+
   tagList(
     singleton(tags$head(
       initResourcePaths(),

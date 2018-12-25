@@ -11,7 +11,8 @@ aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
   hotkeys = NULL, autoComplete = c("disabled", "enabled", "live"),
   autoCompleters = "", autoCompleteList = NULL, tabSize = 4,
   useSoftTabs = TRUE, showInvisibles = FALSE,
-  setBehavioursEnabled = TRUE)
+  setBehavioursEnabled = TRUE, autoScrollEditorIntoView = FALSE,
+  maxLines = NULL, minLines = NULL)
 }
 \arguments{
 \item{outputId}{The ID associated with this element}
@@ -95,6 +96,12 @@ Default value is FALSE}
 
 \item{setBehavioursEnabled}{Determines if the auto-pairing of special characters, like 
 quotation marks, parenthesis, or brackets should be enabled. Default value is TRUE.}
+
+\item{autoScrollEditorIntoView}{If TRUE, expands the size of the editor window as new lines are added}
+
+\item{maxLines}{Maximum number of lines the editor window will expand to when autoScrollEditorIntoView is TRUE}
+
+\item{minLines}{Minimum number of lines in the editor window when autoScrollEditorIntoView is TRUE}
 }
 \description{
 Render an Ace editor on an application page.

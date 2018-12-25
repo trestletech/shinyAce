@@ -1,4 +1,4 @@
-.aceflash{  
+.aceflash {
   -moz-animation: aceflash 3s ease-out;
   -moz-animation-iteration-count: infinite;
   
@@ -27,7 +27,7 @@
   100% { border-color: #CCC;}
 }
 
-.acealert{
+.acealert {
   border: 1px solid rgba(255, 50, 50, 0.60);
 }
 

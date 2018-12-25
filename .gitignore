@@ -3,4 +3,5 @@
 .RData
 revdep/
 build/
+.DS_Store
 cran-comments.md
