@@ -60,7 +60,7 @@ Run example: `library(shiny); runApp(system.file("examples/03-knitr", package="s
 
 ![shinyAce](https://trestletech.github.io/shinyAce/images/shinyAce-knitr.png)
 
-Demonstrates integrating shinyAce with the [knitR](https://yihui.name/knitr/) package. (Note also that an example of this integration is available [in the knitR package](https://github.com/yihui/knitr/tree/master/inst/shiny) itself and includes features such as R syntax highlighting.)
+Demonstrates integrating shinyAce with the [knitr](https://yihui.name/knitr/) package. (Note also that an example of this integration is available [in the knitr package](https://github.com/yihui/knitr/tree/master/inst/shiny) itself and includes features such as R syntax highlighting.)
 
 ### 04-shinyui
 

@@ -240,7 +240,7 @@ aceEditor <- function(
                 i = match_line.row - range.end.row + 1
               } 
             } else {
-              rexpr = /(%>%|\\+|\\-|\\(|\\{|\\,)\\s*$/;
+              rexpr = /(%>%|\\+|\\-|\\,)\\s*$/;
               rxeval = rexpr.test(line);
               while((rxeval | /^\\s*(\\#|$)/.test(next_line)) & i < imax) {
                 rxeval = rexpr.test(line);
