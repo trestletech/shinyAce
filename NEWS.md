@@ -1,3 +1,8 @@
+shinyAce 0.3.4
+--------------------------------------------------------------------
+
+* Downgrade R version requirement [@yonicd](https://github.com/trestletech/shinyAce/issues/61) 
+
 shinyAce 0.3.3
 --------------------------------------------------------------------
 
