@@ -126,6 +126,15 @@ aceEditor <- function(
     js <- paste(js, "", editorVar, ".setKeyboardHandler('ace/keyboard/vim');", sep = "")
   }
   if (!missing(mode)) {
+    if(grepl("mode-.*\\.js",mode)){
+      samd <- paste0(system.file('www', package='shinyAce'),"/ace/")
+      if(file.access(samd,2)==0){
+        file.copy(mode,paste0(samd,mode))
+      }else{
+        warning("custom mode could not be implemented")
+      }
+      mode <- gsub("mode-|\\.js$","",mode)
+    }
     js <- paste(js, "", editorVar, ".getSession().setMode('ace/mode/", mode,"');", sep = "")
   }
   if (!missing(value)) {
