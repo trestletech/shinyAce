@@ -232,14 +232,22 @@
             // automatically clobber existing code
             var cursor = editor.getCursorPosition();
             var remainder = editor.session.getLine(cursor.row).slice(cursor.column);
-            var clobbered_word = remainder.match(/^[a-zA-Z0-9._:]*(\(|\(\))?/)[0];
-            editor.getSession().getDocument().removeInLine(
-              cursor.row, 
-              cursor.column, 
-              cursor.column + clobbered_word.length);
+            var re_match = remainder.match(/(^[a-zA-Z0-9._:]*)((?:\(\)?)?)(.*)/);
             
-            // navigate backwards into ()'s for function completions
-            if (insertString.endsWith("()")) {
+            if (re_match) {
+              // remove word that we're clobbering
+              editor.getSession().getDocument().removeInLine(
+                cursor.row, cursor.column, cursor.column + re_match[1].length);
+                
+              // if function call, delete parens and navigate into existing call
+              if (insertString.endsWith("()") && re_match[2].length) {
+                editor.getSession().getDocument().removeInLine(
+                  cursor.row, cursor.column - 2, cursor.column);
+                editor.navigateRight(1);
+              }
+              
+            } else if (insertString.endsWith("()")) {
+              // navigate backwards into ()'s for function completions
               editor.navigateLeft(1);
             }
             
