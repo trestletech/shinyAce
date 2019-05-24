@@ -15,12 +15,25 @@
       //TODO
     },
     subscribe: function(el, callback) {
+      var editor = $(el).data('aceEditor');
+      
       $(el).data('aceChangeCallback', function(e) {
         callback(true);
+        
+        // rate limit annotation parsing
+        if (!editor.__annotationTimerCall || !editor.__annotationTimerCall.isPending()) {
+          editor.__annotationTimerCall = lang.delayedCall(
+            function() { 
+              Shiny.onInputChange(
+                this.attr('id') + '_shinyAce_annotationTrigger', 
+                Math.random());
+            }.bind($(el)), 1000);
+          editor.__annotationTimerCall();
+        }
       });
-      
-      $(el).data('aceEditor').getSession().addEventListener("change", 
-        $(el).data('aceChangeCallback') 
+            
+      $(el).data('aceEditor').getSession().addEventListener("change",
+        $(el).data('aceChangeCallback')
       );
     },
     unsubscribe: function(el) {
@@ -72,10 +85,13 @@
         // with the same linebuffer and cursorPosition
         nonce: Math.random() 
       });
+      
       // store callback for dynamic completion
       $('#' + inputId).data('autoCompleteCallback', callback);
+    },
+    getDocTooltip: function(item) {
+      Shiny.onInputChange(item.inputId + '_shinyAce_tooltipItem', item);
     }
-    // TODO: add option to include optional getDocTooltip for suggestion context 
   };
   langTools.addCompleter(rlangCompleter);
 
@@ -84,15 +100,15 @@
     var $el = $('#' + id);
     var editor = $el.data('aceEditor');
     
-    if (data.theme){
+    if (data.theme) {
       editor.setTheme("ace/theme/" + data.theme);
     }
     
-    if (data.mode){
+    if (data.mode) {
       editor.getSession().setMode("ace/mode/" + data.mode);
     }
     
-    if (data.value !== undefined){
+    if (data.value !== undefined) {
       editor.getSession().setValue(data.value, -1);
     }
     
@@ -112,6 +128,30 @@
       var classes = ['acenormal', 'aceflash', 'acealert'];
       $el.removeClass(classes.join(' '));
       $el.addClass(data.border);
+    }
+    
+    if (data.annotations) {
+      editor.getSession().setAnnotations(data.annotations);
+    }
+    
+    if (data.docTooltip) {
+      // { docHTML: "", docText: "" }
+      if (data.docTooltip.docHTML || data.docTooltip.docText) {
+        if (!editor.completer.tooltipNode) {
+          if (editor.__tooltipTimerCall)
+            editor.__tooltipTimerCall.cancel();
+            
+          editor.__tooltipTimerCall = lang.delayedCall(
+            function() { 
+              if (this.completer.activated)
+                this.completer.showDocTooltip(data.docTooltip); 
+            }.bind(editor), 1000);
+            
+          editor.__tooltipTimerCall();
+        } else {
+          editor.completer.showDocTooltip(data.docTooltip);
+        }
+      }
     }
     
     if (data.autoComplete) {
