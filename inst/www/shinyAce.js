@@ -20,16 +20,24 @@
       $(el).data('aceChangeCallback', function(e) {
         callback(true);
         
-        // rate limit annotation parsing
-        if (!editor.__annotationTimerCall || !editor.__annotationTimerCall.isPending()) {
-          editor.__annotationTimerCall = lang.delayedCall(
-            function() { 
-              Shiny.onInputChange(
-                this.attr('id') + '_shinyAce_annotationTrigger', 
-                Math.random());
-            }.bind($(el)), 1000);
-          editor.__annotationTimerCall();
-        }
+        // always clear annotation at current line on edit
+        var cp = editor.getCursorPosition();
+        editor.getSession().setAnnotations(
+          editor.getSession().getAnnotations().filter(
+            a => !(a.row === cp.row && a.type === 'error')));
+        
+        // only trigger syntax parsing if idle for some time
+        if (editor.__annotationTimerCall)
+          editor.__annotationTimerCall.cancel();
+        
+        editor.__annotationTimerCall = lang.delayedCall(
+          function() { 
+            console.log("here");
+            Shiny.onInputChange(
+              this.attr('id') + '_shinyAce_annotationTrigger', 
+              Math.random());
+          }.bind($(el)), 1000);
+        editor.__annotationTimerCall();
       });
             
       $(el).data('aceEditor').getSession().addEventListener("change",
@@ -233,7 +241,6 @@
             var cursor = editor.getCursorPosition();
             var remainder = editor.session.getLine(cursor.row).slice(cursor.column);
             var re_match = remainder.match(/(^[a-zA-Z0-9._:]*)((?:\(\)?)?)(.*)/);
-            
             if (re_match) {
               // remove word that we're clobbering
               editor.getSession().getDocument().removeInLine(

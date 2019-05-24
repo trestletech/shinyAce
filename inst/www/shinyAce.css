@@ -36,6 +36,14 @@
   font-size: 85%;
 }
 
+pre .shinyAce_annotation {
+  margin: 0;
+  padding: 0.5em;
+  border: none;
+  background: none;
+  font-size: 100%;
+}
+
 .acealert {
   border: 1px solid rgba(255, 50, 50, 0.60);
 }

@@ -35,13 +35,16 @@ aceAnnotate <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
     } else if ("error" %in% class(parse_out)) {
       annotation <- as.list(re_capture(
         parse_out$message,
-        "(?s).*:(?<row>\\d+):(?<column>\\d+):(?<text>.*)",
+        "(?s).*:(?<row>\\d+):(?<column>\\d+):(?<html>.*)",
         perl = TRUE))
 
       num_cols <- c("row", "column")
       annotation[num_cols] <- as.numeric(annotation[num_cols])
-      annotation$row <- annotation$row - 2
+      annotation$row <- annotation$row - 1
       annotation$type <- "error"
+      annotation$html <- as.character(htmltools::tags$pre(
+        annotation$html, 
+        class = "shinyAce_annotation"))
       
       return(session$sendCustomMessage('shinyAce', list(
         id = session$ns(inputId),
