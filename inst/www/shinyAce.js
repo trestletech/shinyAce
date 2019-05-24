@@ -1,5 +1,8 @@
-(function(){
-
+(function() {
+  
+  var lang = ace.require("ace/lib/lang");
+  var langTools = ace.require("ace/ext/language_tools");
+  
   var shinyAceInputBinding = new Shiny.InputBinding();
   $.extend(shinyAceInputBinding, {
     find: function(scope) {
@@ -31,7 +34,6 @@
 
   Shiny.inputBindings.register(shinyAceInputBinding);
 
-  var langTools = ace.require("ace/ext/language_tools");
   var staticCompleter = {
     getCompletions: function(editor, session, pos, prefix, callback) {
       var comps = $('#' + editor.container.id).data('auto-complete-list');
@@ -53,8 +55,12 @@
   langTools.addCompleter(staticCompleter);
 
   var rlangCompleter = {
+    identifierRegexps: [
+      /[a-zA-Z_0-9\.\:\-\u00A2-\uFFFF]/, 
+    ],
     getCompletions: function(editor, session, pos, prefix, callback) {
       var inputId = editor.container.id;
+      
       // TODO: consider dropping onInputChange hook when completer is disabled for performance
       Shiny.onInputChange(inputId + '_shinyAce_hint', {
         // TODO: add an option to disable full document parsing for performance
@@ -165,7 +171,44 @@
     
     if (data.codeCompletions) {
       var callback = $el.data('autoCompleteCallback');
-      if(callback !== undefined) callback(null, data.codeCompletions);
+      
+      data.codeCompletions = data.codeCompletions.map(function(completion) {
+        completion.completer = {};
+        completion.completer.insertMatch = function(editor, data) {
+          if (editor.completer.completions.filterText) {
+            var ranges = editor.selection.getAllRanges();
+            for (var i = 0, range; range = ranges[i]; i++) {
+              range.start.column -= editor.completer.completions.filterText.length;
+              editor.session.remove(range);
+            }
+          }
+          if (data.snippet) {
+            snippetManager.insertSnippet(editor, data.snippet);
+          } else {
+            // insert completion
+            var insertString = data.value || data;
+            editor.execCommand("insertstring", insertString);
+            
+            // automatically clobber existing code
+            var cursor = editor.getCursorPosition();
+            var remainder = editor.session.getLine(cursor.row).slice(cursor.column);
+            var clobbered_word = remainder.match(/^[a-zA-Z0-9._:]*(\(|\(\))?/)[0];
+            editor.getSession().getDocument().removeInLine(
+              cursor.row, 
+              cursor.column, 
+              cursor.column + clobbered_word.length);
+            
+            // navigate backwards into ()'s for function completions
+            if (insertString.endsWith("()")) {
+              editor.navigateLeft(1);
+            }
+            
+          }
+        };
+        return completion;
+      });
+      
+      if (callback !== undefined) callback(null, data.codeCompletions);
     }
   });
 
