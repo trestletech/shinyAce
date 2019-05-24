@@ -145,17 +145,8 @@ aceEditor <- function(
                 as.numeric(fontSize), "px'; ", sep = "")
   }
   if (!is.null(debounce) && !is.na(as.numeric(debounce))) {
-    # I certainly hope there's a more reasonable way to compare 
-    # versions with an extra field in them...
-    re <- regexpr("^\\d+\\.\\d+(\\.\\d+)?", utils::packageVersion("shiny"))
-    shinyVer <- substr(utils::packageVersion("shiny"), 0, attr(re, "match.length"))
-    minorVer <- as.integer(substr(utils::packageVersion("shiny"),
-      attr(re, "match.length") + 2,
-      nchar(utils::packageVersion("shiny"))))
-    comp <- utils::compareVersion(shinyVer, "0.9.1")
-    if (comp < 0 || (comp == 0 && minorVer < 9004)) {
+    if (utils::packageVersion("shiny") < package_version("0.9.1.9004"))
       warning("Shiny version 0.9.1.9004 required to use input debouncing in shinyAce.")
-    }
     js <- paste(js, "$('#", outputId ,"').data('debounce',", debounce,");", sep = "")
   }
   
@@ -184,6 +175,32 @@ aceEditor <- function(
     js <- paste(js, curJS, sep = "")
   }
   
+  js <- paste0(js, "", editorVar, ".commands.addCommand({
+    name: 'smartTab',
+    bindKey: { win: 'Tab', mac: 'TAB' },
+    multiSelectAction: 'forEach',
+    exec: function(", editorVar, ") {
+      var selection = ", editorVar, ".session.getTextRange();
+      var range = ", editorVar, ".selection.getRange();
+      var imax = ", editorVar, ".session.getLength() - range.end.row;
+
+      // use regular indent whenever cursor is anything but standard
+      if (selection !== '' || ", editorVar, ".inMultiSelectMode) {
+        ", editorVar, ".indent();
+      // otherwise handle autocopmletion 
+      } else {
+        var linebuffer = ", editorVar, ".session.getLine(range.start.row).slice(0, range.start.column);
+
+        if (/[a-zA-Z._][a-zA-Z0-9._:]*$/.test(linebuffer) || /[a-zA-Z0-9._]\\([^)]*$/.test(linebuffer)) {
+          if (", editorVar, ".completer) ", editorVar, ".completer.detach();
+          ", editorVar, ".execCommand('startAutocomplete');
+        } else {
+          ", editorVar, ".indent();
+        }
+      }
+    }
+  });")
+  
   for (i in seq_along(hotkeys)) {
     shortcut = hotkeys[[i]]
     if (is.list(shortcut)) {
@@ -203,7 +220,7 @@ aceEditor <- function(
           var range = ", editorVar, ".selection.getRange();
           var imax = ", editorVar, ".session.getLength() - range.end.row;
                   
-          if(selection === '') {
+          if (selection === '') {
             var i = 1;
             var line = ", editorVar, ".session.getLine(range.end.row);
             var next_line = ", editorVar, ".session.getLine(range.end.row + i);
