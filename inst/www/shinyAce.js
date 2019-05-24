@@ -1,5 +1,8 @@
-(function(){
-
+(function() {
+  
+  var lang = ace.require("ace/lib/lang");
+  var langTools = ace.require("ace/ext/language_tools");
+  
   var shinyAceInputBinding = new Shiny.InputBinding();
   $.extend(shinyAceInputBinding, {
     find: function(scope) {
@@ -12,12 +15,25 @@
       //TODO
     },
     subscribe: function(el, callback) {
+      var editor = $(el).data('aceEditor');
+      
       $(el).data('aceChangeCallback', function(e) {
         callback(true);
+        
+        // rate limit annotation parsing
+        if (!editor.__annotationTimerCall || !editor.__annotationTimerCall.isPending()) {
+          editor.__annotationTimerCall = lang.delayedCall(
+            function() { 
+              Shiny.onInputChange(
+                this.attr('id') + '_shinyAce_annotationTrigger', 
+                Math.random());
+            }.bind($(el)), 1000);
+          editor.__annotationTimerCall();
+        }
       });
-      
-      $(el).data('aceEditor').getSession().addEventListener("change", 
-        $(el).data('aceChangeCallback') 
+            
+      $(el).data('aceEditor').getSession().addEventListener("change",
+        $(el).data('aceChangeCallback')
       );
     },
     unsubscribe: function(el) {
@@ -31,7 +47,6 @@
 
   Shiny.inputBindings.register(shinyAceInputBinding);
 
-  var langTools = ace.require("ace/ext/language_tools");
   var staticCompleter = {
     getCompletions: function(editor, session, pos, prefix, callback) {
       var comps = $('#' + editor.container.id).data('auto-complete-list');
@@ -53,8 +68,12 @@
   langTools.addCompleter(staticCompleter);
 
   var rlangCompleter = {
+    identifierRegexps: [
+      /[a-zA-Z_0-9\.\:\-\u00A2-\uFFFF]/, 
+    ],
     getCompletions: function(editor, session, pos, prefix, callback) {
       var inputId = editor.container.id;
+      
       // TODO: consider dropping onInputChange hook when completer is disabled for performance
       Shiny.onInputChange(inputId + '_shinyAce_hint', {
         // TODO: add an option to disable full document parsing for performance
@@ -66,10 +85,13 @@
         // with the same linebuffer and cursorPosition
         nonce: Math.random() 
       });
+      
       // store callback for dynamic completion
       $('#' + inputId).data('autoCompleteCallback', callback);
+    },
+    getDocTooltip: function(item) {
+      Shiny.onInputChange(item.inputId + '_shinyAce_tooltipItem', item);
     }
-    // TODO: add option to include optional getDocTooltip for suggestion context 
   };
   langTools.addCompleter(rlangCompleter);
 
@@ -78,15 +100,15 @@
     var $el = $('#' + id);
     var editor = $el.data('aceEditor');
     
-    if (data.theme){
+    if (data.theme) {
       editor.setTheme("ace/theme/" + data.theme);
     }
     
-    if (data.mode){
+    if (data.mode) {
       editor.getSession().setMode("ace/mode/" + data.mode);
     }
     
-    if (data.value !== undefined){
+    if (data.value !== undefined) {
       editor.getSession().setValue(data.value, -1);
     }
     
@@ -106,6 +128,30 @@
       var classes = ['acenormal', 'aceflash', 'acealert'];
       $el.removeClass(classes.join(' '));
       $el.addClass(data.border);
+    }
+    
+    if (data.annotations) {
+      editor.getSession().setAnnotations(data.annotations);
+    }
+    
+    if (data.docTooltip) {
+      // { docHTML: "", docText: "" }
+      if (data.docTooltip.docHTML || data.docTooltip.docText) {
+        if (!editor.completer.tooltipNode) {
+          if (editor.__tooltipTimerCall)
+            editor.__tooltipTimerCall.cancel();
+            
+          editor.__tooltipTimerCall = lang.delayedCall(
+            function() { 
+              if (this.completer.activated)
+                this.completer.showDocTooltip(data.docTooltip); 
+            }.bind(editor), 1000);
+            
+          editor.__tooltipTimerCall();
+        } else {
+          editor.completer.showDocTooltip(data.docTooltip);
+        }
+      }
     }
     
     if (data.autoComplete) {
@@ -165,7 +211,44 @@
     
     if (data.codeCompletions) {
       var callback = $el.data('autoCompleteCallback');
-      if(callback !== undefined) callback(null, data.codeCompletions);
+      
+      data.codeCompletions = data.codeCompletions.map(function(completion) {
+        completion.completer = {};
+        completion.completer.insertMatch = function(editor, data) {
+          if (editor.completer.completions.filterText) {
+            var ranges = editor.selection.getAllRanges();
+            for (var i = 0, range; range = ranges[i]; i++) {
+              range.start.column -= editor.completer.completions.filterText.length;
+              editor.session.remove(range);
+            }
+          }
+          if (data.snippet) {
+            snippetManager.insertSnippet(editor, data.snippet);
+          } else {
+            // insert completion
+            var insertString = data.value || data;
+            editor.execCommand("insertstring", insertString);
+            
+            // automatically clobber existing code
+            var cursor = editor.getCursorPosition();
+            var remainder = editor.session.getLine(cursor.row).slice(cursor.column);
+            var clobbered_word = remainder.match(/^[a-zA-Z0-9._:]*(\(|\(\))?/)[0];
+            editor.getSession().getDocument().removeInLine(
+              cursor.row, 
+              cursor.column, 
+              cursor.column + clobbered_word.length);
+            
+            // navigate backwards into ()'s for function completions
+            if (insertString.endsWith("()")) {
+              editor.navigateLeft(1);
+            }
+            
+          }
+        };
+        return completion;
+      });
+      
+      if (callback !== undefined) callback(null, data.codeCompletions);
     }
   });
 
