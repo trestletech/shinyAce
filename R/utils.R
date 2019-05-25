@@ -1,3 +1,23 @@
+#' Get namespace to get access to unexported functions, namely
+#'   .getHelpFile
+#'   .assignLinebuffer
+#'   .assignEnd
+#'   .guessTokenFromLine
+#'   .completeToken
+#'
+#' @import utils
+#' 
+.utils <- asNamespace("utils")
+
+#' Get namespace to get access to unexported functions, namely
+#'   RdTags
+#'   
+#' @import tools
+#' 
+.tools <- asNamespace("tools")
+
+
+
 #' Retrieve an Rd object of a help query
 #' 
 #' Safely return NULL if an error is encountered.
@@ -12,7 +32,7 @@
 #' 
 get_help_file <- function(topic, package = NULL, ...) {
   tryCatch({
-    utils:::.getHelpFile(eval(bquote(help(
+    .utils$.getHelpFile(eval(bquote(help(
       topic = .(topic), 
       package = .(package), 
       ...))))
@@ -43,7 +63,7 @@ rd_2_html <- function(...) {
 #'   document, rendered as HTML
 #'
 #' @examples 
-#' get_desc_help("match", package = "base")
+#' shinyAce:::get_desc_help("match", package = "base")
 #'
 #' @import tools 
 #'
@@ -51,7 +71,7 @@ get_desc_help <- function(...) {
   x <- get_help_file(...)
   if (is.null(x)) return(x)
   
-  rd_2_html(x[[which(tools:::RdTags(x) == "\\description")]], fragment = TRUE)
+  rd_2_html(x[[which(.tools$RdTags(x) == "\\description")]], fragment = TRUE)
 }
 
 
@@ -64,7 +84,7 @@ get_desc_help <- function(...) {
 #' @return A character vector of help 
 #'
 #' @examples
-#' get_arg_help("match", package = "base", args = c("table", "nomatch"))
+#' shinyAce:::get_arg_help("match", package = "base", args = c("table", "nomatch"))
 #' 
 #' @import tools
 #' 
@@ -76,7 +96,7 @@ get_arg_help <- function(..., args = character()) {
   x <- get_help_file(...)
   if (is.null(x)) return(character())
   
-  arg_rds <- x[[which(tools:::RdTags(x) == "\\arguments")]]
+  arg_rds <- x[[which(.tools$RdTags(x) == "\\arguments")]]
   arg_rds <- Filter(function(i) attr(i, "Rd_tag") == "\\item", arg_rds)
   arg_rds <- setNames(lapply(arg_rds, "[[", 2), Map(function(i) i[[1]][[1]], arg_rds))
   if (length(args)) arg_rds <- arg_rds[which(names(arg_rds) %in% args)]
@@ -96,14 +116,14 @@ get_arg_help <- function(..., args = character()) {
 #'   document, rendered as HTML
 #'
 #' @examples 
-#' get_usage_help("match", package = "base")
+#' shinyAce:::get_usage_help("match", package = "base")
 #'
 #' @import tools 
 #'
 get_usage_help <- function(...) {
   x <- get_help_file(...)
   if (is.null(x)) return(x)
-  rd_2_html(x[[which(tools:::RdTags(x) == "\\usage")]], fragment = TRUE)
+  rd_2_html(x[[which(.tools$RdTags(x) == "\\usage")]], fragment = TRUE)
 }
 
 
@@ -112,12 +132,12 @@ get_usage_help <- function(...) {
 #'
 #' @param x a character string to capture from
 #' @param re the regular expression to use
-#' @inheritParams base::regexpr
+#' @param ... additional arguments passed to \code{\link[base]{regexpr}}
 #'
 #' @return a named list of matches
 #'
 #' @examples
-#' re_capture("ak09j b", "(?<num>\\d+)(?<alpha>[a-zA-Z]+)", perl = TRUE)
+#' shinyAce:::re_capture("ak09j b", "(?<num>\\d+)(?<alpha>[a-zA-Z]+)", perl = TRUE)
 #' 
 re_capture <- function(x, re, ...) {
   re_match <- regexpr(re, x, ...)

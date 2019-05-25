@@ -41,6 +41,14 @@
 #'
 #' @export
 aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
+  
+  fname_regex <- paste0(
+    "(?:^|.*[^a-zA-Z0-9._:])", # non-function name chars, non-capturing group
+    "([a-zA-Z0-9._:]+)",       # function name capturing group
+    "\\(",                     # function call open paren
+    "[^)]*$"                   # remainder of line buffer within function call
+  )
+  
   shiny::observe({
     # read params
     value <- session$input[[paste0(inputId, "_shinyAce_hint")]]
@@ -68,17 +76,16 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
     meta <- character()
     
     try(silent = TRUE, {
-      utils <- asNamespace("utils")
-      utils$.assignLinebuffer(line)
-      utils$.assignEnd(nchar(line))
-      utils$.guessTokenFromLine()
-      utils$.completeToken()
-      completions <- as.character(utils$.retrieveCompletions())
+      .utils$.assignLinebuffer(line)
+      .utils$.assignEnd(nchar(line))
+      .utils$.guessTokenFromLine()
+      .utils$.completeToken()
+      completions <- as.character(.utils$.retrieveCompletions())
     })
 
     # handle within paren of function call separately
-    if (grepl("[a-zA-Z0-9._]\\([^)]*$", line)) {
-      fname <- gsub("(?:^|.*[^a-zA-Z0-9._:])([a-zA-Z0-9._:]+)\\([^)]*$", "\\1", line)
+    if (grepl(fname_regex, line)) {
+      fname <- gsub(fname_regex, "\\1", line)
       splat <- strsplit(fname, ":{2,3}")[[1]]
       n <- length(splat)
       
