@@ -88,6 +88,18 @@ get_arg_help <- function(..., args = character()) {
 
 
 
+#' Retrieve usage section from help document
+#'
+#' @inheritParams get_help_file
+#'
+#' @return a character value representing the usage section of a help
+#'   document, rendered as HTML
+#'
+#' @examples 
+#' get_usage_help("match", package = "base")
+#'
+#' @import tools 
+#'
 get_usage_help <- function(...) {
   x <- get_help_file(...)
   if (is.null(x)) return(x)
