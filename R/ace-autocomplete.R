@@ -1,22 +1,42 @@
 #' Enable Code Completion for an Ace Code Input
 #'
-#' This function dynamically auto complete R code pieces using built-in function
-#' \code{utils:::.win32consoleCompletion}. Please see \code{\link[utils]{rcompgen}} for details.
+#' This function dynamically auto complete R code pieces using built-in
+#' functions \code{utils:::.assignLinebuffer}, \code{utils:::.assignEnd},
+#' \code{utils:::.guessTokenFromLine} and \code{utils:::.completeToken}.
 #'
 #' @details
 #' You can implement your own code completer by listening to \code{input$<editorId>_shinyAce_hint}
 #' where <editorId> is the \code{aceEditor} id. The input contains
 #' \itemize{
-#'  \item \code{linebuffer}: Code/Text at current editing line
-#'  \item \code{cursorPosition}: Current cursor position at this line
+#'   \item \code{linebuffer}: Code/Text at current editing line
+#'   \item \code{cursorPosition}: Current cursor position at this line
 #' }
 #'
 #' @param inputId The id of the input object
 #' @param session The \code{session} object passed to function given to shinyServer
 #'
-#' @return An observer reference class object that is responsible for offering code completion.
-#' See \code{\link[shiny]{observe}} for more details. You can use \code{suspend} or \code{destroy}
-#' to pause to stop dynamic code completion.
+#' @return An observer reference class object that is responsible for offering
+#'   code completion. See \code{\link[shiny]{observe}} for more details. You can
+#'   use \code{suspend} or \code{destroy} to pause to stop dynamic code
+#'   completion.
+#'   
+#'   The observer reference object will send a custom shiny message using
+#'   \code{session$sendCustomMessage} to the codeCompletions endpoint containing
+#'   a json list of completion item metadata objects. The json list should have
+#'   a structure akin to:
+#'   
+#'   \preformatted{
+#'   [
+#'     {
+#'        inputId: <str: inputId, expected for tooltips>, 
+#'        symbol:  <str: symbol name of completion item>,
+#'        name:    <str: value to be inserted upon completion (e.g. "print()")>, 
+#'        value:   <str: value to be inserted upon completion (e.g. "print()")>,
+#'        score:   <num: score to pass to ace editor for sorting>,
+#'        meta:    <str: meta text on right of completion>
+#'     }
+#'   ]
+#'   }
 #'
 #' @export
 aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
@@ -111,7 +131,6 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
           symbol = symbol,
           name = name, 
           value = name,
-          caption = completion,
           score = score,
           meta = meta)
       }, completions, splat, rev(seq_along(completions))))
