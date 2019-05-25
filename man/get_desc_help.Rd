@@ -17,6 +17,6 @@ a character value representing the description section of a help
 Retrieve description section from help document
 }
 \examples{
-get_desc_help("match", package = "base")
+shinyAce:::get_desc_help("match", package = "base")
 
 }

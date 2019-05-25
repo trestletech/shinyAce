@@ -98,10 +98,13 @@ get_arg_help <- function(..., args = character()) {
   
   arg_rds <- x[[which(.tools$RdTags(x) == "\\arguments")]]
   arg_rds <- Filter(function(i) attr(i, "Rd_tag") == "\\item", arg_rds)
-  arg_rds <- setNames(lapply(arg_rds, "[[", 2), Map(function(i) i[[1]][[1]], arg_rds))
+  names(arg_rds) <- Map(function(i) i[[1]][[1]], arg_rds)
+  arg_rds <- lapply(arg_rds, "[[", 2)
   if (length(args)) arg_rds <- arg_rds[which(names(arg_rds) %in% args)]
   
-  out <- setNames(vector("character", length(args)), args)
+  out <- vector("character", length(args))
+  names(out) <- args
+  
   out[names(arg_rds)] <- sapply(arg_rds, rd_2_html, fragment = TRUE)
   out
 }

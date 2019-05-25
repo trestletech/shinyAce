@@ -7,9 +7,9 @@
 #' You can implement your own tooltips by observing modification events to
 #' \code{input$<editorId>_shinyAce_tooltipItem} where <editorId> is the
 #' \code{aceEditor} id. This input contains the object passed to codeCompletion
-#' for this item. See the help for \code{\link{aceComplete}} for details on the
-#' fields of the completion item object.
-#'
+#' for this item. See the help for \code{\link{aceAutocomplete}} for details on
+#' the fields of the completion item object.
+#' 
 #' @param inputId The id of the input object
 #' @param session The \code{session} object passed to function given to
 #'   shinyServer

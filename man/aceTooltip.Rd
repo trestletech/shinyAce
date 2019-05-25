@@ -50,6 +50,6 @@ by parsing R \code{\link{help}} documentation and rendering to html.
 You can implement your own tooltips by observing modification events to
 \code{input$<editorId>_shinyAce_tooltipItem} where <editorId> is the
 \code{aceEditor} id. This input contains the object passed to codeCompletion
-for this item. See the help for \code{\link{aceComplete}} for details on the
-fields of the completion item object.
+for this item. See the help for \code{\link{aceAutocomplete}} for details on
+the fields of the completion item object.
 }

@@ -10,6 +10,8 @@ re_capture(x, re, ...)
 \item{x}{a character string to capture from}
 
 \item{re}{the regular expression to use}
+
+\item{...}{additional arguments passed to \code{\link[base]{regexpr}}}
 }
 \value{
 a named list of matches
@@ -18,6 +20,6 @@ a named list of matches
 Retrieve regular expression named capture groups as a list
 }
 \examples{
-re_capture("ak09j b", "(?<num>\\\\d+)(?<alpha>[a-zA-Z]+)", perl = TRUE)
+shinyAce:::re_capture("ak09j b", "(?<num>\\\\d+)(?<alpha>[a-zA-Z]+)", perl = TRUE)
 
 }

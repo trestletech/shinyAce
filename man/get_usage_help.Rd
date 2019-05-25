@@ -17,6 +17,6 @@ a character value representing the usage section of a help
 Retrieve usage section from help document
 }
 \examples{
-get_usage_help("match", package = "base")
+shinyAce:::get_usage_help("match", package = "base")
 
 }

@@ -18,6 +18,6 @@ A character vector of help
 Retrieve argument documentation from help document
 }
 \examples{
-get_arg_help("match", package = "base", args = c("table", "nomatch"))
+shinyAce:::get_arg_help("match", package = "base", args = c("table", "nomatch"))
 
 }
