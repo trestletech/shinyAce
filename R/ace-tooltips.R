@@ -52,13 +52,13 @@ aceTooltip <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
     value <- session$input[[paste0(inputId, "_shinyAce_tooltipItem")]]
     if (is.null(value)) return()
 
+    name   <- value$name
     symbol <- value$symbol
-    envir <- value$meta
+    envir  <- value$meta
      
-    tooltip_caption <- if (endsWith(value$name, " = ")) {
-      name <- gsub(" = $", "", value$name)
+    tooltip_caption <- if (grepl("\\s*=.*$", value$caption)) {
       paste0(
-        "<b>", name, "</b>", 
+        "<b style=\"font-size:larger\">", name, "</b>", 
         tryCatch({
           if (!length(envir) || envir == "R") {
             get_arg_help(symbol, args = name)

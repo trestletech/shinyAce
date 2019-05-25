@@ -52,7 +52,7 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
     options <- utils::rc.options()
     utils::rc.options(
       package.suffix = "::",
-      funarg.suffix = " = ",
+      funarg.suffix = "",
       function.suffix = "()")
     on.exit(do.call(utils::rc.options, as.list(options)), add = TRUE)
     
@@ -82,24 +82,40 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
       n <- length(splat)
       
       symbol <- if (n == 2) splat[[2]] else splat[[1]]
-      envir <- if (n == 2) asNamespace(splat[[1]]) else NULL
+      envir <- if (n == 2) asNamespace(splat[[1]]) else .GlobalEnv
       
       # get call object
-      obj <- tryCatch({
-        get(symbol, envir = if (is.null(envir)) .GlobalEnv else envir)
-      }, error = function(e) NULL)
+      obj <- tryCatch(get(symbol, envir = envir), error = function(e) NULL)
       
+      # get formal arguments to populate with default values
+      frmls <- tryCatch(formals(obj), 
+        warning = function(e) "", 
+        error = function(e) "")
+      
+      # ensure formal arg default values follow same order as completions
+      comp_frmls <- vector("character", length(completions))
+      frmls_i <- completions %in% names(frmls)
+      comp_frmls[frmls_i] <- as.character(frmls[completions[frmls_i]])
+      
+      # get environment name if possible
       meta <- if (!is.null(obj)) environmentName(environment(obj)) else "R"
       
-      completions <- unname(Map(function(completion, score) {
+      # truncate really long captions
+      captions <- paste0(completions, " = ", comp_frmls)
+      captions <- ifelse(nchar(captions) >= 28, 
+        paste0(substr(captions, 1, 28), "\u2026"),
+        captions)
+      
+      completions <- unname(Map(function(completion, frml, caption, meta, score) {
         list(
           inputId = inputId,
           symbol = symbol,
           name = completion,
-          value = completion,
+          value = paste0(completion, " = "),
+          caption = caption,
           score = score,
           meta = meta)
-      }, completions, rev(seq_along(completions))))
+      }, completions, comp_frmls, captions, meta, rev(seq_along(completions))))
       
     } else {
       completions <- sort(completions[nzchar(completions)])
@@ -108,12 +124,10 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
       completions <- unname(Map(function(completion, el, score) {
         n <- length(el)
         symbol <- if (n == 2) el[[2]] else el[[1]]
-        envir <- if (n == 2) asNamespace(el[[1]]) else NULL
+        envir <- if (n == 2) asNamespace(el[[1]]) else .GlobalEnv
         
         # get call object
-        obj <- tryCatch({
-          get(symbol, envir = if (is.null(envir)) .GlobalEnv else envir)
-        }, error = function(e) NULL)
+        obj <- tryCatch(get(symbol, envir = envir), error = function(e) NULL)
         
         # detect functions
         if (!is.null(obj)) {
@@ -131,6 +145,7 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
           symbol = symbol,
           name = name, 
           value = name,
+          caption = gsub(".*::", "", name),
           score = score,
           meta = meta)
       }, completions, splat, rev(seq_along(completions))))

@@ -69,6 +69,10 @@ get_desc_help <- function(...) {
 #' @import tools
 #' 
 get_arg_help <- function(..., args = character()) {
+  # TODO:
+  #   split multi-argument help text, e.g. for function "seq" which gives a
+  #   description for arguments "from" and "to" together
+  
   x <- get_help_file(...)
   if (is.null(x)) return(character())
   
@@ -80,6 +84,14 @@ get_arg_help <- function(..., args = character()) {
   out <- setNames(vector("character", length(args)), args)
   out[names(arg_rds)] <- sapply(arg_rds, rd_2_html, fragment = TRUE)
   out
+}
+
+
+
+get_usage_help <- function(...) {
+  x <- get_help_file(...)
+  if (is.null(x)) return(x)
+  rd_2_html(x[[which(tools:::RdTags(x) == "\\usage")]], fragment = TRUE)
 }
 
 
