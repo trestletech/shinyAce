@@ -313,7 +313,7 @@ aceEditor <- function(
         js <- paste(js, "", editorVar, ".completers.push(langTools.keywordCompleter);", sep = "")
       }
       if ("rlang" %in% autoCompleters) {
-        js <- paste(js, "", editorVar, ".completers.push(langTools.rlangCompleter);", sep = "")
+        js <- paste(js, "", editorVar, ".completers.push(rlangCompleter);", sep = "")
       }
       if ("static" %in% autoCompleters) {
         code <- 'var staticCompleter = {

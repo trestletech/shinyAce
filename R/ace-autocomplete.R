@@ -82,9 +82,11 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
       .utils$.completeToken()
       completions <- as.character(.utils$.retrieveCompletions())
     })
-
-    # handle within paren of function call separately
-    if (grepl(fname_regex, line)) {
+    
+    if (!length(completions)) {
+      completions <- list()
+    } else if (grepl(fname_regex, line)) {
+      # handle within paren of function call separately
       fname <- gsub(fname_regex, "\\1", line)
       splat <- strsplit(fname, ":{2,3}")[[1]]
       n <- length(splat)
