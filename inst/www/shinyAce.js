@@ -32,7 +32,6 @@
         
         editor.__annotationTimerCall = lang.delayedCall(
           function() { 
-            console.log("here");
             Shiny.onInputChange(
               this.attr('id') + '_shinyAce_annotationTrigger', 
               Math.random());
@@ -240,8 +239,8 @@
             // automatically clobber existing code
             var cursor = editor.getCursorPosition();
             var remainder = editor.session.getLine(cursor.row).slice(cursor.column);
-            var re_match = remainder.match(/(^[a-zA-Z0-9._:]*)((?:\(\)?)?)(.*)/);
-            if (re_match) {
+            var re_match = remainder.match(/(^[a-zA-Z0-9._:]*)((?:\(\)?)?)/);
+            if (re_match && re_match[0].length) {
               // remove word that we're clobbering
               editor.getSession().getDocument().removeInLine(
                 cursor.row, cursor.column, cursor.column + re_match[1].length);
