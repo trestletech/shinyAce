@@ -36,9 +36,8 @@
 #'   ]
 #'   }
 #' 
-#' @importFrom shiny observeEvent getDefaultReactiveDomain
+#' @importFrom shiny observeEvent getDefaultReactiveDomain tags
 #' @importFrom jsonlite toJSON
-#' @importFrom htmltools tags
 #' 
 #' @export
 aceAnnotate <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
@@ -64,7 +63,7 @@ aceAnnotate <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
       annotation[num_cols] <- as.numeric(annotation[num_cols])
       annotation$row <- annotation$row - 1
       annotation$type <- "error"
-      annotation$html <- as.character(htmltools::tags$pre(
+      annotation$html <- as.character(shiny::tags$pre(
         annotation$html, 
         class = "shinyAce_annotation"))
       
