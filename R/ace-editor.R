@@ -46,9 +46,10 @@
 #'    will be considered as candidates. Use \code{autoCompleteList} for static 
 #'    completions and \code{\link{aceAutocomplete}} for dynamic R code completions.
 #' @param autoCompleters List of completers to enable. If set to \code{NULL},
-#'   all completers will be disabled. Select one or more of "snippet", "text", "static", 
-#'   and "keyword" to control which completers to use. Default option is an empty character
-#'   vector which does not effect default completion options
+#'   all completers will be disabled. Select one or more of "snippet", "text",
+#'   "static", "keyword" and "rlang" to control which completers to use. Default
+#'   option is an empty character vector which does not effect default
+#'   completion options
 #' @param autoCompleteList A named list that contains static code completions 
 #'   candidates. This can be especially useful for Non-Standard Evaluation (NSE) 
 #'   functions such as those in \code{dplyr} and \code{ggvis}. Each element in list 
@@ -310,6 +311,9 @@ aceEditor <- function(
       }
       if ("keyword" %in% autoCompleters) {
         js <- paste(js, "", editorVar, ".completers.push(langTools.keywordCompleter);", sep = "")
+      }
+      if ("rlang" %in% autoCompleters) {
+        js <- paste(js, "", editorVar, ".completers.push(langTools.rlangCompleter);", sep = "")
       }
       if ("static" %in% autoCompleters) {
         code <- 'var staticCompleter = {

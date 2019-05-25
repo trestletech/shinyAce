@@ -76,9 +76,10 @@ By default, only local completer is used where all aforementioned code pieces
   completions and \code{\link{aceAutocomplete}} for dynamic R code completions.}
 
 \item{autoCompleters}{List of completers to enable. If set to \code{NULL},
-all completers will be disabled. Select one or more of "snippet", "text", "static", 
-and "keyword" to control which completers to use. Default option is an empty character
-vector which does not effect default completion options}
+all completers will be disabled. Select one or more of "snippet", "text",
+"static", "keyword" and "rlang" to control which completers to use. Default
+option is an empty character vector which does not effect default
+completion options}
 
 \item{autoCompleteList}{A named list that contains static code completions 
 candidates. This can be especially useful for Non-Standard Evaluation (NSE) 
