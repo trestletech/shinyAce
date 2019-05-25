@@ -30,8 +30,9 @@
 #'     {
 #'        inputId: <str: inputId, expected for tooltips>, 
 #'        symbol:  <str: symbol name of completion item>,
-#'        name:    <str: value to be inserted upon completion (e.g. "print()")>, 
+#'        name:    <str: value to be used for tooltip (e.g. "print")>, 
 #'        value:   <str: value to be inserted upon completion (e.g. "print()")>,
+#'        caption: <str: value to be displayed (e.g. "print() # prints text")>,
 #'        score:   <num: score to pass to ace editor for sorting>,
 #'        meta:    <str: meta text on right of completion>
 #'     }
