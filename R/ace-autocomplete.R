@@ -118,7 +118,7 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
       
       completions <- unname(Map(function(completion, frml, caption, meta, score) {
         list(
-          inputId = inputId,
+          inputId = session$ns(inputId),
           symbol = symbol,
           name = completion,
           value = paste0(completion, " = "),
@@ -151,7 +151,7 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
         name <- if (isTRUE(fn)) paste0(completion, "()") else completion
         
         list(
-          inputId = inputId, 
+          inputId = session$ns(inputId), 
           symbol = symbol,
           name = name, 
           value = name,

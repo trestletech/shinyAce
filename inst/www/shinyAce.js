@@ -97,6 +97,7 @@
       $('#' + inputId).data('autoCompleteCallback', callback);
     },
     getDocTooltip: function(item) {
+      console.log(item);
       Shiny.onInputChange(item.inputId + '_shinyAce_tooltipItem', item);
     }
   };
