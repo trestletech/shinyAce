@@ -54,7 +54,7 @@ updateAceEditor <- function(
     stop("Must provide both a session and an editorId to update Ace editor settings")
   }
 
-  theList <- list(id = editorId)
+  theList <- list(id = session$ns(editorId))
 
   if (!missing(value)) theList["value"] <- value
   if (!missing(theme)) theList["theme"] <- theme

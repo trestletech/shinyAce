@@ -299,45 +299,71 @@ aceEditor <- function(
     js <- paste(js, "", editorVar, ".setOption('enableLiveAutocompletion', true);", sep = "")
   }
 
-  if (length(autoCompleters) > 0) {
-    if (sum(autoCompleters %in% c("snippet", "text", "static", "keyword")) > 0) {
-      js <- paste(js, 'var langTools = ace.require("ace/ext/language_tools");')
-      js <- paste(js, "", editorVar, ".completers = [];", sep = "")
-      if ("snippet" %in% autoCompleters) {
-        js <- paste(js, "", editorVar, ".completers.push(langTools.snippetCompleter);", sep = "")
-      }
-      if ("text" %in% autoCompleters) {
-        js <- paste(js, "", editorVar, ".completers.push(langTools.textCompleter);", sep = "")
-      }
-      if ("keyword" %in% autoCompleters) {
-        js <- paste(js, "", editorVar, ".completers.push(langTools.keywordCompleter);", sep = "")
-      }
-      if ("rlang" %in% autoCompleters) {
-        js <- paste(js, "", editorVar, ".completers.push(rlangCompleter);", sep = "")
-      }
-      if ("static" %in% autoCompleters) {
-        code <- 'var staticCompleter = {
-            getCompletions: function(editor, session, pos, prefix, callback) {
-              var comps = $("#" + editor.container.id).data("auto-complete-list");
-              if(comps) {
-                var words = [];
-                Object.keys(comps).forEach(function(key) {
-                  var comps_key = comps[key];
-                  if (!Array.isArray(comps[key])) {
-                    comps_key = [comps_key];
-                  }
-                  words = words.concat(comps_key.map(function(d) {
-                    return {name: d, value: d, meta: key};
-                  }));
-                });
-                callback(null, words);
-              }
+  if (any(autoCompleters %in% c("snippet", "text", "static", "keyword", "rlang"))) {
+    js <- paste(js, 'var langTools = ace.require("ace/ext/language_tools");')
+    js <- paste(js, "", editorVar, ".completers = [];", sep = "")
+    if ("snippet" %in% autoCompleters) {
+      js <- paste(js, "", editorVar, ".completers.push(langTools.snippetCompleter);", sep = "")
+    }
+    if ("text" %in% autoCompleters) {
+      js <- paste(js, "", editorVar, ".completers.push(langTools.textCompleter);", sep = "")
+    }
+    if ("keyword" %in% autoCompleters) {
+      js <- paste(js, "", editorVar, ".completers.push(langTools.keywordCompleter);", sep = "")
+    }
+    if ("rlang" %in% autoCompleters) {
+      code <- 'var rlangCompleter = {
+        identifierRegexps: [
+          /[a-zA-Z_0-9\\.\\:\\-\\u00A2-\\uFFFF]/, 
+        ],
+        getCompletions: function(editor, session, pos, prefix, callback) {
+          var inputId = editor.container.id;
+          
+          // TODO: consider dropping onInputChange hook when completer is disabled for performance
+          Shiny.onInputChange(inputId + "_shinyAce_hint", {
+            // TODO: add an option to disable full document parsing for performance
+            document: session.getValue(),
+            linebuffer: session.getLine(pos.row),
+            cursorPosition: pos,
+            // nonce causes autocomplete event to trigger
+            // on R side even if Ctrl-Space is pressed twice
+            // with the same linebuffer and cursorPosition
+            nonce: Math.random() 
+          });
+          
+          // store callback for dynamic completion
+          $("#" + inputId).data("autoCompleteCallback", callback);
+        },
+        getDocTooltip: function(item) {
+          Shiny.onInputChange(item.inputId + "_shinyAce_tooltipItem", item);
+        }
+      };
+      langTools.addCompleter(rlangCompleter);'
+      js <- paste0(js, code)
+      js <- paste(js, "", editorVar, ".completers.push(rlangCompleter);", sep = "")
+    }
+    if ("static" %in% autoCompleters) {
+      code <- 'var staticCompleter = {
+          getCompletions: function(editor, session, pos, prefix, callback) {
+            var comps = $("#" + editor.container.id).data("auto-complete-list");
+            if(comps) {
+              var words = [];
+              Object.keys(comps).forEach(function(key) {
+                var comps_key = comps[key];
+                if (!Array.isArray(comps[key])) {
+                  comps_key = [comps_key];
+                }
+                words = words.concat(comps_key.map(function(d) {
+                  return {name: d, value: d, meta: key};
+                }));
+              });
+              callback(null, words);
             }
-          };
-          langTools.addCompleter(staticCompleter);'
-        js <- paste0(js, code)
-        js <- paste(js, "", editorVar, ".completers.push(staticCompleter);", sep = "")
-      }
+          }
+        };
+        langTools.addCompleter(staticCompleter);'
+      js <- paste0(js, code)
+      js <- paste(js, "", editorVar, ".completers.push(staticCompleter);", sep = "")
     }
   } else {
     js <- paste(js, "", editorVar, ".completers = [];", sep = "")
