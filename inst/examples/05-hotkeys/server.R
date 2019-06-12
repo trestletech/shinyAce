@@ -8,12 +8,12 @@ shinyServer(function(input, output, session) {
   vals <- reactiveValues(log = "")
   
   observe({
-    input$runKey
+    input$ace_runKey
     isolate(vals$log <- paste(vals$log, renderLogEntry("Run Key"), sep="\n"))
   })
   
   observe({
-    input$helpKey
+    input$ace_helpKey
     isolate(vals$log <- paste(vals$log, renderLogEntry("Help Key"), sep="\n"))
   })
   
