@@ -192,8 +192,8 @@
 
     if (data.hasOwnProperty('border')) {
       var classes = ['acenormal', 'aceflash', 'acealert'];
-      $el.removeClass(classes.join(' '));
-      $el.addClass(data.border);
+      $(el).removeClass(classes.join(' '));
+      $(el).addClass(data.border);
     }
 
     if (data.hasOwnProperty('autoComplete')) {
@@ -232,7 +232,7 @@
     }
 
     if (data.hasOwnProperty('autoCompleteList')) {
-      $el.data('auto-complete-list', data.autoCompleteList);
+      $(el).data('auto-complete-list', data.autoCompleteList);
     }
 
     if (data.hasOwnProperty("setBehavioursEnabled") && data.setBehavioursEnabled === false) {
@@ -300,7 +300,6 @@
 
   Shiny.addCustomMessageHandler('shinyAce', function(data) {
     var id = data.id;
-    var $el = $('#' + id);
     var el = document.getElementById( data.id );
     updateEditor(el, data);
   });
