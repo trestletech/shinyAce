@@ -45,10 +45,10 @@
 #'  By default, only local completer is used where all aforementioned code pieces 
 #'    will be considered as candidates. Use \code{autoCompleteList} for static 
 #'    completions and \code{\link{aceAutocomplete}} for dynamic R code completions.
-#' @param autoCompleters List of completers to enable. If set to \code{NULL},
+#' @param autoCompleters Character vector of completers to enable. If set to \code{NULL},
 #'   all completers will be disabled. Select one or more of "snippet", "text", "static", 
-#'   and "keyword" to control which completers to use. Default option is an empty character
-#'   vector which does not effect default completion options
+#'   "keyword", and "rlang" to control which completers to use. Default option is an
+#'   empty character vector which does not effect default completion options.
 #' @param autoCompleteList A named list that contains static code completions 
 #'   candidates. This can be especially useful for Non-Standard Evaluation (NSE) 
 #'   functions such as those in \code{dplyr} and \code{ggvis}. Each element in list 
@@ -131,7 +131,6 @@ aceEditor <- function(
       cursorId = cursorId,
       hotkeys = hotkeys,
       autoComplete = match.arg(autoComplete),
-      autoCompleters = I(autoCompleters),
       autoCompleteList = autoCompleteList,
       tabSize = tabSize,
       useSoftTabs = useSoftTabs,
@@ -142,6 +141,10 @@ aceEditor <- function(
       minLines = minLines
     )
 
+  if(is.null(autoCompleters))
+    payloadLst$autoComplete <- "disabled"
+  if(sum(autoCompleters %in% c("snippet", "text", "static", "keyword", "rlang")) > 0)
+    payloadLst$autoCompleters <- I(autoCompleters)
   if(!missing(value)) payloadLst$value <- value
   if(!missing(mode)) payloadLst$mode <- mode
   if(!missing(theme)) payloadLst$theme <- theme

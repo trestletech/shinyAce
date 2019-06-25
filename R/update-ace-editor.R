@@ -25,7 +25,7 @@
 #' @param border Set the \code{border} 'normal', 'alert', or 'flash'.
 #' @param autoComplete Enable/Disable code completion. See \code{\link{aceEditor}}
 #'   for details.
-#' @param autoCompleters List of completers to enable. If set to \code{NULL},
+#' @param autoCompleters Character vector of completers to enable. If set to \code{NULL},
 #'   all completers will be disabled.
 #' @param autoCompleteList If set to \code{NULL}, existing static completions
 #'   list will be unset. See \code{\link{aceEditor}} for details.
@@ -81,14 +81,15 @@ updateAceEditor <- function(
   }
 
   if (!missing(autoComplete)) {
-    autoComplete <- match.arg(autoComplete)
+    if (!is.null(autoCompleters))
+      autoComplete <- "disabled"
+    else
+      autoComplete <- match.arg(autoComplete)
     theList["autoComplete"] <- autoComplete
   }
 
-  if (!missing(autoCompleters)) {
-    if (!is.null(autoCompleters)) {
-      autoCompleters <- match.arg(autoCompleters, several.ok = TRUE)
-    }
+  if (!missing(autoCompleters) && !is.null(autoCompleters)) {
+    autoCompleters <- match.arg(autoCompleters, several.ok = TRUE)
     theList <- c(theList, list(autoCompleters = autoCompleters))
   }
 
