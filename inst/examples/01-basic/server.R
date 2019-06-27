@@ -30,6 +30,6 @@ shinyServer(function(input, output, session) {
   })
 
   observeEvent(input$clear, {
-    updateAceEditor(session, "ace", value = "\r")
+    updateAceEditor(session, "ace", value = "")
   })
 })

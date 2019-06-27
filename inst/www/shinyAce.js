@@ -63,8 +63,8 @@
     if (data.hasOwnProperty('value')) {
       editor.setValue(data.value, -1);
     }
-
-    if (data.hasOwnProperty("selectionId")) {
+    
+   if (data.hasOwnProperty("selectionId")) {
       editor.getSelection().on("changeSelection", function() {
         Shiny.onInputChange(el.id + "_" + data.selectionId, editor.getCopyText());
       })
@@ -254,7 +254,28 @@
       if(callback !== undefined) callback(null, data.codeCompletions);
     }
 
-
+    if (data.hasOwnProperty('placeholder')) {
+      // adapted from https://stackoverflow.com/a/26700324/1974918
+      function update() {
+        var shouldShow = !editor.session.getValue().length;
+        var node = editor.renderer.emptyMessageNode;
+        if (!shouldShow && node) {
+          editor.renderer.scroller.removeChild(editor.renderer.emptyMessageNode);
+          editor.renderer.emptyMessageNode = null;
+        } else if (shouldShow && !node) {
+          node = editor.renderer.emptyMessageNode = document.createElement("div");
+          node.textContent = data.placeholder;
+          // node.className = "ace_invisible ace_emptyMessage";
+          node.className = "ace_emptyMessage";
+          node.style.padding = "0 15px";
+          node.style.opacity = 0.50;
+          editor.renderer.scroller.appendChild(node);
+        }
+      }
+      editor.on("input", update);
+      setTimeout(update, 100);
+    }
+ 
     if (typeof $(el).data('aceEditor') == 'undefined')
       $(el).data("aceEditor", editor);
 

@@ -21,7 +21,8 @@ shinyUI(
         # i.e., the outputId is prepended to the selectionId for use
         # with Shiny modules
         selectionId = "selection",
-        value = init
+        value = init,
+        placeholder = "Show a placeholder when the editor is empty ..."
       )
     )
   )

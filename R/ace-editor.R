@@ -64,6 +64,7 @@
 #' @param autoScrollEditorIntoView If TRUE, expands the size of the editor window as new lines are added
 #' @param maxLines Maximum number of lines the editor window will expand to when autoScrollEditorIntoView is TRUE
 #' @param minLines Minimum number of lines in the editor window when autoScrollEditorIntoView is TRUE
+#' @param placeholder A string to use a placeholder when the editor has no content
 #' 
 #' @import shiny
 #' @importFrom utils compareVersion
@@ -114,7 +115,8 @@ aceEditor <- function(
   autoCompleteList = NULL,
   tabSize = 4, useSoftTabs = TRUE, 
   showInvisibles = FALSE, setBehavioursEnabled = TRUE,
-  autoScrollEditorIntoView = FALSE, maxLines = NULL, minLines = NULL
+  autoScrollEditorIntoView = FALSE, maxLines = NULL, minLines = NULL,
+  placeholder = NULL
 ) {
 
   escapedId <- gsub("\\.", "\\\\\\\\.", outputId)
@@ -138,7 +140,8 @@ aceEditor <- function(
       setBehavioursEnabled = setBehavioursEnabled,
       autoScrollEditorIntoView = autoScrollEditorIntoView,
       maxLines = maxLines,
-      minLines = minLines
+      minLines = minLines,
+      placeholder = placeholder
     )
   
   if(is.empty(autoCompleters)) {
