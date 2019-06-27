@@ -86,7 +86,7 @@ updateAceEditor <- function(
     theList["autoComplete"] <- autoComplete
   }
 
-  if (!missing(autoCompleters) && is.empty(autoCompleters)) {
+  if (!missing(autoCompleters) && !is.empty(autoCompleters)) {
     theList <- c(theList, list(autoCompleters = match.arg(autoCompleters, several.ok = TRUE)))
   }
 
