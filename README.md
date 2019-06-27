@@ -80,6 +80,30 @@ Run example: `shiny::runApp(system.file("examples/06-autocomplete", package="shi
 
 An example using the `autocomplete` feature of ShinyAce to enable Ace to suggest completions as the user types.
 
+### 07-autocomplete-combine ([Live Demo](https://vnijs.shinyapps.io/shinyAce-07-autocomplete-combine/))
+
+Run example: `shiny::runApp(system.file("examples/07-autocomplete-combine", package="shinyAce"))`
+
+Create a custom (reactive) autocomplete list to use in the editor
+
+### 08-resize ([Live Demo](https://vnijs.shinyapps.io/shinyAce-08-resize/))
+
+Run example: `shiny::runApp(system.file("examples/08-resize", package="shinyAce"))`
+
+Shows how to include an Ace editor that will dynamically adjusting size depending on the provided user input.
+
+### 09-selectionId ([Live Demo](https://vnijs.shinyapps.io/shinyAce-09-selectionId/))
+
+Run example: `shiny::runApp(system.file("examples/09-selectionId", package="shinyAce"))`
+
+Shows how to access the position of the cursor in the editor and any selected text or code.
+
+### 10-modules 
+
+Run example: `shiny::runApp(system.file("examples/10-modules", package="shinyAce"))`
+
+Demonstrates how to use shinyAce with shiny modules.
+
 ### Security Note
 
 As with any online application, it is a **genuinely bad idea** to allow arbitrary users to execute code on your server. The above examples show such an environment in which arbitrary R code is being executed on a remote machine. In a trusted environment (such as after authenticating a user or on a network protected by a firewall), this may not be a terrible idea; on a public server without authentication, it most certainly is. So please use the above examples with caution, realizing that without proper security checks in place, allowing unknown users to execute arbitrary R code would make it trivial for an attacker to compromise your server or steal your private data.
@@ -93,7 +117,7 @@ Contributors (In order of first commit)
  - [Sebastian Kranz](https://github.com/skranz) - Hotkey feature and cursor listener ([#16](https://github.com/trestletech/shinyAce/pull/16/files))
  - [Forest Fang](https://github.com/saurfang) - Code completion ([#21](https://github.com/trestletech/shinyAce/pull/21), [#52](https://github.com/trestletech/shinyAce/pull/52),  [#53](https://github.com/trestletech/shinyAce/pull/53)) 
   - [Gregor De Cillia](https://github.com/GregorDeCillia) - Auto completion with shiny modules ([#54](https://github.com/trestletech/shinyAce/pull/54))
-  - [@detule](https://github.com/detule) - Refactoring of much of the JS code in shinyAce to better work with Shiny Modules ([#54](https://github.com/trestletech/shinyAce/pull/62))
+  - [@detule](https://github.com/detule) - Refactoring of much of the JS code in shinyAce to better work with Shiny Modules ([#62](https://github.com/trestletech/shinyAce/pull/62))
 
 Known Bugs
 ----------

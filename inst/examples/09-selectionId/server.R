@@ -8,8 +8,9 @@ shinyServer(function(input, output, session) {
     # `cursor` and `selection`
     req(input$ace_cursor)
     paste0(
-      "Cursor position: row ", input$ace_cursor$row, ", column ", input$ace_cursor$col,
-      "\nSelection: ", input$ace_selection
+      "Cursor position: row ", input$ace_cursor$row,
+      ", column ", input$ace_cursor$col,
+      "\nSelection: \"", input$ace_selection, "\""
     )
   })
 })

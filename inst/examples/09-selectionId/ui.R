@@ -11,7 +11,11 @@ shinyUI(
       width = 6
     ),
     mainPanel(
-      aceEditor("ace", value = "Some text ...", cursorId = "cursor", selectionId = "selection"),
+      aceEditor(
+        outputId = "ace",
+        value = "Move the cursor inside the editor and\nselect one or more words ...",
+        cursorId = "cursor", selectionId = "selection"
+      ),
       width = 6
     )
   )

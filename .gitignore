@@ -5,3 +5,4 @@ revdep/
 build/
 .DS_Store
 cran-comments.md
+rsconnect/
