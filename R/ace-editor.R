@@ -194,7 +194,3 @@ aceEditor <- function(
     tags$script(type = "application/json", `data-for` = escapedId, HTML(payload))
   )
 }
-
-sanitizeId <- function(id) {
-  gsub("[^[:alnum:]]", "", id)
-}

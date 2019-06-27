@@ -6,6 +6,5 @@
 #' @export
 getAceThemes <- function(){
   themes <- dir(system.file('www/ace', package='shinyAce'), "^theme-.*.js$")
-  themes <- sub("^theme-(.*).js$", "\\1", themes)
-  themes
+  sub("^theme-(.*).js$", "\\1", themes)
 }

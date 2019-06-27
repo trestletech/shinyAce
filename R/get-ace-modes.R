@@ -8,6 +8,5 @@
 #' @export
 getAceModes <- function(){
   modes <- dir(system.file('www/ace', package='shinyAce'), "^mode-.*.js$")
-  modes <- sub("^mode-(.*).js$", "\\1", modes)
-  modes
+  sub("^mode-(.*).js$", "\\1", modes)
 }
