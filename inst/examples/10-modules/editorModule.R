@@ -6,6 +6,7 @@ editorUI <- function(id) {
       shinyAce::aceEditor(
         ns("code"),
         mode = "r",
+        height = "200px",
         autoComplete = "live",
         autoCompleters = "rlang",
         hotkeys = list(

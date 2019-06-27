@@ -15,6 +15,7 @@ shinyUI(
     h1("Resizable Shiny Ace"),
     aceEditor(
       outputId = "ace",
+      mode = "r",
       autoScrollEditorIntoView = TRUE,
       minLines = 2,
       maxLines = 30,
