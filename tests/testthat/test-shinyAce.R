@@ -13,3 +13,10 @@ test_that("themes", {
   expect_true(length(themes) > 0)
   expect_true(sum(nchar(themes)) > 300)
 })
+
+test_that("is.empty", {  
+  expect_true(is.empty(NULL))
+  expect_true(is.empty(NA))
+  expect_true(is.empty(c()))
+  expect_true(is.empty(""))
+})

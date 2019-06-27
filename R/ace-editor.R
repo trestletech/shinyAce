@@ -140,19 +140,22 @@ aceEditor <- function(
       maxLines = maxLines,
       minLines = minLines
     )
-
-  if(is.null(autoCompleters))
+  
+  if(is.empty(autoCompleters)) {
     payloadLst$autoComplete <- "disabled"
-  if(sum(autoCompleters %in% c("snippet", "text", "static", "keyword", "rlang")) > 0)
+  } else if(sum(autoCompleters %in% c("snippet", "text", "static", "keyword", "rlang")) > 0) {
     payloadLst$autoCompleters <- I(autoCompleters)
+  } else {
+    payloadLst$autoComplete <- "disabled"
+  }
   if(!missing(value)) payloadLst$value <- value
   if(!missing(mode)) payloadLst$mode <- mode
   if(!missing(theme)) payloadLst$theme <- theme
-  if(!is.null(fontSize) && !is.na(as.numeric(fontSize)))
+  if(!is.empty(fontSize) && !is.na(as.numeric(fontSize)))
     payloadLst$fontSize <- fontSize
-  if(!is.null(debounce) && !is.na(as.numeric(debounce)))
+  if(!is.empty(debounce) && !is.na(as.numeric(debounce)))
     payloadLst$debounce <- debounce
-  if (!is.null(debounce) && !is.na(as.numeric(debounce))) {
+  if (!is.empty(debounce) && !is.na(as.numeric(debounce))) {
     # I certainly hope there's a more reasonable way to compare
     # versions with an extra field in them...
     re <- regexpr("^\\d+\\.\\d+(\\.\\d+)?", utils::packageVersion("shiny"))
@@ -160,17 +163,13 @@ aceEditor <- function(
     minorVer <- as.integer(substr(utils::packageVersion("shiny"),
         attr(re, "match.length") + 2,
         nchar(utils::packageVersion("shiny"))))
-    comp <- utils::compareVersion(shinyVer, "0.9.1")
-    if (comp < 0 || (comp == 0 && minorVer < 9004)) {
-      warning("Shiny version 0.9.1.9004 required to use input debouncing in shinyAce.")
-    }
     payloadLst$debounce <- debounce
   }
   # Filter out any elements of the list that are NULL
   # In the javascript code we use ".hasOwnProperty" to test whether a property
   # should be set, and all of our properties are such that a javascript value of
   # `null` does not make sense.
-  payloadLst <- Filter(f = function(y) !is.null(y), x = payloadLst)
+  payloadLst <- Filter(f = function(y) !is.empty(y), x = payloadLst)
   payload <- jsonlite::toJSON(payloadLst, null = "null", auto_unbox = TRUE)
   tagList(
     singleton(tags$head(

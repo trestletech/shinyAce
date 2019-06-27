@@ -57,10 +57,7 @@ updateAceEditor <- function(
     stop("updateAceEditor: Incorrectly formatted autoComplete parameter")
   if(!all(border %in% c("normal", "alert", "flash")))
     stop("updateAceEditor: Incorrectly formatted border parameter")
-  if(
-    !is.null(autoCompleters) &&
-      !all(autoCompleters %in% c("snippet", "text", "keyword", "static", "rlang"))
-  )
+  if(!is.empty(autoCompleters) && !all(autoCompleters %in% c("snippet", "text", "keyword", "static", "rlang")))
     stop("updateAceEditor: Incorrectly formatted autoCompleters parameter")
 
   theList <- list(id = editorId)
@@ -81,16 +78,16 @@ updateAceEditor <- function(
   }
 
   if (!missing(autoComplete)) {
-    if (!is.null(autoCompleters))
+    if (is.empty(autoCompleters)) {
       autoComplete <- "disabled"
-    else
+    } else {
       autoComplete <- match.arg(autoComplete)
+    }
     theList["autoComplete"] <- autoComplete
   }
 
-  if (!missing(autoCompleters) && !is.null(autoCompleters)) {
-    autoCompleters <- match.arg(autoCompleters, several.ok = TRUE)
-    theList <- c(theList, list(autoCompleters = autoCompleters))
+  if (!missing(autoCompleters) && is.empty(autoCompleters)) {
+    theList <- c(theList, list(autoCompleters = match.arg(autoCompleters, several.ok = TRUE)))
   }
 
   if (!missing(autoCompleteList)) {

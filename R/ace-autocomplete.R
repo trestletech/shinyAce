@@ -22,7 +22,7 @@
 aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
   shiny::observe({
     value <- session$input[[paste0(inputId, "_shinyAce_hint")]]
-    if (is.null(value)) return(NULL)
+    if (is.empty(value)) return(NULL)
 
     utilEnv <- environment(utils::alarm)
     w32 <- get(".win32consoleCompletion", utilEnv)
