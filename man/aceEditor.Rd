@@ -9,10 +9,11 @@ aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
   debounce = 1000, wordWrap = FALSE, showLineNumbers = TRUE,
   highlightActiveLine = TRUE, selectionId = NULL, cursorId = NULL,
   hotkeys = NULL, autoComplete = c("disabled", "enabled", "live"),
-  autoCompleters = "", autoCompleteList = NULL, tabSize = 4,
-  useSoftTabs = TRUE, showInvisibles = FALSE,
-  setBehavioursEnabled = TRUE, autoScrollEditorIntoView = FALSE,
-  maxLines = NULL, minLines = NULL)
+  autoCompleters = c("snippet", "text", "static", "keyword", "rlang"),
+  autoCompleteList = NULL, tabSize = 4, useSoftTabs = TRUE,
+  showInvisibles = FALSE, setBehavioursEnabled = TRUE,
+  autoScrollEditorIntoView = FALSE, maxLines = NULL, minLines = NULL,
+  placeholder = NULL)
 }
 \arguments{
 \item{outputId}{The ID associated with this element}
@@ -75,10 +76,10 @@ By default, only local completer is used where all aforementioned code pieces
   will be considered as candidates. Use \code{autoCompleteList} for static 
   completions and \code{\link{aceAutocomplete}} for dynamic R code completions.}
 
-\item{autoCompleters}{List of completers to enable. If set to \code{NULL},
+\item{autoCompleters}{Character vector of completers to enable. If set to \code{NULL},
 all completers will be disabled. Select one or more of "snippet", "text", "static", 
-and "keyword" to control which completers to use. Default option is an empty character
-vector which does not effect default completion options}
+"keyword", and "rlang" to control which completers to use. Default option is to 
+ use all available autocompleters}
 
 \item{autoCompleteList}{A named list that contains static code completions 
 candidates. This can be especially useful for Non-Standard Evaluation (NSE) 
@@ -102,6 +103,8 @@ quotation marks, parenthesis, or brackets should be enabled. Default value is TR
 \item{maxLines}{Maximum number of lines the editor window will expand to when autoScrollEditorIntoView is TRUE}
 
 \item{minLines}{Minimum number of lines in the editor window when autoScrollEditorIntoView is TRUE}
+
+\item{placeholder}{A string to use a placeholder when the editor has no content}
 }
 \description{
 Render an Ace editor on an application page.

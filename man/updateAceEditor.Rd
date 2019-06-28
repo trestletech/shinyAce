@@ -47,7 +47,7 @@ Default value is FALSE}
 \item{autoComplete}{Enable/Disable code completion. See \code{\link{aceEditor}}
 for details.}
 
-\item{autoCompleters}{List of completers to enable. If set to \code{NULL},
+\item{autoCompleters}{Character vector of completers to enable. If set to \code{NULL},
 all completers will be disabled.}
 
 \item{autoCompleteList}{If set to \code{NULL}, existing static completions
