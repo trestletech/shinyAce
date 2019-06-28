@@ -48,7 +48,7 @@
 #' @param autoCompleters Character vector of completers to enable. If set to \code{NULL},
 #'   all completers will be disabled. Select one or more of "snippet", "text", "static", 
 #'   "keyword", and "rlang" to control which completers to use. Default option is to 
-#'    use all available autocompleters 
+#'    use the "snippet", "text", and "keyword" autocompleters 
 #' @param autoCompleteList A named list that contains static code completions 
 #'   candidates. This can be especially useful for Non-Standard Evaluation (NSE) 
 #'   functions such as those in \code{dplyr} and \code{ggvis}. Each element in list 
@@ -111,7 +111,7 @@ aceEditor <- function(
   highlightActiveLine = TRUE, selectionId = NULL,  cursorId = NULL, 
   hotkeys = NULL, 
   autoComplete = c("disabled", "enabled", "live"),
-  autoCompleters = c("snippet", "text", "static", "keyword", "rlang"),
+  autoCompleters = c("snippet", "text", "keyword"),
   autoCompleteList = NULL,
   tabSize = 4, useSoftTabs = TRUE, 
   showInvisibles = FALSE, setBehavioursEnabled = TRUE,
