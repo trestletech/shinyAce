@@ -8,8 +8,8 @@ aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
   readOnly = FALSE, height = "400px", fontSize = 12,
   debounce = 1000, wordWrap = FALSE, showLineNumbers = TRUE,
   highlightActiveLine = TRUE, selectionId = NULL, cursorId = NULL,
-  hotkeys = NULL, autoComplete = c("disabled", "enabled", "live"),
-  autoCompleters = c("snippet", "text", "keyword"),
+  hotkeys = NULL, code_hotkeys = NULL, autoComplete = c("disabled",
+  "enabled", "live"), autoCompleters = c("snippet", "text", "keyword"),
   autoCompleteList = NULL, tabSize = 4, useSoftTabs = TRUE,
   showInvisibles = FALSE, setBehavioursEnabled = TRUE,
   autoScrollEditorIntoView = FALSE, maxLines = NULL, minLines = NULL,
@@ -62,7 +62,11 @@ line.}
 \item{hotkeys}{A list whose names are ID names and whose elements are the 
 shortcuts of keys. Shortcuts can either be a simple string or a list with 
 elements 'win' and 'mac' that that specifies different shortcuts for win and 
-mac (see example).}
+mac (see example 05).}
+
+\item{code_hotkeys}{A nested list. The first element indicates the code type (e.g., "r") 
+The second element is a list whose names are ID names and whose elements are the 
+shortcuts of keys (see \code{hotkeys})}
 
 \item{autoComplete}{Enable/Disable auto code completion. Must be one of the following:
 \describe{
