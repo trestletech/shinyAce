@@ -16,7 +16,7 @@ shinyServer(function(input, output, session) {
       code(input$code_run_key$selection)
     } else {
       # evalute the line where the cursor is located
-      # using "code-jumping" include lines as needed
+      # using "code-jumping" to include lines as needed
       # see www/code/code-jump-r.js for details
       code(input$code_run_key$line)
     }
@@ -27,15 +27,14 @@ shinyServer(function(input, output, session) {
       # evaluate only the selected code
       code(input$code_selection)
     } else {
-      # evalute the line where the cursor is located
-      # using "code-jumping" include lines as needed
-      # see www/code/code-jump-r.js for details
+      # evalute all code in the editor
       code(input$code)
     }
   })
 
   output$output <- renderUI({
     input$eval
+    input$code_run_key
     eval_code <- paste0("\n```{r echo = TRUE, comment = NA}\n", code(), "\n```\n")
     HTML(knitr::knit2html(text = eval_code, fragment.only = TRUE, quiet = TRUE, envir = ace_envir))
   })
