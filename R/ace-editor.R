@@ -180,6 +180,14 @@ aceEditor <- function(
   # `null` does not make sense.
   payloadLst <- Filter(f = function(y) !is.empty(y), x = payloadLst)
   payload <- jsonlite::toJSON(payloadLst, null = "null", auto_unbox = TRUE)
+
+  # assign code-jump js file to source, if any
+  if (is.empty(code_hotkeys)) {
+    cfile <- ""
+  } else {
+    cfile <- paste0("shinyAce/code/code-jump-", code_hotkeys[[1]], ".js")
+  }
+
   tagList(
     singleton(tags$head(
       initResourcePaths(),
@@ -187,6 +195,7 @@ aceEditor <- function(
       tags$script(src = 'shinyAce/ace/ext-language_tools.js'),
       tags$script(src = 'shinyAce/ace/ext-searchbox.js'),
       tags$script(src = 'shinyAce/shinyAce.js'),
+      tags$script(src = cfile),
       tags$link(
         rel = 'stylesheet',
         type = 'text/css',

@@ -19,4 +19,8 @@ test_that("is.empty", {
   expect_true(is.empty(NA))
   expect_true(is.empty(c()))
   expect_true(is.empty(""))
+  expect_true(is.empty(" "))
+  expect_true(is.empty(c(" ", " ")))
+  expect_true(is.empty(list()))
+  expect_true(is.empty(list(a = "", b = "")))
 })

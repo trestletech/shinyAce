@@ -104,6 +104,12 @@ Run example: `shiny::runApp(system.file("examples/10-modules", package="shinyAce
 
 Demonstrates how to use shinyAce with shiny modules.
 
+### 11-code-hotkeys
+
+Run example: `shiny::runApp(system.file("examples/11-code-hotkeys", package="shinyAce"))`
+
+Use hotkeys to evaluate a selection of code or step through your code using hotkeys
+
 ### Security Note
 
 As with any online application, it is a **genuinely bad idea** to allow arbitrary users to execute code on your server. The above examples show such an environment in which arbitrary R code is being executed on a remote machine. In a trusted environment (such as after authenticating a user or on a network protected by a firewall), this may not be a terrible idea; on a public server without authentication, it most certainly is. So please use the above examples with caution, realizing that without proper security checks in place, allowing unknown users to execute arbitrary R code would make it trivial for an attacker to compromise your server or steal your private data.
