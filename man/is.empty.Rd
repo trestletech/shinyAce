@@ -17,5 +17,9 @@ is.empty(NULL)
 is.empty(NA)
 is.empty(c())
 is.empty("")
+is.empty(" ")
+is.empty(c(" ", " "))
+is.empty(list())
+is.empty(list(a = "", b = ""))
 
 }

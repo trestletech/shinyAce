@@ -1,18 +1,18 @@
-(function(){
+(function () {
 
   var langTools = ace.require("ace/ext/language_tools");
   var staticCompleter = {
-    getCompletions: function(editor, session, pos, prefix, callback) {
+    getCompletions: function (editor, session, pos, prefix, callback) {
       var comps = $('#' + editor.container.id).data('auto-complete-list');
-      if(comps) {
+      if (comps) {
         var words = [];
-        Object.keys(comps).forEach(function(key) {
+        Object.keys(comps).forEach(function (key) {
           var comps_key = comps[key];
           if (!Array.isArray(comps[key])) {
             comps_key = [comps_key];
           }
-          words = words.concat(comps_key.map(function(d) {
-            return {name: d, value: d, meta: key};
+          words = words.concat(comps_key.map(function (d) {
+            return { name: d, value: d, meta: key };
           }));
         });
         callback(null, words);
@@ -22,7 +22,7 @@
   langTools.addCompleter(staticCompleter);
 
   var rlangCompleter = {
-    getCompletions: function(editor, session, pos, prefix, callback) {
+    getCompletions: function (editor, session, pos, prefix, callback) {
       var inputId = editor.container.id;
       // TODO: consider dropping onInputChange hook when completer is disabled for performance
       Shiny.onInputChange(inputId + '_shinyAce_hint', {
@@ -63,82 +63,56 @@
     if (data.hasOwnProperty('value')) {
       editor.setValue(data.value, -1);
     }
-    
-   if (data.hasOwnProperty("selectionId")) {
-      editor.getSelection().on("changeSelection", function() {
+
+    if (data.hasOwnProperty("selectionId")) {
+      editor.getSelection().on("changeSelection", function () {
         Shiny.onInputChange(el.id + "_" + data.selectionId, editor.getCopyText());
       })
     }
 
     if (data.hasOwnProperty("cursorId")) {
-      editor.getSelection().on("changeCursor", function() {
+      editor.getSelection().on("changeCursor", function () {
         Shiny.onInputChange(el.id + "_" + data.cursorId, editor.selection.getCursor());
       })
     }
 
-    if(data.hasOwnProperty("hotkeys")) {
-      Object.keys(data.hotkeys).forEach(function(key) {
+    if (data.hasOwnProperty("hotkeys")) {
+      Object.keys(data.hotkeys).forEach(function (key) {
         editor.commands.addCommand({
           name: key,
           bindKey: data.hotkeys[key],
-          exec: function(editor) {
+          exec: function (editor) {
             var selection = editor.session.getTextRange();
             var range = editor.selection.getRange();
             var imax = editor.session.getLength() - range.end.row;
             var inputId = editor.container.id;
-            if(selection === "") {
-              var i = 1;
-              var line = editor.session.getLine(range.end.row);
-              var next_line = editor.session.getLine(range.end.row + i);
+            var shinyEvent = {
+              editorId: inputId,
+              selection: selection,
+              range: range,
+              randNum: Math.random()
+            };
+            Shiny.onInputChange(inputId + "_" + key, shinyEvent);
+          }, // exec end
+          readOnly: true // false if this command should not apply in readOnly mode
+        }); //editor.addCommand end
+      }); // forEach end
+    }
 
-              if (/^```\{.*\}\s*$/.test(line)) {
-                // run R-code chunk
-                while(/\n```\s*$/.test(line) === false & i < imax + 1) {
-                  i++;
-                  line = line.concat('\n', next_line);
-                  next_line = editor.session.getLine(range.end.row + i);
-                  // console.log(next_line, i, imax);
-                }
-                if (i === imax + 1) {
-                  line = '<h4>Code chunk not properly closed. Code chunks must end in &#96 &#96 &#96</h4>';
-                }
-              } else if (/^\$\$\s*$/.test(line)) {
-                // evaluate equation
-                while(/\n\$\$\s*$/.test(line) === false & i < imax + 1) {
-                  i++;
-                  line = line.concat('\n', next_line);
-                  next_line = editor.session.getLine(range.end.row + i);
-                }
-                if (i === imax + 1) {
-                  line = '<h4>Equation not properly closed. Display equations must start and end with $$</h4>';
-                }
-              } else if (/(\(|\{|\[)\s*$/.test(line)) {
-                editor.navigateLineEnd();
-                editor.jumpToMatching();
-                match_line = editor.selection.getCursor();
-                if (match_line.row === range.end.row) {
-                  line = '#### Bracket not properly closed. Fix and try again';
-                } else {
-                  line = editor.session.getLines(range.end.row, match_line.row).join('\n');
-                  i = match_line.row - range.end.row + 1
-                }
-              } else {
-                rexpr = /(%>%|\+|\-|\,)\s*$/;
-                rxeval = rexpr.test(line);
-                while((rxeval | /^\s*(\#|$)/.test(next_line)) & i < imax) {
-                  rxeval = rexpr.test(line);
-                  if (rxeval | /^\s*(\}|\))/.test(next_line)) {
-                    line = line.concat('\n', next_line);
-                  }
-                  i++;
-                  next_line = editor.session.getLine(range.end.row + i);
-                  // console.log(next_line, i, imax)
-                }
-              }
-              editor.gotoLine(range.end.row + i + 1);
-              if (line === '') {
-                line = ' ';  // ensure whole report is not rendered
-              }
+    if (data.hasOwnProperty("code_hotkeys")) {
+      // data.code_hotkeys[0] should indicate the code type (e.g., "r", "python", etc.)
+      // in the future, this could load js code to "jump" through code of that type
+      Object.keys(data.code_hotkeys[1]).forEach(function (key) {
+        editor.commands.addCommand({
+          name: key,
+          bindKey: data.code_hotkeys[1][key],
+          exec: function (editor) {
+            var selection = editor.session.getTextRange();
+            var range = editor.selection.getRange();
+            var imax = editor.session.getLength() - range.end.row;
+            var inputId = editor.container.id;
+            if (selection === "") {
+              var line = code_jump(editor, range, imax);
             }
             var shinyEvent = {
               editorId: inputId,
@@ -162,19 +136,19 @@
       editor.setKeyboardHandler("ace/keyboard/vim");
     }
 
-    if(data.hasOwnProperty("showLineNumbers") && data.showLineNumbers === false) {
+    if (data.hasOwnProperty("showLineNumbers") && data.showLineNumbers === false) {
       editor.renderer.setShowGutter(false);
     }
 
-    if(data.hasOwnProperty("highlightActiveLine") && data.highlightActiveLine === false) {
+    if (data.hasOwnProperty("highlightActiveLine") && data.highlightActiveLine === false) {
       editor.setHighlightActiveLine(false);
     }
 
-    if(data.hasOwnProperty('readOnly')) {
+    if (data.hasOwnProperty('readOnly')) {
       editor.setReadOnly(data.readOnly);
     }
 
-    if(data.hasOwnProperty('wordWrap')) {
+    if (data.hasOwnProperty('wordWrap')) {
       editor.getSession().setUseWrapMode(data.wordWrap);
     }
 
@@ -209,7 +183,7 @@
         if (!Array.isArray(completers)) {
           completers = [completers];
         }
-        completers.forEach(function(completer) {
+        completers.forEach(function (completer) {
           switch (completer) {
             case 'snippet':
               editor.completers.push(langTools.snippetCompleter);
@@ -251,7 +225,7 @@
 
     if (data.hasOwnProperty("codeCompletions")) {
       var callback = $(el).data('autoCompleteCallback');
-      if(callback !== undefined) callback(null, data.codeCompletions);
+      if (callback !== undefined) callback(null, data.codeCompletions);
     }
 
     if (data.hasOwnProperty('placeholder')) {
@@ -265,7 +239,6 @@
         } else if (shouldShow && !node) {
           node = editor.renderer.emptyMessageNode = document.createElement("div");
           node.textContent = data.placeholder;
-          // node.className = "ace_invisible ace_emptyMessage";
           node.className = "ace_emptyMessage";
           node.style.padding = "0 15px";
           node.style.opacity = 0.50;
@@ -275,7 +248,7 @@
       editor.on("input", update);
       setTimeout(update, 100);
     }
- 
+
     if (typeof $(el).data('aceEditor') == 'undefined')
       $(el).data("aceEditor", editor);
 
@@ -283,24 +256,24 @@
 
   var shinyAceInputBinding = new Shiny.InputBinding();
   $.extend(shinyAceInputBinding, {
-    find: function(scope) {
+    find: function (scope) {
       return $(scope).find(".shiny-ace");
     },
-    initialize: function(el) {
+    initialize: function (el) {
       var scriptData = document.querySelector("script[data-for='" + el.id + "'][type='application/json']");
       if (scriptData) {
         var data = JSON.parse(scriptData.textContent);
         updateEditor(el, data);
       }
     },
-    getValue: function(el) {
-      return($(el).data('aceEditor').getValue());
+    getValue: function (el) {
+      return ($(el).data('aceEditor').getValue());
     },
-    setValue: function(el, value) {
+    setValue: function (el, value) {
       //TODO
     },
-    subscribe: function(el, callback) {
-      $(el).data('aceChangeCallback', function(e) {
+    subscribe: function (el, callback) {
+      $(el).data('aceChangeCallback', function (e) {
         callback(true);
       });
 
@@ -308,26 +281,26 @@
         $(el).data('aceChangeCallback')
       );
     },
-    unsubscribe: function(el) {
+    unsubscribe: function (el) {
       $(el).data('aceEditor').getSession().removeEventListener("change",
         $(el).data('aceChangeCallback'));
     },
-    getRatePolicy: function(el){
-      return ({policy: 'debounce', delay: $(el).data('debounce') || 1000 });
+    getRatePolicy: function (el) {
+      return ({ policy: 'debounce', delay: $(el).data('debounce') || 1000 });
     }
   });
 
   Shiny.inputBindings.register(shinyAceInputBinding);
 
-  Shiny.addCustomMessageHandler('shinyAce', function(data) {
+  Shiny.addCustomMessageHandler('shinyAce', function (data) {
     var id = data.id;
-    var el = document.getElementById( data.id );
+    var el = document.getElementById(data.id);
     updateEditor(el, data);
   });
 
   // Allow toggle of the search-replace box in Ace
   // see https://github.com/ajaxorg/ace/issues/3552
-  var toggle_search_replace = ace.require("ace/ext/searchbox").SearchBox.prototype.$searchBarKb.bindKey( "Ctrl-f|Command-f|Ctrl-H|Command-Option-F", function(sb) {
+  var toggle_search_replace = ace.require("ace/ext/searchbox").SearchBox.prototype.$searchBarKb.bindKey("Ctrl-f|Command-f|Ctrl-H|Command-Option-F", function (sb) {
     var isReplace = sb.isReplace = !sb.isReplace;
     sb.replaceBox.style.display = isReplace ? "" : "none";
     sb[isReplace ? "replaceInput" : "searchInput"].focus();
