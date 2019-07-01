@@ -230,6 +230,7 @@
 
     if (data.hasOwnProperty('placeholder')) {
       // adapted from https://stackoverflow.com/a/26700324/1974918
+      
       function update() {
         var shouldShow = !editor.session.getValue().length;
         var node = editor.renderer.emptyMessageNode;
@@ -241,10 +242,13 @@
           node.textContent = data.placeholder;
           node.className = "ace_emptyMessage";
           node.style.padding = "0 15px";
-          node.style.opacity = 0.50;
+          node.style.position = "absolute";
+          node.style.zIndex = 9;
+          node.style.opacity = 0.5;
           editor.renderer.scroller.appendChild(node);
         }
       }
+
       editor.on("input", update);
       setTimeout(update, 100);
     }

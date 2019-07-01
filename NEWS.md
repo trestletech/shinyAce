@@ -1,6 +1,8 @@
 shinyAce 0.4.0
 
 * Refactor of JS code to provide better support for use with Shiny modules (@detule)
+* Option to add a placeholder to be shown when the editor is empty (see placeholder argument for aceEditor)
+* Option to add JS code to "jump" through code using hotkeys (see code_hotkeys argument for aceEditor)
 * Arguments `autoScrollEditorIntoView`, `maxLines`, and `minLines` added that allow the editor window to resize as extra lines are added by the user. The editor size starts at `minLines` and will not expand beyond `maxLines`. See `inst/examples/08-resize` for an example (@vnijs)
 
 shinyAce 0.3.4
