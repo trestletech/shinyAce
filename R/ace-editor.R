@@ -183,7 +183,7 @@ aceEditor <- function(
 
   # assign code-jump js file to source, if any
   if (is.empty(code_hotkeys)) {
-    cfile <- ""
+    cfile <- NULL
   } else {
     cfile <- paste0("shinyAce/code/code-jump-", code_hotkeys[[1]], ".js")
   }
