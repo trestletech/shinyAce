@@ -164,16 +164,6 @@ aceEditor <- function(
     payloadLst$fontSize <- fontSize
   if(!is.empty(debounce) && !is.na(as.numeric(debounce)))
     payloadLst$debounce <- debounce
-  if (!is.empty(debounce) && !is.na(as.numeric(debounce))) {
-    # I certainly hope there's a more reasonable way to compare
-    # versions with an extra field in them...
-    re <- regexpr("^\\d+\\.\\d+(\\.\\d+)?", utils::packageVersion("shiny"))
-    shinyVer <- substr(utils::packageVersion("shiny"), 0, attr(re, "match.length"))
-    minorVer <- as.integer(substr(utils::packageVersion("shiny"),
-        attr(re, "match.length") + 2,
-        nchar(utils::packageVersion("shiny"))))
-    payloadLst$debounce <- debounce
-  }
   # Filter out any elements of the list that are NULL
   # In the javascript code we use ".hasOwnProperty" to test whether a property
   # should be set, and all of our properties are such that a javascript value of
