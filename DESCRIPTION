@@ -2,7 +2,7 @@ Package: shinyAce
 Type: Package
 Title: Ace Editor Bindings for Shiny
 Version: 0.4.0
-Date: 2019-7-1
+Date: 2019-7-9
 Authors@R: c(
   person("Vincent", "Nijs", role = c("aut", "cre"), email = "radiant@rady.ucsd.edu"),
   person("Forest", "Fang", role = "aut", email = "forest.fang@outlook.com"),
@@ -20,7 +20,7 @@ Imports:
     jsonlite
 Suggests:
     testthat (>= 2.0.0),
-    dplyr (>= 0.7.4)
+    dplyr (>= 0.8.3)
 BugReports: https://github.com/trestletech/shinyAce/issues
 Encoding: UTF-8
 RoxygenNote: 6.1.1
