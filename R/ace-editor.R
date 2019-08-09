@@ -157,13 +157,12 @@ aceEditor <- function(
     payloadLst$autoComplete <- "disabled"
   }
   
-  if(!missing(value)) payloadLst$value <- value
+  # "value" could be provided as a list or vector, see https://github.com/trestletech/shinyAce/issues/64
+  if(!missing(value)) payloadLst$value <- paste0(unlist(value), collapse = "\n") 
   if(!missing(mode)) payloadLst$mode <- mode
   if(!missing(theme)) payloadLst$theme <- theme
-  if(!is.empty(fontSize) && !is.na(as.numeric(fontSize)))
-    payloadLst$fontSize <- fontSize
-  if(!is.empty(debounce) && !is.na(as.numeric(debounce)))
-    payloadLst$debounce <- debounce
+  if(!is.empty(as.numeric(fontSize))) payloadLst$fontSize <- as.numeric(fontSize)
+  if(!is.empty(as.numeric(debounce))) payloadLst$debounce <- as.numeric(debounce)
   # Filter out any elements of the list that are NULL
   # In the javascript code we use ".hasOwnProperty" to test whether a property
   # should be set, and all of our properties are such that a javascript value of
