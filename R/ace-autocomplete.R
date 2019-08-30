@@ -152,7 +152,10 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
           meta <- "R"
         }
         
-        name <- if (isTRUE(fn)) paste0(completion, "()") else completion
+        # add () suffix to functions (excluding user-defined infix operators)
+        name <- if (isTRUE(fn) && !grepl("^%", as.character(symbol)))
+          paste0(completion, "()") 
+        else completion
         
         list(
           inputId = session$ns(inputId), 
