@@ -50,6 +50,10 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
   )
   
   shiny::observeEvent(session$input[[paste0(inputId, "_shinyAce_hint")]], {
+    # largely inspired by rstudio/learnr
+    # https://github.com/rstudio/learnr/blob/master/R/http-handlers.R
+    # 779ac571db5e5915875c845dd10d9b90cc399218 #L157-L232
+    
     # read params
     value <- session$input[[paste0(inputId, "_shinyAce_hint")]]
     if (is.null(value)) return(NULL)
