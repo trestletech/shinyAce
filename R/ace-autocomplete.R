@@ -49,7 +49,7 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
     "[^)]*$"                   # remainder of line buffer within function call
   )
   
-  shiny::observe({
+  shiny::observeEvent(session$input[[paste0(inputId, "_shinyAce_hint")]], {
     # read params
     value <- session$input[[paste0(inputId, "_shinyAce_hint")]]
     if (is.null(value)) return(NULL)
@@ -161,9 +161,9 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
       }, completions, splat, rev(seq_along(completions))))
     }
     
-    session$sendCustomMessage('shinyAce', list(
+    return(session$sendCustomMessage('shinyAce', list(
       id = session$ns(inputId),
       codeCompletions = jsonlite::toJSON(completions, auto_unbox = TRUE)
-    ))
+    )))
   })
 }
