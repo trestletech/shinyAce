@@ -8,8 +8,8 @@
 <title>Ace Editor Bindings for Shiny • shinyAce</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Ace Editor Bindings for Shiny">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script><meta property="og:title" content="Ace Editor Bindings for Shiny">
 <meta property="og:description" content="Ace editor bindings to enable a rich text editing environment
     within Shiny.">
 <meta name="twitter:card" content="summary">
@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shinyAce</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
@@ -75,9 +75,7 @@
 <p>You can install the latest development version of the code using the <code>devtools</code> R package.</p>
 <pre><code># Install devtools, if you haven't already.
 install.packages("devtools")
-
-library(devtools)
-install_github("trestletech/shinyAce")</code></pre>
+devtools::install_github("trestletech/shinyAce")</code></pre>
 </div>
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
@@ -85,43 +83,73 @@ install_github("trestletech/shinyAce")</code></pre>
 <p>Various examples are available in the <a href="https://github.com/trestletech/shinyAce/tree/master/inst/examples"><code>inst/examples</code></a> directory included in the package. A few examples are described below. (Note that the package must be installed before you can run any examples.)</p>
 <div id="basic-live-demo" class="section level3">
 <h3 class="hasAnchor">
-<a href="#basic-live-demo" class="anchor"></a>01-basic (<a href="https://starkingdom.shinyapps.io/shinyAce-01-basic/">Live Demo</a>)</h3>
-<p>Run example: <code>library(shiny); runApp(system.file("examples/01-basic", package="shinyAce"));</code></p>
+<a href="#basic-live-demo" class="anchor"></a>01-basic (<a href="https://vnijs.shinyapps.io/shinyAce-01-basic/">Live Demo</a>)</h3>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/01-basic", package="shinyAce"))</a></code></p>
 <p><img src="https://trestletech.github.io/shinyAce/images/shinyAce.png" alt="shinyAce"></p>
 <p>Demonstrates the basic capabilities of shinyAce including the ability to set an initial value, or interactively assign a value, theme, or mode later on in the session.</p>
 </div>
 <div id="eval" class="section level3">
 <h3 class="hasAnchor">
 <a href="#eval" class="anchor"></a>02-eval</h3>
-<p>Run example: <code>library(shiny); runApp(system.file("examples/02-eval", package="shinyAce"));</code></p>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/02-eval", package="shinyAce"))</a></code></p>
 <p><img src="https://trestletech.github.io/shinyAce/images/shinyAce-eval.png" alt="shinyAce"></p>
 <p>Shows an example of using shinyAce to allow the user to compose R code which will then be evaluated on the server.</p>
 </div>
 <div id="knitr" class="section level3">
 <h3 class="hasAnchor">
 <a href="#knitr" class="anchor"></a>03-knitr</h3>
-<p>Run example: <code>library(shiny); runApp(system.file("examples/03-knitr", package="shinyAce"));</code></p>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/03-knitr", package="shinyAce"))</a></code></p>
 <p><img src="https://trestletech.github.io/shinyAce/images/shinyAce-knitr.png" alt="shinyAce"></p>
-<p>Demonstrates integrating shinyAce with the <a href="https://yihui.name/knitr/">knitR</a> package. (Note also that an example of this integration is available <a href="https://github.com/yihui/knitr/tree/master/inst/shiny">in the knitR package</a> itself and includes features such as R syntax highlighting.)</p>
+<p>Demonstrates integrating shinyAce with the <a href="https://yihui.name/knitr/">knitr</a> package. (Note also that an example of this integration is available <a href="https://github.com/yihui/knitr/tree/master/inst/shiny">in the knitr package</a> itself and includes features such as R syntax highlighting.)</p>
 </div>
 <div id="shinyui" class="section level3">
 <h3 class="hasAnchor">
 <a href="#shinyui" class="anchor"></a>04-shinyui</h3>
-<p>Run example: <code>library(shiny); runApp(system.file("examples/04-shinyui", package="shinyAce"));</code></p>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/04-shinyui", package="shinyAce"))</a></code></p>
 <p><img src="https://trestletech.github.io/shinyAce/images/shinyAce-renderui.png" alt="shinyAce"></p>
 <p>Demonstrates using shinyAce to allow a user to create a Shiny UI within Shiny itself. The UI can then be rendered on the right half of the page. Could be a great learning tool for teaching how to construct Shiny UIs.</p>
 </div>
 <div id="hotkeys-live-demo" class="section level3">
 <h3 class="hasAnchor">
-<a href="#hotkeys-live-demo" class="anchor"></a>05-hotkeys (<a href="https://trestletech.shinyapps.io/shinyAce5/">Live Demo</a>)</h3>
-<p>Run example: <code>library(shiny); runApp(system.file("examples/05-hotkeys", package="shinyAce"));</code></p>
+<a href="#hotkeys-live-demo" class="anchor"></a>05-hotkeys (<a href="https://vnijs.shinyapps.io/shinyAce-05-hotkeys/">Live Demo</a>)</h3>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/05-hotkeys", package="shinyAce"))</a></code></p>
 <p>An example using the <code>hotkeys</code> feature of ShinyAce to allow application developers to expose keyboard shortcuts to their users.</p>
 </div>
 <div id="autocomplete-live-demo" class="section level3">
 <h3 class="hasAnchor">
-<a href="#autocomplete-live-demo" class="anchor"></a>06-autocomplete (<a href="https://trestletech.shinyapps.io/shinyAce6/">Live Demo</a>)</h3>
-<p>Run example: <code>library(shiny); runApp(system.file("examples/06-autocomplete", package="shinyAce"));</code></p>
+<a href="#autocomplete-live-demo" class="anchor"></a>06-autocomplete (<a href="https://vnijs.shinyapps.io/shinyAce-06-autocomplete/">Live Demo</a>)</h3>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/06-autocomplete", package="shinyAce"))</a></code></p>
 <p>An example using the <code>autocomplete</code> feature of ShinyAce to enable Ace to suggest completions as the user types.</p>
+</div>
+<div id="autocomplete-combine-live-demo" class="section level3">
+<h3 class="hasAnchor">
+<a href="#autocomplete-combine-live-demo" class="anchor"></a>07-autocomplete-combine (<a href="https://vnijs.shinyapps.io/shinyAce-07-autocomplete-combine/">Live Demo</a>)</h3>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/07-autocomplete-combine", package="shinyAce"))</a></code></p>
+<p>Create a custom (reactive) autocomplete list to use in the editor</p>
+</div>
+<div id="resize-live-demo" class="section level3">
+<h3 class="hasAnchor">
+<a href="#resize-live-demo" class="anchor"></a>08-resize (<a href="https://vnijs.shinyapps.io/shinyAce-08-resize/">Live Demo</a>)</h3>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/08-resize", package="shinyAce"))</a></code></p>
+<p>Shows how to include an Ace editor that will dynamically adjusting size depending on the provided user input.</p>
+</div>
+<div id="selectionid-live-demo" class="section level3">
+<h3 class="hasAnchor">
+<a href="#selectionid-live-demo" class="anchor"></a>09-selectionId (<a href="https://vnijs.shinyapps.io/shinyAce-09-selectionId/">Live Demo</a>)</h3>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/09-selectionId", package="shinyAce"))</a></code></p>
+<p>Shows how to access the position of the cursor in the editor and any selected text or code.</p>
+</div>
+<div id="modules" class="section level3">
+<h3 class="hasAnchor">
+<a href="#modules" class="anchor"></a>10-modules</h3>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/10-modules", package="shinyAce"))</a></code></p>
+<p>Demonstrates how to use shinyAce with shiny modules.</p>
+</div>
+<div id="code-hotkeys" class="section level3">
+<h3 class="hasAnchor">
+<a href="#code-hotkeys" class="anchor"></a>11-code-hotkeys</h3>
+<p>Run example: <code><a href="http://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/11-code-hotkeys", package="shinyAce"))</a></code></p>
+<p>Use hotkeys to evaluate a selection of code or step through your code using hotkeys</p>
 </div>
 <div id="security-note" class="section level3">
 <h3 class="hasAnchor">
@@ -145,6 +173,8 @@ install_github("trestletech/shinyAce")</code></pre>
 <a href="https://github.com/saurfang">Forest Fang</a> - Code completion (<a href="https://github.com/trestletech/shinyAce/pull/21">#21</a>, <a href="https://github.com/trestletech/shinyAce/pull/52">#52</a>, <a href="https://github.com/trestletech/shinyAce/pull/53">#53</a>)</li>
 <li>
 <a href="https://github.com/GregorDeCillia">Gregor De Cillia</a> - Auto completion with shiny modules (<a href="https://github.com/trestletech/shinyAce/pull/54">#54</a>)</li>
+<li>
+<a href="https://github.com/detule">@detule</a> - Refactoring of much of the JS code in shinyAce to better work with Shiny Modules (<a href="https://github.com/trestletech/shinyAce/pull/62">#62</a>)</li>
 </ul>
 </div>
 <div id="known-bugs" class="section level2">

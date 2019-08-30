@@ -21,7 +21,7 @@ shinyServer(function(input, output, session) {
       "editor",
       mode = "r",
       value = "select(wt, mpg)\n",
-      height = "500px",
+      height = "200px",
       autoComplete = "live",
       autoCompleters = "static",
       autoCompleteList = isolate(comps())

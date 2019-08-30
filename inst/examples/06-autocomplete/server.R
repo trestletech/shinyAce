@@ -3,29 +3,29 @@ library(shinyAce)
 library(dplyr)
 
 shinyServer(function(input, output, session) {
-  
-  # Dataset Selection
+
+  # dataset Selection
   dataset <- reactive({
     eval(parse(text = input$dataset))
   })
-  
+
   output$table <- renderDataTable({
     dataset()
   })
-  
-  # Auto completion
+
+  # auto completion
   observe({
     autoComplete <- if (input$enableAutocomplete) {
       if (input$enableLiveCompletion) "live" else "enabled"
     } else {
       "disabled"
     }
-    
+
     updateAceEditor(session, "mutate", autoComplete = autoComplete)
     updateAceEditor(session, "plot", autoComplete = autoComplete)
   })
-  
-  # Update static auto complete list according to dataset
+
+  # update static auto complete list according to dataset
   observe({
     req(input$enableNameCompletion)
     comps <- list()
@@ -33,8 +33,8 @@ shinyServer(function(input, output, session) {
     updateAceEditor(session, "mutate", autoCompleteList = comps)
     updateAceEditor(session, "plot", autoCompleteList = list(one = "one"))
   })
-  
-  # Enable/Disable R code completion
+
+  # enable/disable R code completion
   mutateOb <- aceAutocomplete("mutate")
   plotOb <- aceAutocomplete("plot")
   observe({
@@ -46,8 +46,8 @@ shinyServer(function(input, output, session) {
       plotOb$suspend()
     }
   })
-  
-  # Enable/disable completers
+
+  # enable/disable completers
   observe({
     completers <- c()
     if (input$enableLocalCompletion) {
@@ -62,11 +62,11 @@ shinyServer(function(input, output, session) {
     updateAceEditor(session, "mutate", autoCompleters = completers)
     updateAceEditor(session, "plot", autoCompleters = completers)
   })
-  
+
   output$plot <- renderPlot({ 
     input$eval
     tryCatch({
-      # Clear error
+      # clear error
       output$error <- renderPrint(invisible())
       code1 <- gsub("\\s+$", "", isolate(input$mutate))
       code2 <- gsub("\\s+$", "", isolate(input$plot))

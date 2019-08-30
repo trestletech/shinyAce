@@ -21,14 +21,17 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 
 <meta property="og:title" content="Changelog" />
+
 
 
 <!-- mathjax -->
@@ -55,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shinyAce</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
@@ -93,6 +96,39 @@
       
     </div>
 
+    <div id="shinyace-0-4-0" class="section level2">
+<h2 class="hasAnchor">
+<a href="#shinyace-0-4-0" class="anchor"></a>shinyAce 0.4.0</h2>
+<ul>
+<li>Refactor of JS code to provide better support for use with Shiny modules (<a href='http://github.com/detule'>@detule</a>). These (breaking) changes were made to work with shiny modules and make the javascript in the package more easily maintainable and extensible. If you use “selectionID” or “cursorID” in calls to “aceEditor”, note that to access the information in these input you must now prepend the “outputId” of the ace editor element. For example, if outputId = “myeditor” and selectionId = “myselection” you can now access the selection information using “myeditor_myselection”. FYI This is the same approach used in the DT package on CRAN. The same naming convention applies to hotkeys. For example, if outputId = “myeditor” and hotkeys = list(help_key = “F1”) you can now access information related to the key press using “myeditor_help_key”. See README.md at <a href="https://github.com/trestletech/shinyAce" class="uri">https://github.com/trestletech/shinyAce</a> for an overview of updated examples</li>
+<li>Option to add a placeholder to be shown when the editor is empty (see placeholder argument for aceEditor, <a href='http://github.com/vnijs'>@vnijs</a>)</li>
+<li>Option to add JS code to “jump” through code using hotkeys (see code_hotkeys argument for aceEditor, <a href='http://github.com/vnijs'>@vnijs</a>)</li>
+<li>Arguments <code>autoScrollEditorIntoView</code>, <code>maxLines</code>, and <code>minLines</code> added that allow the editor window to resize as extra lines are added by the user. The editor size starts at <code>minLines</code> and will not expand beyond <code>maxLines</code>. See <code>inst/examples/08-resize</code> for an example (<a href='http://github.com/vnijs'>@vnijs</a>)</li>
+</ul>
+</div>
+    <div id="shinyace-0-3-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#shinyace-0-3-4" class="anchor"></a>shinyAce 0.3.4</h2>
+<ul>
+<li>Downgrade R version requirement <a href="https://github.com/trestletech/shinyAce/issues/61"><a href='http://github.com/yonicd'>@yonicd</a></a>
+</li>
+</ul>
+</div>
+    <div id="shinyace-0-3-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#shinyace-0-3-3" class="anchor"></a>shinyAce 0.3.3</h2>
+<ul>
+<li>Enhanced keyboard shortcuts to execute code blocks by jumping to matching bracket using CTRL-enter (CMD-enter on macOS) (<a href='http://github.com/vnijs'>@vnijs</a>)</li>
+<li>Arguments <code>autoScrollEditorIntoView</code>, <code>maxLines</code>, and <code>minLines</code> added that allow the editor window to resize as extra lines are added by the user. The editor size starts at <code>minLines</code> and will not expand beyond <code>maxLines</code>. See <code>inst/examples/08-resize</code> for an example (<a href='http://github.com/vnijs'>@vnijs</a>)</li>
+</ul>
+</div>
+    <div id="shinyace-0-3-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#shinyace-0-3-2" class="anchor"></a>shinyAce 0.3.2</h2>
+<ul>
+<li>Using <code>selectionId</code> in the call to <code><a href="../reference/aceEditor.html">shinyAce::aceEditor</a></code> can cause javascript errors (<a href='http://github.com/laderast'>@laderast</a>)</li>
+</ul>
+</div>
     <div id="shinyace-0-3-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#shinyace-0-3-1" class="anchor"></a>shinyAce 0.3.1</h2>
@@ -126,7 +162,7 @@
 <li><p>Added input debouncing</p></li>
 <li><p>Add shortcut and cursor listeners (<a href='http://github.com/skranz'>@skranz</a>, #16)</p></li>
 <li><p>Added word wrapping (<a href='http://github.com/ncarchedi'>@ncarchedi</a>, #12)</p></li>
-<li><p>Added vim key bindings (<a href='http://github.com/Vincent'>@Vincent</a>, #9)</p></li>
+<li><p>Added vim key bindings (<a href='http://github.com/vnijs'>@vnijs</a>, #9)</p></li>
 </ul>
 </div>
     <div id="shinyace-0-1-0" class="section level2">
@@ -142,6 +178,10 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#shinyace-0-4-0">0.4.0</a></li>
+        <li><a href="#shinyace-0-3-4">0.3.4</a></li>
+        <li><a href="#shinyace-0-3-3">0.3.3</a></li>
+        <li><a href="#shinyace-0-3-2">0.3.2</a></li>
         <li><a href="#shinyace-0-3-1">0.3.1</a></li>
         <li><a href="#shinyace-0-2-0">0.2.0</a></li>
         <li><a href="#shinyace-0-1-1">0.1.1</a></li>

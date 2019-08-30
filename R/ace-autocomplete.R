@@ -56,7 +56,7 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
     
     # read params
     value <- session$input[[paste0(inputId, "_shinyAce_hint")]]
-    if (is.null(value)) return(NULL)
+    if (is.empty(value)) return(NULL)
 
     # build code completion input
     line <- substring(value$linebuffer, 1, value$cursorPosition$col)

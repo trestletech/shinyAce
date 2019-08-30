@@ -1,35 +1,35 @@
-library(shiny)
-library(shinyAce)
-
-#' Define server logic required to generate simple ace editor
-#' @author Jeff Allen \email{jeff@@trestletech.com}
+# define server logic required to generate simple ace editor
 shinyServer(function(input, output, session) {
   observe({
-    print(input$ace)
+    # print all editor content to the R console
+    cat(input$ace, "\n")
   })
-  
+
   observe({
-    print(input$selection)
+    # print only selected editor content to the R console
+    # to access content of `selectionId` use `ace_selection`
+    # i.e., the outputId is prepended to the selectionId for
+    # use with Shiny modules
+    cat(input$ace_selection, "\n")
   })
-  
+
   observe({
     updateAceEditor(
-      session, "ace", 
-      theme = input$theme, 
+      session,
+      "ace",
+      theme = input$theme,
       mode = input$mode,
-      tabSize = input$size, 
-      useSoftTabs = as.logical(input$soft), 
+      tabSize = input$size,
+      useSoftTabs = as.logical(input$soft),
       showInvisibles = as.logical(input$invisible)
     )
   })
-  
+
   observeEvent(input$reset, {
-    updateAceEditor(session, "ace", value = "createData <- function(rows) {
-  data.frame(col1 = 1:rows, col2 = rnorm(rows))
-}")
+    updateAceEditor(session, "ace", value = init)
   })
-  
+
   observeEvent(input$clear, {
-    updateAceEditor(session, "ace", value = "\r")
+    updateAceEditor(session, "ace", value = "")
   })
 })

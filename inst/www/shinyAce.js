@@ -1,12 +1,411 @@
-(function() {
-  
+(function () {
   var lang = ace.require("ace/lib/lang");
   var langTools = ace.require("ace/ext/language_tools");
-  
+
+  var staticCompleter = {
+    getCompletions: function (editor, session, pos, prefix, callback) {
+      var comps = $('#' + editor.container.id).data('auto-complete-list');
+      if (comps) {
+        var words = [];
+        Object.keys(comps).forEach(function (key) {
+          var comps_key = comps[key];
+          if (!Array.isArray(comps[key])) {
+            comps_key = [comps_key];
+          }
+          words = words.concat(comps_key.map(function (d) {
+            return { name: d, value: d, meta: key };
+          }));
+        });
+        callback(null, words);
+      }
+    }
+  };
+  langTools.addCompleter(staticCompleter);
+
+  var rlangCompleter = {
+    identifierRegexps: [
+      /[a-zA-Z_0-9\.\:\-\u00A2-\uFFFF]/, 
+    ],
+    getCompletions: function(editor, session, pos, prefix, callback) {
+      var inputId = editor.container.id;
+      
+      // TODO: consider dropping onInputChange hook when completer is disabled for performance
+      Shiny.onInputChange(inputId + '_shinyAce_hint', {
+        // TODO: add an option to disable full document parsing for performance
+        document: session.getValue(),
+        linebuffer: session.getLine(pos.row),
+        cursorPosition: pos,
+        // nonce causes autocomplete event to trigger
+        // on R side even if Ctrl-Space is pressed twice
+        // with the same linebuffer and cursorPosition
+        nonce: Math.random()
+      });
+      
+      // store callback for dynamic completion
+      $('#' + inputId).data('autoCompleteCallback', callback);
+    },
+    getDocTooltip: function(item) {
+      Shiny.onInputChange(item.inputId + '_shinyAce_tooltipItem', item);
+    }
+  };
+  langTools.addCompleter(rlangCompleter);
+
+  Shiny.addCustomMessageHandler('shinyAce', function(data) {
+    var id = data.id;
+    var $el = $('#' + id);
+    var editor = $el.data('aceEditor');
+    
+    if (data.theme) {
+      editor.setTheme("ace/theme/" + data.theme);
+    }
+    
+    if (data.mode) {
+      editor.getSession().setMode("ace/mode/" + data.mode);
+    }
+    
+    if (data.value !== undefined) {
+      editor.getSession().setValue(data.value, -1);
+      // TODO: add option to include optional getDocTooltip for suggestion context
+    }
+  });
+  langTools.addCompleter(rlangCompleter);
+
+  function updateEditor(el, data) {
+    if (typeof $(el).data('aceEditor') !== 'undefined')
+      var editor = $(el).data('aceEditor');
+    else
+      var editor = ace.edit(el);
+
+    if (data.hasOwnProperty('fontSize')) {
+      el.style.fontSize = data.fontSize + 'px';
+    }
+
+    if (data.hasOwnProperty('theme')) {
+      editor.setTheme("ace/theme/" + data.theme);
+    }
+
+    if (data.hasOwnProperty('mode')) {
+      editor.getSession().setMode('ace/mode/' + data.mode);
+    }
+
+    if (data.hasOwnProperty('value')) {
+      editor.setValue(data.value, -1);
+    }
+
+    if (data.hasOwnProperty("selectionId")) {
+      editor.getSelection().on("changeSelection", function () {
+        Shiny.onInputChange(el.id + "_" + data.selectionId, editor.getCopyText());
+      })
+    }
+
+    if (data.hasOwnProperty("cursorId")) {
+      editor.getSelection().on("changeCursor", function () {
+        Shiny.onInputChange(el.id + "_" + data.cursorId, editor.selection.getCursor());
+      })
+    }
+
+    if (data.hasOwnProperty("hotkeys")) {
+      Object.keys(data.hotkeys).forEach(function (key) {
+        editor.commands.addCommand({
+          name: key,
+          bindKey: data.hotkeys[key],
+          exec: function (editor) {
+            var selection = editor.session.getTextRange();
+            var range = editor.selection.getRange();
+            var imax = editor.session.getLength() - range.end.row;
+            var inputId = editor.container.id;
+            var shinyEvent = {
+              editorId: inputId,
+              selection: selection,
+              range: range,
+              randNum: Math.random()
+            };
+            Shiny.onInputChange(inputId + "_" + key, shinyEvent);
+          }, // exec end
+          readOnly: true // false if this command should not apply in readOnly mode
+        }); //editor.addCommand end
+      }); // forEach end
+    }
+
+    if (data.hasOwnProperty("code_hotkeys")) {
+      // data.code_hotkeys[0] should indicate the code type (e.g., "r", "python", etc.)
+      // in the future, this could load js code to "jump" through code of that type
+      Object.keys(data.code_hotkeys[1]).forEach(function (key) {
+        editor.commands.addCommand({
+          name: key,
+          bindKey: data.code_hotkeys[1][key],
+          exec: function (editor) {
+            var selection = editor.session.getTextRange();
+            var range = editor.selection.getRange();
+            var imax = editor.session.getLength() - range.end.row;
+            var inputId = editor.container.id;
+            if (selection === "") {
+              var line = code_jump(editor, range, imax);
+            }
+            var shinyEvent = {
+              editorId: inputId,
+              selection: selection,
+              range: range,
+              line: line,
+              randNum: Math.random()
+            };
+            Shiny.onInputChange(inputId + "_" + key, shinyEvent);
+          }, // exec end
+          readOnly: true // false if this command should not apply in readOnly mode
+        }); //editor.addCommand end
+      }); // forEach end
+    }
+    
+    if (data.hasOwnProperty("debounce")) {
+      $(el).data("debounce", data.debounce);
+    }
+
+    if (data.hasOwnProperty("vimKeyBinding") && data.vimKeyBinding === true) {
+      editor.setKeyboardHandler("ace/keyboard/vim");
+    }
+
+    if (data.hasOwnProperty("showLineNumbers") && data.showLineNumbers === false) {
+      editor.renderer.setShowGutter(false);
+    }
+
+    if (data.hasOwnProperty("highlightActiveLine") && data.highlightActiveLine === false) {
+      editor.setHighlightActiveLine(false);
+    }
+
+    if (data.hasOwnProperty('readOnly')) {
+      editor.setReadOnly(data.readOnly);
+    }
+
+    if (data.hasOwnProperty('wordWrap')) {
+      editor.getSession().setUseWrapMode(data.wordWrap);
+    }
+
+    if (data.hasOwnProperty("useSoftTabs")) {
+      editor.setOption("useSoftTabs", data.useSoftTabs);
+    }
+
+    if (data.hasOwnProperty("tabSize")) {
+      editor.setOption("tabSize", data.tabSize);
+    }
+
+    if (data.hasOwnProperty("showInvisibles")) {
+      editor.setOption("showInvisibles", data.showInvisibles);
+    }
+
+    if (data.hasOwnProperty('border')) {
+      var classes = ['acenormal', 'aceflash', 'acealert'];
+      $(el).removeClass(classes.join(' '));
+      $(el).addClass(data.border);
+    }
+    
+    if (data.annotations) {
+      editor.getSession().setAnnotations(data.annotations);
+    }
+    
+    if (data.docTooltip) {
+      // { docHTML: "", docText: "" }
+      if (data.docTooltip.docHTML || data.docTooltip.docText) {
+        if (!editor.completer.tooltipNode) {
+          if (editor.__tooltipTimerCall)
+            editor.__tooltipTimerCall.cancel();
+            
+          editor.__tooltipTimerCall = lang.delayedCall(
+            function() { 
+              if (this.completer.activated)
+                this.completer.showDocTooltip(data.docTooltip); 
+            }.bind(editor), 1000);
+            
+          editor.__tooltipTimerCall();
+        } else {
+          editor.completer.showDocTooltip(data.docTooltip);
+        }
+      }
+    }
+    
+    if (data.hasOwnProperty('autoComplete')) {
+      var value = data.autoComplete;
+      editor.setOption('enableLiveAutocompletion', value === 'live');
+      editor.setOption('enableBasicAutocompletion', value !== 'disabled');
+    }
+
+    if (data.hasOwnProperty('autoCompleters')) {
+      var completers = data.autoCompleters;
+      editor.completers = [];
+      if (completers) {
+        if (!Array.isArray(completers)) {
+          completers = [completers];
+        }
+        completers.forEach(function (completer) {
+          switch (completer) {
+            case 'snippet':
+              editor.completers.push(langTools.snippetCompleter);
+              break;
+            case 'text':
+              editor.completers.push(langTools.textCompleter);
+              break;
+            case 'keyword':
+              editor.completers.push(langTools.keyWordCompleter);
+              break;
+            case 'static':
+              editor.completers.push(staticCompleter);
+              break;
+            case 'rlang':
+              editor.completers.push(rlangCompleter);
+              break;
+          }
+        });
+      }
+    }
+
+    if (data.hasOwnProperty('autoCompleteList')) {
+      $(el).data('auto-complete-list', data.autoCompleteList);
+    }
+
+    if (data.hasOwnProperty("setBehavioursEnabled") && data.setBehavioursEnabled === false) {
+      editor.setBehavioursEnabled(data.setBehavioursEnabled);
+    }
+    
+    // if (data.hasOwnProperty("codeCompletions")) {
+    //   var callback = $(el).data('autoCompleteCallback');
+    //   if (callback !== undefined) callback(null, data.codeCompletions);
+    // }
+
+    // this is a bit r-specific, perhaps there's a better way to only link it 
+    // to the rlang completer?
+    if (data.codeCompletions) {
+      var callback = $(el).data('autoCompleteCallback');
+      
+      data.codeCompletions = data.codeCompletions.map(function(completion) {
+        completion.completer = {};
+        completion.completer.insertMatch = function(editor, data) {
+          if (editor.completer.completions.filterText) {
+            var ranges = editor.selection.getAllRanges();
+            for (var i = 0, range; range = ranges[i]; i++) {
+              range.start.column -= editor.completer.completions.filterText.length;
+              editor.session.remove(range);
+            }
+          }
+          if (data.snippet) {
+            snippetManager.insertSnippet(editor, data.snippet);
+          } else {
+            // insert completion
+            var insertString = data.value || data;
+            editor.execCommand("insertstring", insertString);
+            
+            // automatically clobber existing code
+            var cursor = editor.getCursorPosition();
+            var remainder = editor.session.getLine(cursor.row).slice(cursor.column);
+            var re_match = remainder.match(/(^[a-zA-Z0-9._:]*)((?:\(\)?)?)/);
+            if (re_match && re_match[0].length) {
+              // remove word that we're clobbering
+              editor.getSession().getDocument().removeInLine(
+                cursor.row, cursor.column, cursor.column + re_match[1].length);
+                
+              // if function call, delete parens and navigate into existing call
+              if (insertString.endsWith("()") && re_match[2].length) {
+                editor.getSession().getDocument().removeInLine(
+                  cursor.row, cursor.column - 2, cursor.column);
+                editor.navigateRight(1);
+              }
+              
+            } else if (insertString.endsWith("()")) {
+              // navigate backwards into ()'s for function completions
+              editor.navigateLeft(1);
+            }
+            
+          }
+        };
+        return completion;
+      });
+      
+      if (callback !== undefined) callback(null, data.codeCompletions);
+    }
+
+    if (data.hasOwnProperty("autoScrollEditorIntoView") && data.autoScrollEditorIntoView === true) {
+      editor.setOption("autoScrollEditorIntoView", true);
+      if (data.hasOwnProperty("maxLines")) {
+        editor.setOption("maxLines", data.maxLines);
+      }
+      if (data.hasOwnProperty("minLines")) {
+        editor.setOption("minLines", data.minLines);
+      }
+    }
+
+    if (data.hasOwnProperty('placeholder')) {
+      // adapted from https://stackoverflow.com/a/26700324/1974918
+      
+      function update() {
+        var shouldShow = !editor.session.getValue().length;
+        var node = editor.renderer.emptyMessageNode;
+        if (!shouldShow && node) {
+          editor.renderer.scroller.removeChild(editor.renderer.emptyMessageNode);
+          editor.renderer.emptyMessageNode = null;
+        } else if (shouldShow && !node) {
+          node = editor.renderer.emptyMessageNode = document.createElement("div");
+          node.textContent = data.placeholder;
+          node.className = "ace_emptyMessage";
+          node.style.padding = "0 15px";
+          node.style.position = "absolute";
+          node.style.zIndex = 9;
+          node.style.opacity = 0.5;
+          editor.renderer.scroller.appendChild(node);
+        }
+      }
+
+      editor.on("input", update);
+      setTimeout(update, 100);
+    }
+
+    if (typeof $(el).data('aceEditor') == 'undefined')
+      $(el).data("aceEditor", editor);
+
+  };
+
   var shinyAceInputBinding = new Shiny.InputBinding();
   $.extend(shinyAceInputBinding, {
     find: function(scope) {
       return $(scope).find(".shiny-ace");
+    },
+    initialize: function (el) {
+      var scriptData = document.querySelector("script[data-for='" + el.id + "'][type='application/json']");
+      if (scriptData) {
+        var data = JSON.parse(scriptData.textContent);
+        updateEditor(el, data);
+      }
+      
+      // this tab completion is R-specific
+      // shoult this exist somewhere else?
+      $(el).data('aceEditor').commands.addCommand({
+        name: 'smartTab',
+        bindKey: { win: 'Tab', mac: 'TAB' },
+        multiSelectAction: 'forEach',
+        exec: function(editor) {
+          console.log(editor)
+          var selection = editor.session.getTextRange();
+          var range = editor.selection.getRange();
+          var imax = editor.session.getLength() - range.end.row;
+        
+          //// use regular indent whenever cursor is anything but standard
+          if (selection !== '' || editor.inMultiSelectMode) {
+            editor.indent();
+            
+          // otherwise see if autocompletion should be triggered
+          } else {
+            var linebuffer = editor.session.getLine(range.start.row).slice(0, range.start.column);
+          
+            // if at the start of an object name or function call, kick off autocompletion
+            if (/[a-zA-Z._][a-zA-Z0-9._:]*$/.test(linebuffer) || /[a-zA-Z0-9._]\([^)]*$/.test(linebuffer)) {
+              if (editor.completer) editor.completer.detach();
+              editor.execCommand('startAutocomplete');
+            
+            // otherwise do an indentation
+            } else {
+              editor.indent();
+            }
+          }
+        }
+      });
+      
     },
     getValue: function(el) {
       return($(el).data('aceEditor').getValue());
@@ -54,221 +453,15 @@
 
   Shiny.inputBindings.register(shinyAceInputBinding);
 
-  var staticCompleter = {
-    getCompletions: function(editor, session, pos, prefix, callback) {
-      var comps = $('#' + editor.container.id).data('auto-complete-list');
-      if(comps) {
-        var words = [];
-        Object.keys(comps).forEach(function(key) {
-          var comps_key = comps[key];
-          if (!Array.isArray(comps[key])) {
-            comps_key = [comps_key];
-          }
-          words = words.concat(comps_key.map(function(d) {
-            return {name: d, value: d, meta: key};
-          }));
-        });
-        callback(null, words);
-      }
-    }
-  };
-  langTools.addCompleter(staticCompleter);
-
-  var rlangCompleter = {
-    identifierRegexps: [
-      /[a-zA-Z_0-9\.\:\-\u00A2-\uFFFF]/, 
-    ],
-    getCompletions: function(editor, session, pos, prefix, callback) {
-      var inputId = editor.container.id;
-      
-      // TODO: consider dropping onInputChange hook when completer is disabled for performance
-      Shiny.onInputChange(inputId + '_shinyAce_hint', {
-        // TODO: add an option to disable full document parsing for performance
-        document: session.getValue(),
-        linebuffer: session.getLine(pos.row),
-        cursorPosition: pos,
-        // nonce causes autocomplete event to trigger
-        // on R side even if Ctrl-Space is pressed twice
-        // with the same linebuffer and cursorPosition
-        nonce: Math.random() 
-      });
-      
-      // store callback for dynamic completion
-      $('#' + inputId).data('autoCompleteCallback', callback);
-    },
-    getDocTooltip: function(item) {
-      Shiny.onInputChange(item.inputId + '_shinyAce_tooltipItem', item);
-    }
-  };
-  langTools.addCompleter(rlangCompleter);
-
-  Shiny.addCustomMessageHandler('shinyAce', function(data) {
+  Shiny.addCustomMessageHandler('shinyAce', function (data) {
     var id = data.id;
-    var $el = $('#' + id);
-    var editor = $el.data('aceEditor');
-    
-    if (data.theme) {
-      editor.setTheme("ace/theme/" + data.theme);
-    }
-    
-    if (data.mode) {
-      editor.getSession().setMode("ace/mode/" + data.mode);
-    }
-    
-    if (data.value !== undefined) {
-      editor.getSession().setValue(data.value, -1);
-    }
-    
-    if (data.hasOwnProperty('readOnly')) {
-      editor.setReadOnly(data.readOnly);
-    }
-    
-    if (data.fontSize) {
-      document.getElementById(id).style.fontSize = data.fontSize + 'px';
-    }
-    
-    if (data.hasOwnProperty('wordWrap')) {
-      editor.getSession().setUseWrapMode(data.wordWrap);
-    }
-    
-    if (data.border) {
-      var classes = ['acenormal', 'aceflash', 'acealert'];
-      $el.removeClass(classes.join(' '));
-      $el.addClass(data.border);
-    }
-    
-    if (data.annotations) {
-      editor.getSession().setAnnotations(data.annotations);
-    }
-    
-    if (data.docTooltip) {
-      // { docHTML: "", docText: "" }
-      if (data.docTooltip.docHTML || data.docTooltip.docText) {
-        if (!editor.completer.tooltipNode) {
-          if (editor.__tooltipTimerCall)
-            editor.__tooltipTimerCall.cancel();
-            
-          editor.__tooltipTimerCall = lang.delayedCall(
-            function() { 
-              if (this.completer.activated)
-                this.completer.showDocTooltip(data.docTooltip); 
-            }.bind(editor), 1000);
-            
-          editor.__tooltipTimerCall();
-        } else {
-          editor.completer.showDocTooltip(data.docTooltip);
-        }
-      }
-    }
-    
-    if (data.autoComplete) {
-      var value = data.autoComplete;
-      editor.setOption('enableLiveAutocompletion', value === 'live');
-      editor.setOption('enableBasicAutocompletion', value !== 'disabled');
-    }
-    
-    if (data.hasOwnProperty('autoCompleters')) {
-      var completers = data.autoCompleters;
-      editor.completers = [];
-      if (completers) {
-        if (!Array.isArray(completers)) {
-          completers = [completers];
-        }
-        completers.forEach(function(completer) {
-          switch (completer) {
-            case 'snippet':
-              editor.completers.push(langTools.snippetCompleter);
-              break;
-            case 'text':
-              editor.completers.push(langTools.textCompleter);
-              break;
-            case 'keyword':
-              editor.completers.push(langTools.keyWordCompleter);
-              break;
-            case 'static':
-              editor.completers.push(staticCompleter);
-              break;
-            case 'rlang':
-              editor.completers.push(rlangCompleter);
-              break;
-          }
-        });
-      }
-    }
-    
-    if (data.tabSize) {
-      editor.setOption('tabSize', data.tabSize);
-    } 
-    
-    if (data.useSoftTabs === false) {
-      editor.setOption('useSoftTabs', false);
-    } else if (data.useSoftTabs === true) {
-      editor.setOption('useSoftTabs', true);
-    }
-   
-    if (data.showInvisibles === true) {
-      editor.setOption('showInvisibles', true);
-    } else if (data.showInvisibles === false) {
-      editor.setOption('showInvisibles', false);
-    }
-    
-    if (data.hasOwnProperty('autoCompleteList')) {
-      $el.data('auto-complete-list', data.autoCompleteList);
-    }
-    
-    if (data.codeCompletions) {
-      var callback = $el.data('autoCompleteCallback');
-      
-      data.codeCompletions = data.codeCompletions.map(function(completion) {
-        completion.completer = {};
-        completion.completer.insertMatch = function(editor, data) {
-          if (editor.completer.completions.filterText) {
-            var ranges = editor.selection.getAllRanges();
-            for (var i = 0, range; range = ranges[i]; i++) {
-              range.start.column -= editor.completer.completions.filterText.length;
-              editor.session.remove(range);
-            }
-          }
-          if (data.snippet) {
-            snippetManager.insertSnippet(editor, data.snippet);
-          } else {
-            // insert completion
-            var insertString = data.value || data;
-            editor.execCommand("insertstring", insertString);
-            
-            // automatically clobber existing code
-            var cursor = editor.getCursorPosition();
-            var remainder = editor.session.getLine(cursor.row).slice(cursor.column);
-            var re_match = remainder.match(/(^[a-zA-Z0-9._:]*)((?:\(\)?)?)/);
-            if (re_match && re_match[0].length) {
-              // remove word that we're clobbering
-              editor.getSession().getDocument().removeInLine(
-                cursor.row, cursor.column, cursor.column + re_match[1].length);
-                
-              // if function call, delete parens and navigate into existing call
-              if (insertString.endsWith("()") && re_match[2].length) {
-                editor.getSession().getDocument().removeInLine(
-                  cursor.row, cursor.column - 2, cursor.column);
-                editor.navigateRight(1);
-              }
-              
-            } else if (insertString.endsWith("()")) {
-              // navigate backwards into ()'s for function completions
-              editor.navigateLeft(1);
-            }
-            
-          }
-        };
-        return completion;
-      });
-      
-      if (callback !== undefined) callback(null, data.codeCompletions);
-    }
+    var el = document.getElementById(data.id);
+    updateEditor(el, data);
   });
 
   // Allow toggle of the search-replace box in Ace
   // see https://github.com/ajaxorg/ace/issues/3552
-  var toggle_search_replace = ace.require("ace/ext/searchbox").SearchBox.prototype.$searchBarKb.bindKey( "Ctrl-f|Command-f|Ctrl-H|Command-Option-F", function(sb) {
+  var toggle_search_replace = ace.require("ace/ext/searchbox").SearchBox.prototype.$searchBarKb.bindKey("Ctrl-f|Command-f|Ctrl-H|Command-Option-F", function (sb) {
     var isReplace = sb.isReplace = !sb.isReplace;
     sb.replaceBox.style.display = isReplace ? "" : "none";
     sb[isReplace ? "replaceInput" : "searchInput"].focus();

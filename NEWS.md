@@ -1,3 +1,11 @@
+shinyAce 0.4.0
+--------------------------------------------------------------------
+
+* Refactor of JS code to provide better support for use with Shiny modules (@detule). These (breaking) changes were made to work with shiny modules and make the javascript in the package more easily maintainable and extensible. If you use "selectionID" or "cursorID" in calls to "aceEditor", note that to access the information in these input you must now prepend the "outputId" of the ace editor element. For example, if outputId = "myeditor" and selectionId = "myselection" you can now access the selection information using "myeditor_myselection". FYI This is the same approach used in the DT package on CRAN. The same naming convention applies to hotkeys.  For example, if outputId = "myeditor" and hotkeys = list(help_key = "F1") you can now access information related to the key press using "myeditor_help_key". See README.md at https://github.com/trestletech/shinyAce for an overview of updated examples
+* Option to add a placeholder to be shown when the editor is empty (see placeholder argument for aceEditor, @vnijs)
+* Option to add JS code to "jump" through code using hotkeys (see code_hotkeys argument for aceEditor, @vnijs)
+* Arguments `autoScrollEditorIntoView`, `maxLines`, and `minLines` added that allow the editor window to resize as extra lines are added by the user. The editor size starts at `minLines` and will not expand beyond `maxLines`. See `inst/examples/08-resize` for an example (@vnijs)
+
 shinyAce 0.3.4
 --------------------------------------------------------------------
 

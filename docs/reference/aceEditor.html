@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -32,6 +34,7 @@
 
 <meta property="og:description" content="Render an Ace editor on an application page." />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -58,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shinyAce</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
@@ -104,12 +107,15 @@
     </div>
 
     <pre class="usage"><span class='fu'>aceEditor</span>(<span class='no'>outputId</span>, <span class='no'>value</span>, <span class='no'>mode</span>, <span class='no'>theme</span>, <span class='kw'>vimKeyBinding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>readOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='st'>"400px"</span>, <span class='kw'>fontSize</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>debounce</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>wordWrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showLineNumbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>highlightActiveLine</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>selectionId</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cursorId</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hotkeys</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>autoComplete</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"disabled"</span>, <span class='st'>"enabled"</span>, <span class='st'>"live"</span>), <span class='kw'>autoCompleters</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>readOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='st'>"400px"</span>, <span class='kw'>fontSize</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+  <span class='kw'>debounce</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>wordWrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showLineNumbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>highlightActiveLine</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>selectionId</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cursorId</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>hotkeys</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>code_hotkeys</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>autoComplete</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"disabled"</span>,
+  <span class='st'>"enabled"</span>, <span class='st'>"live"</span>), <span class='kw'>autoCompleters</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"snippet"</span>, <span class='st'>"text"</span>, <span class='st'>"keyword"</span>),
   <span class='kw'>autoCompleteList</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tabSize</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>useSoftTabs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>showInvisibles</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>setBehavioursEnabled</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>showInvisibles</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>setBehavioursEnabled</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>autoScrollEditorIntoView</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>maxLines</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>minLines</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>placeholder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,7 +196,13 @@ line.</p></td>
       <td><p>A list whose names are ID names and whose elements are the 
 shortcuts of keys. Shortcuts can either be a simple string or a list with 
 elements 'win' and 'mac' that that specifies different shortcuts for win and 
-mac (see example).</p></td>
+mac (see example 05).</p></td>
+    </tr>
+    <tr>
+      <th>code_hotkeys</th>
+      <td><p>A nested list. The first element indicates the code type (e.g., "r") 
+The second element is a list whose names are ID names and whose elements are the 
+shortcuts of keys (see <code>hotkeys</code>)</p></td>
     </tr>
     <tr>
       <th>autoComplete</th>
@@ -206,10 +218,10 @@ mac (see example).</p></td>
     </tr>
     <tr>
       <th>autoCompleters</th>
-      <td><p>List of completers to enable. If set to <code>NULL</code>,
+      <td><p>Character vector of completers to enable. If set to <code>NULL</code>,
 all completers will be disabled. Select one or more of "snippet", "text", "static", 
-and "keyword" to control which completers to use. Default option is an empty character
-vector which does not effect default completion options</p></td>
+"keyword", and "rlang" to control which completers to use. Default option is to 
+ use the "snippet", "text", and "keyword" autocompleters</p></td>
     </tr>
     <tr>
       <th>autoCompleteList</th>
@@ -237,6 +249,22 @@ Default value is FALSE</p></td>
       <th>setBehavioursEnabled</th>
       <td><p>Determines if the auto-pairing of special characters, like 
 quotation marks, parenthesis, or brackets should be enabled. Default value is TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>autoScrollEditorIntoView</th>
+      <td><p>If TRUE, expands the size of the editor window as new lines are added</p></td>
+    </tr>
+    <tr>
+      <th>maxLines</th>
+      <td><p>Maximum number of lines the editor window will expand to when autoScrollEditorIntoView is TRUE</p></td>
+    </tr>
+    <tr>
+      <th>minLines</th>
+      <td><p>Minimum number of lines in the editor window when autoScrollEditorIntoView is TRUE</p></td>
+    </tr>
+    <tr>
+      <th>placeholder</th>
+      <td><p>A string to use a placeholder when the editor has no content</p></td>
     </tr>
     </table>
     

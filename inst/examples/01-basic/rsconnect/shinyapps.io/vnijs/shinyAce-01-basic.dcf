@@ -1,0 +1,12 @@
+name: shinyAce-01-basic
+title: shinyAce-01-basic
+username:
+account: vnijs
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1000903
+bundleId: 2184589
+url: https://vnijs.shinyapps.io/shinyAce-01-basic/
+when: 1561680216.01196
+asMultiple: FALSE
+asStatic: FALSE

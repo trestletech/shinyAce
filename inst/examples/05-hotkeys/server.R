@@ -1,28 +1,29 @@
 library(shiny)
-library(shinyAce)
 
-#' Define server logic required to generate simple ace editor
-#' @author Jeff Allen \email{jeff@@trestletech.com}
+renderLogEntry <- function(entry) {
+  paste0(entry, " - ", date())
+}
+
 shinyServer(function(input, output, session) {
-  
   vals <- reactiveValues(log = "")
-  
-  observe({
-    input$runKey
-    isolate(vals$log <- paste(vals$log, renderLogEntry("Run Key"), sep="\n"))
+
+  # note that the editor `outputId` is prepended to the name of
+  # the input value (i.e., use `ace_run_key` rather than `run_key`)
+  observeEvent(input$ace_run_key, {
+    print(str(input$ace_run_key))
+    vals$log <- paste(vals$log, renderLogEntry("Run Key"), sep = "\n")
+    print(input$ace_run_key)
   })
-  
-  observe({
-    input$helpKey
-    isolate(vals$log <- paste(vals$log, renderLogEntry("Help Key"), sep="\n"))
+
+  # note that the editor `outputId` is prepended to the name of
+  # the input value (i.e., use `ace_help_key` rather than `help_key`)
+  observeEvent(input$ace_help_key, {
+    print(str(input$ace_help_key))
+    vals$log <- paste(vals$log, renderLogEntry("Help Key"), sep = "\n")
+    print(input$ace_help_key)
   })
-  
+
   output$log <- renderText({
     vals$log
   })
 })
-
-renderLogEntry <- function(entry){
-  paste0(date(), " - ", entry)
-}
-
