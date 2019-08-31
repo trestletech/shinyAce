@@ -50,6 +50,50 @@
   };
   langTools.addCompleter(rlangCompleter);
 
+  // behavior upon selection of an autocompletion
+  //   I was expecting this to be able to be defined with the rlangCompleter,
+  //   but it appears to only be able to be defined per-completion.
+  //   Upon a completion callback, completions are mapped over and assigned this 
+  //  function for insertion behavior for each completion entry
+  function r_insertMatch(editor, data) {
+    if (editor.completer.completions.filterText) {
+      var ranges = editor.selection.getAllRanges();
+      for (var i = 0, range; range = ranges[i]; i++) {
+        range.start.column -= editor.completer.completions.filterText.length;
+        editor.session.remove(range);
+      }
+    }
+    if (data.snippet) {
+      snippetManager.insertSnippet(editor, data.snippet);
+    } else {
+      // insert completion
+      var insertString = data.value || data;
+      editor.execCommand("insertstring", insertString);
+      
+      // automatically clobber existing code
+      var cursor = editor.getCursorPosition();
+      var remainder = editor.session.getLine(cursor.row).slice(cursor.column);
+      var re_match = remainder.match(/(^[a-zA-Z0-9._:]*)((?:\(\)?)?)/);
+      if (re_match && re_match[0].length) {
+        // remove word that we're clobbering
+        editor.getSession().getDocument().removeInLine(
+          cursor.row, cursor.column, cursor.column + re_match[1].length);
+          
+        // if function call, delete parens and navigate into existing call
+        if (insertString.endsWith("()") && re_match[2].length) {
+          editor.getSession().getDocument().removeInLine(
+            cursor.row, cursor.column - 2, cursor.column);
+          editor.navigateRight(1);
+        }
+        
+      } else if (insertString.endsWith("()")) {
+        // navigate backwards into ()'s for function completions
+        editor.navigateLeft(1);
+      }
+      
+    }
+  };
+
   Shiny.addCustomMessageHandler('shinyAce', function(data) {
     var id = data.id;
     var $el = $('#' + id);
@@ -251,6 +295,36 @@
               break;
             case 'rlang':
               editor.completers.push(rlangCompleter);
+              editor.commands.addCommand({
+                name: 'rlang_smartTab',
+                bindKey: { win: 'Tab', mac: 'TAB' },
+                multiSelectAction: 'forEach',
+                exec: function(editor) {
+                  console.log(editor)
+                  var selection = editor.session.getTextRange();
+                  var range = editor.selection.getRange();
+                  var imax = editor.session.getLength() - range.end.row;
+                
+                  //// use regular indent whenever cursor is anything but standard
+                  if (selection !== '' || editor.inMultiSelectMode) {
+                    editor.indent();
+                    
+                  // otherwise see if autocompletion should be triggered
+                  } else {
+                    var linebuffer = editor.session.getLine(range.start.row).slice(0, range.start.column);
+                  
+                    // if at the start of an object name or function call, kick off autocompletion
+                    if (/[a-zA-Z._][a-zA-Z0-9._:]*$/.test(linebuffer) || /[a-zA-Z0-9._]\([^)]*$/.test(linebuffer)) {
+                      if (editor.completer) editor.completer.detach();
+                      editor.execCommand('startAutocomplete');
+                    
+                    // otherwise do an indentation
+                    } else {
+                      editor.indent();
+                    }
+                  }
+                }
+              });
               break;
           }
         });
@@ -272,49 +346,17 @@
 
     // this is a bit r-specific, perhaps there's a better way to only link it 
     // to the rlang completer?
-    if (data.codeCompletions) {
+    if (data.hasOwnProperty("codeCompletions")) {
       var callback = $(el).data('autoCompleteCallback');
-      
       data.codeCompletions = data.codeCompletions.map(function(completion) {
-        completion.completer = {};
-        completion.completer.insertMatch = function(editor, data) {
-          if (editor.completer.completions.filterText) {
-            var ranges = editor.selection.getAllRanges();
-            for (var i = 0, range; range = ranges[i]; i++) {
-              range.start.column -= editor.completer.completions.filterText.length;
-              editor.session.remove(range);
-            }
+        if (typeof completion.completer == "string") {
+          switch (completion.completer) {
+            case 'rlang': 
+              completion.completer = {};
+              completion.completer.insertMatch = r_insertMatch;
+              break;
           }
-          if (data.snippet) {
-            snippetManager.insertSnippet(editor, data.snippet);
-          } else {
-            // insert completion
-            var insertString = data.value || data;
-            editor.execCommand("insertstring", insertString);
-            
-            // automatically clobber existing code
-            var cursor = editor.getCursorPosition();
-            var remainder = editor.session.getLine(cursor.row).slice(cursor.column);
-            var re_match = remainder.match(/(^[a-zA-Z0-9._:]*)((?:\(\)?)?)/);
-            if (re_match && re_match[0].length) {
-              // remove word that we're clobbering
-              editor.getSession().getDocument().removeInLine(
-                cursor.row, cursor.column, cursor.column + re_match[1].length);
-                
-              // if function call, delete parens and navigate into existing call
-              if (insertString.endsWith("()") && re_match[2].length) {
-                editor.getSession().getDocument().removeInLine(
-                  cursor.row, cursor.column - 2, cursor.column);
-                editor.navigateRight(1);
-              }
-              
-            } else if (insertString.endsWith("()")) {
-              // navigate backwards into ()'s for function completions
-              editor.navigateLeft(1);
-            }
-            
-          }
-        };
+        }
         return completion;
       });
       
@@ -372,40 +414,6 @@
         var data = JSON.parse(scriptData.textContent);
         updateEditor(el, data);
       }
-      
-      // this tab completion is R-specific
-      // shoult this exist somewhere else?
-      $(el).data('aceEditor').commands.addCommand({
-        name: 'smartTab',
-        bindKey: { win: 'Tab', mac: 'TAB' },
-        multiSelectAction: 'forEach',
-        exec: function(editor) {
-          console.log(editor)
-          var selection = editor.session.getTextRange();
-          var range = editor.selection.getRange();
-          var imax = editor.session.getLength() - range.end.row;
-        
-          //// use regular indent whenever cursor is anything but standard
-          if (selection !== '' || editor.inMultiSelectMode) {
-            editor.indent();
-            
-          // otherwise see if autocompletion should be triggered
-          } else {
-            var linebuffer = editor.session.getLine(range.start.row).slice(0, range.start.column);
-          
-            // if at the start of an object name or function call, kick off autocompletion
-            if (/[a-zA-Z._][a-zA-Z0-9._:]*$/.test(linebuffer) || /[a-zA-Z0-9._]\([^)]*$/.test(linebuffer)) {
-              if (editor.completer) editor.completer.detach();
-              editor.execCommand('startAutocomplete');
-            
-            // otherwise do an indentation
-            } else {
-              editor.indent();
-            }
-          }
-        }
-      });
-      
     },
     getValue: function(el) {
       return($(el).data('aceEditor').getValue());
