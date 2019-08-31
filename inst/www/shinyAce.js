@@ -93,25 +93,6 @@
       
     }
   };
-
-  Shiny.addCustomMessageHandler('shinyAce', function(data) {
-    var id = data.id;
-    var $el = $('#' + id);
-    var editor = $el.data('aceEditor');
-    
-    if (data.theme) {
-      editor.setTheme("ace/theme/" + data.theme);
-    }
-    
-    if (data.mode) {
-      editor.getSession().setMode("ace/mode/" + data.mode);
-    }
-    
-    if (data.value !== undefined) {
-      editor.getSession().setValue(data.value, -1);
-      // TODO: add option to include optional getDocTooltip for suggestion context
-    }
-  });
   langTools.addCompleter(rlangCompleter);
 
   function updateEditor(el, data) {
