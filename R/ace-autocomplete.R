@@ -159,14 +159,15 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
         else completion
         
         list(
-          inputId = session$ns(inputId), 
+          # Ace standard autocomplete fields
           symbol = symbol,
           name = name, 
           value = name,
-          caption = gsub(".*::", "", name),
           score = score,
-          completer = "rlang",
-          meta = meta)
+          caption = gsub(".*::", "", name),
+          meta = meta,
+          # shinyAce-specific autocomplete fields for interfacing with R
+          completer = "rlang")
       }, completions, splat, rev(seq_along(completions))))
     }
     

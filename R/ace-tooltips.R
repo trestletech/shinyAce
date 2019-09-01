@@ -53,7 +53,7 @@ aceTooltip <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
     if (is.null(value)) return()
 
     name   <- value$name
-    symbol <- value$symbol
+    symbol <- if (is.null(value$symbol)) value$name else value$symbol
     envir  <- value$meta
      
     tooltip_caption <- if (grepl("\\s*=.*$", value$caption)) {
@@ -76,7 +76,7 @@ aceTooltip <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
             get_desc_help(symbol, package = envir)
           }
         }, error = function(e) { print(e$message); ""}))
-    }
+    } 
     
     return(session$sendCustomMessage('shinyAce', list(
       id = session$ns(inputId),

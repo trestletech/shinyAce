@@ -43,9 +43,6 @@
       
       // store callback for dynamic completion
       $('#' + inputId).data('autoCompleteCallback', callback);
-    },
-    getDocTooltip: function(item) {
-      Shiny.onInputChange(item.inputId + '_shinyAce_tooltipItem', item);
     }
   };
   langTools.addCompleter(rlangCompleter);
@@ -73,7 +70,7 @@
       // automatically clobber existing code
       var cursor = editor.getCursorPosition();
       var remainder = editor.session.getLine(cursor.row).slice(cursor.column);
-      var re_match = remainder.match(/(^[a-zA-Z0-9._:]*)((?:\(\)?)?)/);
+      var re_match = remainder.match(/(^[a-zA-Z0-9._:]*)((?:\(\)?|\))?)/);
       if (re_match && re_match[0].length) {
         // remove word that we're clobbering
         editor.getSession().getDocument().removeInLine(
@@ -82,8 +79,8 @@
         // if function call, delete parens and navigate into existing call
         if (insertString.endsWith("()") && re_match[2].length) {
           editor.getSession().getDocument().removeInLine(
-            cursor.row, cursor.column - 2, cursor.column);
-          editor.navigateRight(1);
+            cursor.row, cursor.column - re_match[2].length, cursor.column);
+          if (re_match[2].length > 1) editor.navigateRight(1);
         }
         
       } else if (insertString.endsWith("()")) {
@@ -96,10 +93,11 @@
   langTools.addCompleter(rlangCompleter);
 
   function updateEditor(el, data) {
+    var editor = {};
     if (typeof $(el).data('aceEditor') !== 'undefined')
-      var editor = $(el).data('aceEditor');
+      editor = $(el).data('aceEditor');
     else
-      var editor = ace.edit(el);
+      editor = ace.edit(el);
 
     if (data.hasOwnProperty('fontSize')) {
       el.style.fontSize = data.fontSize + 'px';
@@ -120,13 +118,13 @@
     if (data.hasOwnProperty("selectionId")) {
       editor.getSelection().on("changeSelection", function () {
         Shiny.onInputChange(el.id + "_" + data.selectionId, editor.getCopyText());
-      })
+      });
     }
 
     if (data.hasOwnProperty("cursorId")) {
       editor.getSelection().on("changeCursor", function () {
         Shiny.onInputChange(el.id + "_" + data.cursorId, editor.selection.getCursor());
-      })
+      });
     }
 
     if (data.hasOwnProperty("hotkeys")) {
@@ -164,8 +162,9 @@
             var range = editor.selection.getRange();
             var imax = editor.session.getLength() - range.end.row;
             var inputId = editor.container.id;
+            var line = "";
             if (selection === "") {
-              var line = code_jump(editor, range, imax);
+              line = code_jump(editor, range, imax);
             }
             var shinyEvent = {
               editorId: inputId,
@@ -263,25 +262,26 @@
         completers.forEach(function (completer) {
           switch (completer) {
             case 'snippet':
-              editor.completers.push(langTools.snippetCompleter);
+              completer = langTools.snippetCompleter;
               break;
             case 'text':
-              editor.completers.push(langTools.textCompleter);
+              completer = langTools.textCompleter;
               break;
             case 'keyword':
-              editor.completers.push(langTools.keyWordCompleter);
+              completer = langTools.keyWordCompleter;
               break;
             case 'static':
-              editor.completers.push(staticCompleter);
+              completer = staticCompleter;
               break;
             case 'rlang':
-              editor.completers.push(rlangCompleter);
+              completer = rlangCompleter;
+              // add a keybind for "smart" tab - using tab for both indentation 
+              // and autocompletion triggering, specific to R object names
               editor.commands.addCommand({
                 name: 'rlang_smartTab',
                 bindKey: { win: 'Tab', mac: 'TAB' },
                 multiSelectAction: 'forEach',
                 exec: function(editor) {
-                  console.log(editor)
                   var selection = editor.session.getTextRange();
                   var range = editor.selection.getRange();
                   var imax = editor.session.getLength() - range.end.row;
@@ -308,6 +308,15 @@
               });
               break;
           }
+          
+          // to each completer, add getDocTooltip callback to R
+          if (!completer.hasOwnProperty("getDocTooltip")) {
+            completer.getDocTooltip = function(item) {
+              Shiny.onInputChange(data.id + '_shinyAce_tooltipItem', item);
+            };
+          }
+          
+          editor.completers.push(completer);
         });
       }
     }
