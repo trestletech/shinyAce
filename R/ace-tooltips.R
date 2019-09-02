@@ -49,39 +49,41 @@
 #' @export
 aceTooltip <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
   shiny::observe({
-    value <- session$input[[paste0(inputId, "_shinyAce_tooltipItem")]]
-    if (is.null(value)) return()
-
-    name   <- value$name
-    symbol <- if (is.null(value$symbol)) value$name else value$symbol
-    envir  <- value$meta
-     
-    tooltip_caption <- if (grepl("\\s*=.*$", value$caption)) {
-      paste0(
-        "<b style=\"font-size:larger\">", name, "</b>", 
-        tryCatch({
-          if (!length(envir) || envir == "R") {
-            get_arg_help(symbol, args = name)
-          } else {
-            get_arg_help(symbol, package = envir, args = name)
-          }
-        }, error = function(e) { print(e$message); ""}))
-    } else {
-      paste0(
-        "<b>", symbol, "</b>", 
-        tryCatch({
-          if (!length(envir) || envir == "R") {
-            get_desc_help(symbol)
-          } else {
-            get_desc_help(symbol, package = envir)
-          }
-        }, error = function(e) { print(e$message); ""}))
-    } 
+    v <- session$input[[paste0(inputId, "_shinyAce_tooltipItem")]]
+    if (is.null(v)) return()
+    
+    tooltip <- tryCatch({ 
+      if (v$r_help_type == "parameter") {
+        arg <- gsub(" = $", "", v$value)
+        tooltip_html(arg, 
+          if (!nchar(v$r_envir)) get_arg_help(v$r_symbol, args = arg)
+          else get_arg_help(v$r_symbol, package = v$r_envir, args = arg))
+        
+      } else if (v$r_help_type == "package") {
+        pkg_desc <- utils::packageDescription(v$value, fields = c("Title", "Description"))
+        pkg_help <- get_desc_help(paste0(v$value, "-package"))
+        tooltip_html(pkg_desc$Title, 
+          if (is.null(pkg_help)) paste0("<p>", pkg_desc$Description, "</p>")
+          else pkg_help)
+        
+      } else {
+        tooltip_html(v$r_symbol, get_desc_help(v$r_symbol, package = v$r_envir))
+        
+      }
+    }, error = function(e) { print(e$message); "" })
     
     return(session$sendCustomMessage('shinyAce', list(
       id = session$ns(inputId),
-      docTooltip = jsonlite::toJSON(list(
-        docHTML = paste0("<div>", tooltip_caption, "</div>")
-      ), auto_unbox = TRUE))))
+      docTooltip = jsonlite::toJSON(list(docHTML = tooltip), auto_unbox = TRUE))))
   })
+}
+
+
+tooltip_html <- function(title, description) {
+  paste0(
+    "<div><b style=\"font-size:larger\">",
+    title,
+    "</b>",
+    description,
+    "</div>")
 }

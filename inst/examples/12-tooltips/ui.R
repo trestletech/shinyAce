@@ -5,20 +5,28 @@ shinyUI(fluidPage(
   titlePanel("shinyAce auto completion demo"),
   sidebarLayout(
     sidebarPanel(
-      checkboxInput("enableAutocomplete", "Enable AutoComplete", TRUE),
-      conditionalPanel(
-        "input.enableAutocomplete", 
-        wellPanel(
-          checkboxInput("enableLiveCompletion", "Live auto completion", TRUE),
-          checkboxInput("enableNameCompletion", list("Dataset column names completion in", tags$i("mutate")), FALSE),
-          checkboxInput("enableRCompletion", "R code completion", TRUE),
-          checkboxInput("enableLocalCompletion", "Local text completion", FALSE)
-        )
-      ),
-      textOutput("error")
-    ),
+      checkboxInput("enableAutocomplete", "Enable R AutoComplete", TRUE),
+      checkboxInput("enableTooltips", "Enable R Tooltips", TRUE),
+      checkboxInput("enableAnnotations", "Enable R Annotations", TRUE)),
     mainPanel(
-      aceEditor("ace_editor", mode = "r", value = "")
-    )
-  )
+      aceEditor("ace_editor", 
+        mode = "r", 
+        autoComplete = "live",
+        autoCompleters = "rlang", 
+        value = "
+# Tooltips:
+# linger over an autocomplete option to view some documentation. See
+# - Function descriptions
+#     data.fra  # <autocomplete>
+# - Argument descriptions
+#     data.frame(  # <autocomplete>
+# - Package descriptions
+#     shinyAc  # <autocomplete>
+
+
+# Annotations:
+# gutter annotations used to indicate syntax errors, try uncommenting this line 
+# with an incomplete string
+# '''
+        ")))
 ))

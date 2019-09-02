@@ -31,6 +31,7 @@
 #' @import utils
 #' 
 get_help_file <- function(topic, package = NULL, ...) {
+  if (is.character(package) && nchar(package) == 0) package <- NULL
   tryCatch({
     .utils$.getHelpFile(eval(bquote(help(
       topic = .(topic), 
@@ -100,12 +101,24 @@ get_arg_help <- function(..., args = character()) {
   arg_rds <- Filter(function(i) attr(i, "Rd_tag") == "\\item", arg_rds)
   names(arg_rds) <- Map(function(i) i[[1]][[1]], arg_rds)
   arg_rds <- lapply(arg_rds, "[[", 2)
+  
+  # split multiple argument entries (e.g "package, help" from ?library)
+  arg_rds <- Reduce(c, Map(function(name, value) {
+    n <- strsplit(name, ", ")[[1]]
+    out <- rep(list(value), length(n))
+    names(out) <- n
+    out
+  }, names(arg_rds), arg_rds))
+  
+  # rename R "\dots" fields
+  names(arg_rds)[names(arg_rds) == "list()"] <- "..."
+  
   if (length(args)) arg_rds <- arg_rds[which(names(arg_rds) %in% args)]
   
   out <- vector("character", length(args))
   names(out) <- args
   
-  out[names(arg_rds)] <- sapply(arg_rds, rd_2_html, fragment = TRUE)
+  out[names(arg_rds)] <- vapply(arg_rds, rd_2_html, character(1L), fragment = TRUE)
   out
 }
 
@@ -150,3 +163,13 @@ re_capture <- function(x, re, ...) {
   names(out) <- attr(re_match, "capture.names")
   out
 }
+
+
+
+#' Character value to use for package meta field
+meta_pkg <- function() "{pkg}"
+
+
+
+#' Character value to use for object meta field
+meta_obj <- function() "{obj}"

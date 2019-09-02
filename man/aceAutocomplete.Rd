@@ -16,23 +16,23 @@ An observer reference class object that is responsible for offering
   code completion. See \code{\link[shiny]{observe}} for more details. You can
   use \code{suspend} or \code{destroy} to pause to stop dynamic code
   completion.
-  
+
   The observer reference object will send a custom shiny message using
   \code{session$sendCustomMessage} to the codeCompletions endpoint containing
   a json list of completion item metadata objects. The json list should have
   a structure akin to:
-  
+
   \preformatted{
   [
     {
-       inputId:   <str: inputId, expected for tooltips>, 
-       symbol:    <str: symbol name of completion item>,
-       name:      <str: value to be used for tooltip (e.g. "print")>, 
-       value:     <str: value to be inserted upon completion (e.g. "print()")>,
-       caption:   <str: value to be displayed (e.g. "print() # prints text")>,
-       score:     <num: score to pass to ace editor for sorting>,
-       completer: <str: used for dispatching default insertMatch functions>,
-       meta:      <str: meta text on right of completion>
+       value:        <str: value to be inserted upon completion (e.g. "print()")>,
+       caption:      <str: value to be displayed (e.g. "print() # prints text")>,
+       score:        <num: score to pass to ace editor for sorting>,
+       meta:         <str: meta text on right of completion>
+       r_symbol:     <str: symbol name of completion item>,
+       r_envir_name: <str: name of the environment from which the symbol is referenced>,
+       r_help_type:  <str: a datatype for dispatching help documentation function>,
+       completer:    <str: used for dispatching default insertMatch functions>,
     }
   ]
   }
