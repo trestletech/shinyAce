@@ -13,8 +13,7 @@ shinyUI(fluidPage(
         mode = "r", 
         autoComplete = "live",
         autoCompleters = "rlang", 
-        value = "
-# Tooltips:
+        value = "# Tooltips:
 # linger over an autocomplete option to view some documentation. See
 # - Function descriptions
 #     data.fra  # <autocomplete>
@@ -28,5 +27,8 @@ shinyUI(fluidPage(
 # gutter annotations used to indicate syntax errors, try uncommenting this line 
 # with an incomplete string
 # '''
-        ")))
+
+
+"
+    )))
 ))

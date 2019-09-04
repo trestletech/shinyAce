@@ -1,3 +1,5 @@
+shiny::shinyAppDir(system.file(package = "shinyAce", "examples", "12-tooltips"))
+
 #' Get namespace to get access to unexported functions, namely
 #'   .getHelpFile
 #'   .assignLinebuffer
@@ -37,7 +39,10 @@ get_help_file <- function(topic, package = NULL, ...) {
       topic = .(topic), 
       package = .(package), 
       ...))))
-  }, error = function(e) NULL)
+  }, error = function(e) {
+    shinyAce_debug("Error while trying to retrieve help files: \n", e$message)
+    NULL
+  })
 }
 
 
@@ -71,7 +76,6 @@ rd_2_html <- function(...) {
 get_desc_help <- function(...) {
   x <- get_help_file(...)
   if (is.null(x)) return(x)
-  
   rd_2_html(x[[which(.tools$RdTags(x) == "\\description")]], fragment = TRUE)
 }
 
@@ -173,3 +177,11 @@ meta_pkg <- function() "{pkg}"
 
 #' Character value to use for object meta field
 meta_obj <- function() "{obj}"
+
+
+
+#' Function for handling optional debugging messages
+shinyAce_debug <- function(...) {
+  if (getOption("shinyAce.debug", FALSE))
+    message("[shinyAce] ", ...)
+}

@@ -2,10 +2,10 @@
 % Please edit documentation in R/utils.R
 \name{meta_obj}
 \alias{meta_obj}
-\title{Character value to use for dataset meta field}
+\title{Character value to use for object meta field}
 \usage{
 meta_obj()
 }
 \description{
-Character value to use for dataset meta field
+Character value to use for object meta field
 }

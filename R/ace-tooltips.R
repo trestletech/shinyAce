@@ -51,15 +51,15 @@ aceTooltip <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
   shiny::observe({
     v <- session$input[[paste0(inputId, "_shinyAce_tooltipItem")]]
     if (is.null(v)) return()
-    
+
     tooltip <- tryCatch({ 
-      if (v$r_help_type == "parameter") {
+      if ("parameter" %in% v$r_help_type) {
         arg <- gsub(" = $", "", v$value)
         tooltip_html(arg, 
           if (!nchar(v$r_envir)) get_arg_help(v$r_symbol, args = arg)
           else get_arg_help(v$r_symbol, package = v$r_envir, args = arg))
         
-      } else if (v$r_help_type == "package") {
+      } else if ("package" %in% v$r_help_type) {
         pkg_desc <- utils::packageDescription(v$value, fields = c("Title", "Description"))
         pkg_help <- get_desc_help(paste0(v$value, "-package"))
         tooltip_html(pkg_desc$Title, 
@@ -70,7 +70,10 @@ aceTooltip <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
         tooltip_html(v$r_symbol, get_desc_help(v$r_symbol, package = v$r_envir))
         
       }
-    }, error = function(e) { print(e$message); "" })
+    }, error = function(e) {
+      shinyAce_debug("Error building tooltip body: \n", e$message)
+      ""
+    })
     
     return(session$sendCustomMessage('shinyAce', list(
       id = session$ns(inputId),
@@ -79,6 +82,12 @@ aceTooltip <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
 }
 
 
+
+#' A helper for formating a tooltip entry
+#' 
+#' @param title a character value to use as the title
+#' @param description an html block to embed as the body of the tooltip
+#' 
 tooltip_html <- function(title, description) {
   paste0(
     "<div><b style=\"font-size:larger\">",

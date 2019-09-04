@@ -102,6 +102,7 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
 
 
 
+#' R completions when cursor is within a function call
 r_function_completions_metadata <- function(fname, completions) {
   splat <- strsplit(fname, ":{2,3}")[[1]]
   n <- length(splat)
@@ -163,6 +164,7 @@ r_function_completions_metadata <- function(fname, completions) {
 
 
 
+#' R completions for general case
 r_completions_metadata <- function(completions) {
   completions <- sort(completions[nzchar(completions)])
   splat <- strsplit(completions, ":{2,3}")
@@ -183,10 +185,11 @@ r_completions_metadata <- function(completions) {
 
     # deduce environment name
     envir_name <- if (isNamespace(envir)) getNamespaceName(envir)
-      else environmentName(environment(obj))
+      else if (!is.null(environment(obj))) environmentName(environment(obj))
+      else ""
 
     # determine tooltip type
-    r_help_type <- if (is.environment(obj)) "package"
+    r_help_type <- if (isNamespace(obj)) "package"
       else if (is.function(obj)) "function"
       else "object"
 
