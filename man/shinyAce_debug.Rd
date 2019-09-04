@@ -6,6 +6,11 @@
 \usage{
 shinyAce_debug(...)
 }
+\arguments{
+\item{...}{zero or more objects which can be coerced to character
+    (and which are pasted together with no separator) or (for
+    \code{message} only) a single condition object.}
+}
 \description{
 Function for handling optional debugging messages
 }

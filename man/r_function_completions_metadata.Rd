@@ -6,6 +6,13 @@
 \usage{
 r_function_completions_metadata(fname, completions)
 }
+\arguments{
+\item{fname}{the function name for which the function call specific
+completion metadata should be constructed}
+
+\item{completions}{a character vector of completions. These will serve as the
+foundation for building added R-specific metadata}
+}
 \description{
 R completions when cursor is within a function call
 }

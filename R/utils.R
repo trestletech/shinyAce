@@ -181,6 +181,9 @@ meta_obj <- function() "{obj}"
 
 
 #' Function for handling optional debugging messages
+#' 
+#' @inheritParams base::message
+#' 
 shinyAce_debug <- function(...) {
   if (getOption("shinyAce.debug", FALSE))
     message("[shinyAce] ", ...)

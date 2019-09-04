@@ -6,6 +6,10 @@
 \usage{
 r_completions_metadata(completions)
 }
+\arguments{
+\item{completions}{a character vector of completions. These will serve as the
+foundation for building added R-specific metadata}
+}
 \description{
 R completions for general case
 }

@@ -103,6 +103,11 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
 
 
 #' R completions when cursor is within a function call
+#' 
+#' @param fname the function name for which the function call specific
+#'   completion metadata should be constructed
+#' @inheritParams r_completions_metadata
+#' 
 r_function_completions_metadata <- function(fname, completions) {
   splat <- strsplit(fname, ":{2,3}")[[1]]
   n <- length(splat)
@@ -165,6 +170,10 @@ r_function_completions_metadata <- function(fname, completions) {
 
 
 #' R completions for general case
+#' 
+#' @param completions a character vector of completions. These will serve as the
+#'   foundation for building added R-specific metadata
+#' 
 r_completions_metadata <- function(completions) {
   completions <- sort(completions[nzchar(completions)])
   splat <- strsplit(completions, ":{2,3}")
