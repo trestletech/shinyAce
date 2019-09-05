@@ -27,6 +27,23 @@
   100% { border-color: #CCC;}
 }
 
+
+.ace_tooltip {
+  /* tools::Rd2HTML whitespace doesn't cause breaks, impose spacing */
+  white-space: normal; 
+  
+  max-width: 25em;
+  font-size: 85%;
+}
+
+pre .shinyAce_annotation {
+  margin: 0;
+  padding: 0.5em;
+  border: none;
+  background: none;
+  font-size: 100%;
+}
+
 .acealert {
   border: 1px solid rgba(255, 50, 50, 0.60);
 }

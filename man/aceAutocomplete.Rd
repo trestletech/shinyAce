@@ -12,19 +12,41 @@ aceAutocomplete(inputId, session = shiny::getDefaultReactiveDomain())
 \item{session}{The \code{session} object passed to function given to shinyServer}
 }
 \value{
-An observer reference class object that is responsible for offering code completion.
-See \code{\link[shiny]{observe}} for more details. You can use \code{suspend} or \code{destroy}
-to pause to stop dynamic code completion.
+An observer reference class object that is responsible for offering
+  code completion. See \code{\link[shiny]{observe}} for more details. You can
+  use \code{suspend} or \code{destroy} to pause to stop dynamic code
+  completion.
+
+  The observer reference object will send a custom shiny message using
+  \code{session$sendCustomMessage} to the codeCompletions endpoint containing
+  a json list of completion item metadata objects. The json list should have
+  a structure akin to:
+
+  \preformatted{
+  [
+    {
+       value:        <str: value to be inserted upon completion (e.g. "print()")>,
+       caption:      <str: value to be displayed (e.g. "print() # prints text")>,
+       score:        <num: score to pass to ace editor for sorting>,
+       meta:         <str: meta text on right of completion>
+       r_symbol:     <str: symbol name of completion item>,
+       r_envir_name: <str: name of the environment from which the symbol is referenced>,
+       r_help_type:  <str: a datatype for dispatching help documentation function>,
+       completer:    <str: used for dispatching default insertMatch functions>,
+    }
+  ]
+  }
 }
 \description{
-This function dynamically auto complete R code pieces using built-in function
-\code{utils:::.win32consoleCompletion}. Please see \code{\link[utils]{rcompgen}} for details.
+This function dynamically auto complete R code pieces using built-in
+functions \code{utils:::.assignLinebuffer}, \code{utils:::.assignEnd},
+\code{utils:::.guessTokenFromLine} and \code{utils:::.completeToken}.
 }
 \details{
 You can implement your own code completer by listening to \code{input$<editorId>_shinyAce_hint}
 where <editorId> is the \code{aceEditor} id. The input contains
 \itemize{
- \item \code{linebuffer}: Code/Text at current editing line
- \item \code{cursorPosition}: Current cursor position at this line
+  \item \code{linebuffer}: Code/Text at current editing line
+  \item \code{cursorPosition}: Current cursor position at this line
 }
 }

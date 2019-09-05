@@ -2,7 +2,13 @@ library(shiny)
 library(shinyAce)
 library(dplyr)
 
-shinyServer(function(input, output, session) {
+ui <- fluidPage(
+  titlePanel("shinyAce auto completion - combine completion lists"),
+  radioButtons("dataset", "Dataset: ", c("mtcars", "airquality"), inline = TRUE),
+  uiOutput("ace_editor")
+)
+
+server <- function(input, output, session) {
   
   ## Dataset Selection
   dataset <- reactive({
@@ -30,9 +36,11 @@ shinyServer(function(input, output, session) {
   
   ## Update static auto complete list according to dataset and add local completions
   observe({
-    shinyAce::updateAceEditor(session,
+    shinyAce::updateAceEditor(
+      session,
       "editor",
-      autoCompleters = c("static", "text", "rlang"),
+      # autoCompleters = c("static", "text", "rlang"),
+      autoCompleters = c("static", "text"),
       autoCompleteList = comps()
     )
   })
@@ -40,5 +48,9 @@ shinyServer(function(input, output, session) {
   ## adding an observer for R-language code completion
   ## will become active after the first switch to another
   ## dataset
-  rlang <- aceAutocomplete("editor")
-})
+  ace_completer <- aceAutocomplete("editor")
+  ace_annotator <- aceAnnotate("editor")
+  ace_tooltip   <- aceTooltip("editor")
+}
+
+shinyApp(ui = ui, server = server)

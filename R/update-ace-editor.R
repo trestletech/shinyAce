@@ -60,7 +60,7 @@ updateAceEditor <- function(
   if(!is.empty(autoCompleters) && !all(autoCompleters %in% c("snippet", "text", "keyword", "static", "rlang")))
     stop("updateAceEditor: Incorrectly formatted autoCompleters parameter")
 
-  theList <- list(id = editorId)
+  theList <- list(id = session$ns(editorId))
 
   if (!missing(value)) theList["value"] <- value
   if (!missing(theme)) theList["theme"] <- theme

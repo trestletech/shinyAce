@@ -17,7 +17,9 @@ Depends:
     R (>= 3.3.0)
 Imports:
     shiny (>= 1.0.5),
-    jsonlite
+    jsonlite,
+    utils,
+    tools
 Suggests:
     testthat (>= 2.0.0),
     dplyr (>= 0.8.3)
