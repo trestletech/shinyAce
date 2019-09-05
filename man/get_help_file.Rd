@@ -4,14 +4,7 @@
 \alias{get_help_file}
 \title{Retrieve an Rd object of a help query}
 \usage{
-get_help_file(topic, package = NULL, ...)
-}
-\arguments{
-\item{topic}{character name of help topic}
-
-\item{package}{character name of help topic package namespace}
-
-\item{...}{additional arguments passed to \code{utils:::.getHelpFile}}
+get_help_file(...)
 }
 \value{
 the Rd object returned from \code{utils:::.getHelpFile}

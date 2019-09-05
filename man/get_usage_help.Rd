@@ -6,9 +6,6 @@
 \usage{
 get_usage_help(...)
 }
-\arguments{
-\item{...}{additional arguments passed to \code{utils:::.getHelpFile}}
-}
 \value{
 a character value representing the usage section of a help
   document, rendered as HTML

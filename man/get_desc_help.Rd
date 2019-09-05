@@ -6,9 +6,6 @@
 \usage{
 get_desc_help(...)
 }
-\arguments{
-\item{...}{additional arguments passed to \code{utils:::.getHelpFile}}
-}
 \value{
 a character value representing the description section of a help
   document, rendered as HTML

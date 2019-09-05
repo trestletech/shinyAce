@@ -114,10 +114,15 @@ r_function_completions_metadata <- function(fname, completions) {
 
   symbol <- if (n == 2) splat[[2]] else splat[[1]]
   envir <- if (n == 2) asNamespace(splat[[1]]) else .GlobalEnv
-
+  
   # get call object
   obj <- tryCatch(get(symbol, envir = envir), error = function(e) NULL)
 
+  # deduce environment name
+  envir_name <- if (isNamespace(envir)) getNamespaceName(envir)
+    else if (!is.null(environment(obj))) environmentName(environment(obj))
+    else ""
+  
   # get formal arguments to populate with default values
   frmls <- tryCatch(formals(obj),
     warning = function(e) "",
@@ -160,7 +165,7 @@ r_function_completions_metadata <- function(fname, completions) {
       caption = caption,
       score = score,
       meta = meta,
-      r_envir = meta,
+      r_envir = envir_name,
       r_symbol = symbol,
       r_help_type = r_help_type,
       completer = "rlang")

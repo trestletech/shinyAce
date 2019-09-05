@@ -24,21 +24,16 @@ shiny::shinyAppDir(system.file(package = "shinyAce", "examples", "12-tooltips"))
 #' 
 #' Safely return NULL if an error is encountered.
 #'
-#' @param topic character name of help topic 
-#' @param package character name of help topic package namespace
-#' @param ... additional arguments passed to \code{utils:::.getHelpFile}
+#' @inheritParams utils::help
 #'
 #' @return the Rd object returned from \code{utils:::.getHelpFile}
 #' 
 #' @import utils
 #' 
-get_help_file <- function(topic, package = NULL, ...) {
-  if (is.character(package) && nchar(package) == 0) package <- NULL
+get_help_file <- function(...) {
+  # if (is.character(package) && nchar(package) == 0) package <- NULL
   tryCatch({
-    .utils$.getHelpFile(eval(bquote(help(
-      topic = .(topic), 
-      package = .(package), 
-      ...))))
+    .utils$.getHelpFile(help(...))
   }, error = function(e) {
     shinyAce_debug("Error while trying to retrieve help files: \n", e$message)
     NULL
