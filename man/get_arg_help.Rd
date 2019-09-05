@@ -7,6 +7,11 @@
 get_arg_help(..., args = character())
 }
 \arguments{
+\item{...}{Arguments passed on to \code{get_help_file}
+\describe{
+  \item{}{}
+}}
+
 \item{args}{function arguments names to get documentation for}
 }
 \value{

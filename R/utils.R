@@ -25,15 +25,21 @@ shiny::shinyAppDir(system.file(package = "shinyAce", "examples", "12-tooltips"))
 #' Safely return NULL if an error is encountered.
 #'
 #' @inheritParams utils::help
+#' @inheritDotParams utils::help
 #'
 #' @return the Rd object returned from \code{utils:::.getHelpFile}
 #' 
 #' @import utils
 #' 
 get_help_file <- function(...) {
-  # if (is.character(package) && nchar(package) == 0) package <- NULL
+  dots <- list(...)
+  if (is.character(dots$package) && nchar(dots$package) == 0) 
+    dots$package <- NULL
+  
   tryCatch({
-    .utils$.getHelpFile(help(...))
+    h <- do.call(help, dots)
+    if (!length(h)) NULL
+    else .utils$.getHelpFile(h)
   }, error = function(e) {
     shinyAce_debug("Error while trying to retrieve help files: \n", e$message)
     NULL
@@ -59,6 +65,7 @@ rd_2_html <- function(...) {
 #' Retrieve description section from help document
 #'
 #' @inheritParams get_help_file
+#' @inheritDotParams get_help_file
 #'
 #' @return a character value representing the description section of a help
 #'   document, rendered as HTML
@@ -79,6 +86,7 @@ get_desc_help <- function(...) {
 #' Retrieve argument documentation from help document
 #'
 #' @inheritParams get_help_file
+#' @inheritDotParams get_help_file
 #' @param args function arguments names to get documentation for
 #'
 #' @return A character vector of help 
@@ -126,6 +134,7 @@ get_arg_help <- function(..., args = character()) {
 #' Retrieve usage section from help document
 #'
 #' @inheritParams get_help_file
+#' @inheritDotParams get_help_file
 #'
 #' @return a character value representing the usage section of a help
 #'   document, rendered as HTML

@@ -6,6 +6,12 @@
 \usage{
 get_usage_help(...)
 }
+\arguments{
+\item{...}{Arguments passed on to \code{get_help_file}
+\describe{
+  \item{}{}
+}}
+}
 \value{
 a character value representing the usage section of a help
   document, rendered as HTML
