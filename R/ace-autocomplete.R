@@ -42,14 +42,6 @@
 #'
 #' @export
 aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
-
-  fname_regex <- paste0(
-    "(?:^|.*[^a-zA-Z0-9._:])", # non-function name chars, non-capturing group
-    "([a-zA-Z0-9._:]+)",       # function name capturing group
-    "\\(",                     # function call open paren
-    "[^)]*$"                   # remainder of line buffer within function call
-  )
-
   shiny::observeEvent(session$input[[paste0(inputId, "_shinyAce_hint")]], {
     # largely inspired by rstudio/learnr
     # https://github.com/rstudio/learnr/blob/master/R/http-handlers.R
@@ -59,39 +51,8 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
     value <- session$input[[paste0(inputId, "_shinyAce_hint")]]
     if (is.empty(value)) return(NULL)
 
-    # build code completion input
     line <- substring(value$linebuffer, 1, value$cursorPosition$col)
-
-    # set completion settings
-    options <- utils::rc.options()
-    utils::rc.options(
-      package.suffix = "::",
-      funarg.suffix = "",
-      function.suffix = "()")
-    on.exit(do.call(utils::rc.options, as.list(options)), add = TRUE)
-
-    settings <- utils::rc.settings()
-    utils::rc.settings(
-      ops = TRUE, ns = TRUE, args = TRUE, func = FALSE, ipck = TRUE, S3 = FALSE,
-      data = TRUE, help = TRUE, argdb = TRUE, fuzzy = FALSE, files = TRUE,
-      quotes = TRUE)
-    on.exit(do.call(utils::rc.settings, as.list(settings)), add = TRUE)
-
-    completions <- character()
-    try(silent = TRUE, {
-      .utils$.assignLinebuffer(line)
-      .utils$.assignEnd(nchar(line))
-      .utils$.guessTokenFromLine()
-      .utils$.completeToken()
-      completions <- as.character(.utils$.retrieveCompletions())
-    })
-
-    is_func <- grepl(fname_regex, line)
-    fname <- gsub(fname_regex, "\\1", line)
-
-    completions <- if (!length(completions)) list()
-      else if (is_func) r_function_completions_metadata(fname, completions)
-      else r_completions_metadata(completions)
+    completions <- r_completions_metadata(line)
 
     return(session$sendCustomMessage('shinyAce', list(
       id = session$ns(inputId),
@@ -102,13 +63,52 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
 
 
 
+#' Return completions for a given line of text
+#' 
+#' @param line the text up until the cursor in the line for autocompletion
+#' 
+r_completions_metadata <- function(line) {
+  # set completion settings
+  options <- utils::rc.options()
+  utils::rc.options(
+    package.suffix = "::",
+    funarg.suffix = "",
+    function.suffix = "()")
+  on.exit(do.call(utils::rc.options, as.list(options)), add = TRUE)
+
+  settings <- utils::rc.settings()
+  utils::rc.settings(
+    ops = TRUE, ns = TRUE, args = TRUE, func = FALSE, ipck = TRUE, S3 = FALSE,
+    data = TRUE, help = TRUE, argdb = TRUE, fuzzy = FALSE, files = TRUE,
+    quotes = TRUE)
+  on.exit(do.call(utils::rc.settings, as.list(settings)), add = TRUE)
+
+  completions <- character()
+  try(silent = TRUE, {
+    .utils$.assignLinebuffer(line)
+    .utils$.assignEnd(nchar(line))
+    .utils$.guessTokenFromLine()
+    .utils$.completeToken()
+    completions <- as.character(.utils$.retrieveCompletions())
+  })
+
+  is_func <- grepl(.fname_regex, line)
+  fname <- gsub(.fname_regex, "\\1", line)
+
+  if (!length(completions)) list()
+  else if (is_func) r_completions_function_call_metadata(fname, completions)
+  else r_completions_general_metadata(completions)
+}
+
+
+
 #' R completions when cursor is within a function call
 #' 
 #' @param fname the function name for which the function call specific
 #'   completion metadata should be constructed
-#' @inheritParams r_completions_metadata
+#' @inheritParams r_completions_general_metadata
 #' 
-r_function_completions_metadata <- function(fname, completions) {
+r_completions_function_call_metadata <- function(fname, completions) {
   splat <- strsplit(fname, ":{2,3}")[[1]]
   n <- length(splat)
 
@@ -179,7 +179,7 @@ r_function_completions_metadata <- function(fname, completions) {
 #' @param completions a character vector of completions. These will serve as the
 #'   foundation for building added R-specific metadata
 #' 
-r_completions_metadata <- function(completions) {
+r_completions_general_metadata <- function(completions) {
   completions <- sort(completions[nzchar(completions)])
   splat <- strsplit(completions, ":{2,3}")
 

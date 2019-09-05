@@ -38,6 +38,7 @@ get_help_file <- function(...) {
   
   tryCatch({
     h <- do.call(help, dots)
+    if (length(h) > 1) h <- do.call(structure, c(h[1], attributes(h)))
     if (!length(h)) NULL
     else .utils$.getHelpFile(h)
   }, error = function(e) {
@@ -192,3 +193,14 @@ shinyAce_debug <- function(...) {
   if (getOption("shinyAce.debug", FALSE))
     message("[shinyAce] ", ...)
 }
+
+
+
+#' Regular expression for matching the function name in a completion line in the
+#' middle of a function call
+.fname_regex <- paste0(
+  "(?:^|.*[^a-zA-Z0-9._:])", # non-function name chars, non-capturing group
+  "([a-zA-Z0-9._:]+)",       # function name capturing group
+  "\\(",                     # function call open paren
+  "[^)]*$"                   # remainder of line buffer within function call
+)

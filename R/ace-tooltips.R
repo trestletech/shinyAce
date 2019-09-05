@@ -49,36 +49,54 @@
 #' @export
 aceTooltip <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
   shiny::observe({
-    v <- session$input[[paste0(inputId, "_shinyAce_tooltipItem")]]
-    if (is.null(v)) return()
-
-    tooltip <- tryCatch({ 
-      if ("parameter" %in% v$r_help_type) {
-        arg <- gsub(" = $", "", v$value)
-        tooltip_html(arg, 
-          if (!nchar(v$r_envir)) get_arg_help(v$r_symbol, args = arg)
-          else get_arg_help(v$r_symbol, package = v$r_envir, args = arg))
-        
-      } else if ("package" %in% v$r_help_type) {
-        pkg_desc <- utils::packageDescription(v$value, fields = c("Title", "Description"))
-        pkg_help <- get_desc_help(paste0(v$value, "-package"))
-        tooltip_html(pkg_desc$Title, 
-          if (is.null(pkg_help)) paste0("<p>", pkg_desc$Description, "</p>")
-          else pkg_help)
-        
-      } else {
-        tooltip_html(v$r_symbol, get_desc_help(v$r_symbol, package = v$r_envir))
-        
-      }
+    value <- session$input[[paste0(inputId, "_shinyAce_tooltipItem")]]
+    if (is.null(value)) return()
+    
+    tooltip_fields <-   tryCatch({ 
+      build_tooltip_fields(value)
     }, error = function(e) {
       shinyAce_debug("Error building tooltip body: \n", e$message)
-      ""
+      NULL
     })
     
     return(session$sendCustomMessage('shinyAce', list(
       id = session$ns(inputId),
-      docTooltip = jsonlite::toJSON(list(docHTML = tooltip), auto_unbox = TRUE))))
+      docTooltip = jsonlite::toJSON(list(
+          docHTML = do.call(tooltip_html, tooltip_fields)
+        ), auto_unbox = TRUE))))
   })
+}
+
+
+
+#' Build the fields used to make an html tooltip
+#' 
+#' @param v Autocomplete metadata values used for building tooltip info
+#' @return a list with html-formatted character values "title" and "body
+#' 
+build_tooltip_fields <- function(v) {
+  tooltip <- list(title = NULL, body = NULL)
+  
+  if ("parameter" %in% v$r_help_type) {
+    arg <- gsub(" = $", "", v$value)
+    tooltip$title <- arg
+    tooltip$body <- if (!nchar(v$r_envir)) get_arg_help(v$r_symbol, args = arg)
+      else get_arg_help(v$r_symbol, package = v$r_envir, args = arg)
+    
+  } else if ("package" %in% v$r_help_type) {
+    pkg_desc <- utils::packageDescription(v$value, fields = c("Title", "Description"))
+    pkg_help <- get_desc_help(paste0(v$value, "-package"))
+    tooltip$title <- pkg_desc$Title
+    tooltip$body <- if (is.null(pkg_help)) paste0("<p>", pkg_desc$Description, "</p>")
+      else pkg_help
+    
+  } else {
+    tooltip$title <- v$r_symbol
+    tooltip$body <- get_desc_help(v$r_symbol, package = v$r_envir)
+    
+  }
+  
+  tooltip
 }
 
 
@@ -86,13 +104,13 @@ aceTooltip <- function(inputId, session = shiny::getDefaultReactiveDomain()) {
 #' A helper for formating a tooltip entry
 #' 
 #' @param title a character value to use as the title
-#' @param description an html block to embed as the body of the tooltip
+#' @param body an html block to embed as the body of the tooltip
 #' 
-tooltip_html <- function(title, description) {
+tooltip_html <- function(title = "", body = "") {
   paste0(
     "<div><b style=\"font-size:larger\">",
     title,
     "</b>",
-    description,
+    body,
     "</div>")
 }

@@ -4,12 +4,12 @@
 \alias{tooltip_html}
 \title{A helper for formating a tooltip entry}
 \usage{
-tooltip_html(title, description)
+tooltip_html(title = "", body = "")
 }
 \arguments{
 \item{title}{a character value to use as the title}
 
-\item{description}{an html block to embed as the body of the tooltip}
+\item{body}{an html block to embed as the body of the tooltip}
 }
 \description{
 A helper for formating a tooltip entry

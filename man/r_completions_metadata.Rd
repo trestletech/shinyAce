@@ -2,14 +2,13 @@
 % Please edit documentation in R/ace-autocomplete.R
 \name{r_completions_metadata}
 \alias{r_completions_metadata}
-\title{R completions for general case}
+\title{Return completions for a given line of text}
 \usage{
-r_completions_metadata(completions)
+r_completions_metadata(line)
 }
 \arguments{
-\item{completions}{a character vector of completions. These will serve as the
-foundation for building added R-specific metadata}
+\item{line}{the text up until the cursor in the line for autocompletion}
 }
 \description{
-R completions for general case
+Return completions for a given line of text
 }
