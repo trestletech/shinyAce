@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check if vector is empty — is.empty • shinyAce</title>
+<title>Enable Error Annotations for an Ace Code Input — aceAnnotate • shinyAce</title>
 
 
 <!-- jquery -->
@@ -33,8 +33,9 @@
 
 
 
-<meta property="og:title" content="Check if vector is empty — is.empty" />
-<meta property="og:description" content="Check if vector is empty" />
+<meta property="og:title" content="Enable Error Annotations for an Ace Code Input — aceAnnotate" />
+<meta property="og:description" content="This function dynamically evaluate R for syntax errors using the
+parse function." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -99,35 +100,69 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check if vector is empty</h1>
+    <h1>Enable Error Annotations for an Ace Code Input</h1>
     
-    <div class="hidden name"><code>is.empty.Rd</code></div>
+    <div class="hidden name"><code>aceAnnotate.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Check if vector is empty</p>
+    <p>This function dynamically evaluate R for syntax errors using the
+<code><a href='https://www.rdocumentation.org/packages/base/topics/parse'>parse</a></code> function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is.empty</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>aceAnnotate</span>(<span class='no'>inputId</span>, <span class='kw'>session</span> <span class='kw'>=</span> <span class='kw pkg'>shiny</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/shiny/topics/domains'>getDefaultReactiveDomain</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>vector</p></td>
+      <th>inputId</th>
+      <td><p>The id of the input object</p></td>
+    </tr>
+    <tr>
+      <th>session</th>
+      <td><p>The <code>session</code> object passed to function given to
+shinyServer</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>is.empty</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.empty</span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.empty</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.empty</span>(<span class='st'>""</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.empty</span>(<span class='st'>" "</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.empty</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>" "</span>, <span class='st'>" "</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.empty</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.empty</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>""</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+    <p>An observer reference class object that is responsible for offering
+  code annotations. See <code><a href='https://www.rdocumentation.org/packages/shiny/topics/observeEvent'>observeEvent</a></code> for more details.
+  You can use <code>suspend</code> or <code>destroy</code> to pause to stop dynamic code
+  completion.</p>
+<p>The observer reference object will send a custom shiny message using
+  <code>session$sendCustomMessage</code> to the annotations endpoint containing
+  a json list of annotation metadata objects. The json list should have
+  a structure akin to:</p>
+<p></p><pre>
+  [
+    {
+       row:  &lt;int: row of annotation reference&gt;,
+       col:  &lt;int: column of annotation reference&gt;,
+       type: &lt;str: "error", "alert" or "flash"&gt;,
+       html: &lt;str: html of annotation hover div, used by default over text&gt;,
+       text: &lt;num: text of annotation hover div&gt;,
+    }
+  ]
+  </pre>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>You can implement your own code completer by observing modification events to
+<code>input$&lt;editorId&gt;_shinyAce_annotationTrigger</code> where &lt;editorId&gt; is the
+<code>aceEditor</code> id. This input is only used for triggering completion and
+will contain a random number. However, you can access
+<code>session$input[[inputId]]</code> to get the input text for parsing.</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>

@@ -13,7 +13,7 @@ editor can easily be pulled from `server.R` using `input$yourEditorsName`.
 
 ![shinyAce](https://trestletech.github.io/shinyAce/images/shinyAce.png)
 
-Or view an [interactive example](https://starkingdom.shinyapps.io/shinyAce-01-basic/).
+Or view an [interactive example](https://vnijs.shinyapps.io/shinyAce-01-basic/)
 
 Installation
 ------------
