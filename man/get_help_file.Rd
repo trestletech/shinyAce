@@ -21,7 +21,7 @@ get_help_file(...)
    See \sQuote{Details} for what happens if this is omitted.
  }
   \item{package}{a name or character vector giving the packages to look
-   into for documentation, or \code{NULL}.  By default, all packages 
+   into for documentation, or \code{NULL}.  By default, all packages
    whose namespaces are loaded are used.  To avoid a name being deparsed use e.g.
    \code{(pkg_ref)} (see the examples).}
   \item{lib.loc}{a character vector of directory names of \R libraries,
