@@ -21,5 +21,4 @@ is.empty(" ")
 is.empty(c(" ", " "))
 is.empty(list())
 is.empty(list(a = "", b = ""))
-
 }

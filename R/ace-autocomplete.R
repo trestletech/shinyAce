@@ -49,12 +49,14 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
 
     # read params
     value <- session$input[[paste0(inputId, "_shinyAce_hint")]]
-    if (is.empty(value)) return(NULL)
+    if (is.empty(value)) {
+      return(NULL)
+    }
 
     line <- substring(value$linebuffer, 1, value$cursorPosition$col)
     completions <- r_completions_metadata(line)
 
-    return(session$sendCustomMessage('shinyAce', list(
+    return(session$sendCustomMessage("shinyAce", list(
       id = session$ns(inputId),
       codeCompletions = jsonlite::toJSON(completions, auto_unbox = TRUE)
     )))
@@ -64,23 +66,25 @@ aceAutocomplete <- function(inputId, session = shiny::getDefaultReactiveDomain()
 
 
 #' Return completions for a given line of text
-#' 
+#'
 #' @param line the text up until the cursor in the line for autocompletion
-#' 
+#'
 r_completions_metadata <- function(line) {
   # set completion settings
   options <- utils::rc.options()
   utils::rc.options(
     package.suffix = "::",
     funarg.suffix = "",
-    function.suffix = "()")
+    function.suffix = "()"
+  )
   on.exit(do.call(utils::rc.options, as.list(options)), add = TRUE)
 
   settings <- utils::rc.settings()
   utils::rc.settings(
     ops = TRUE, ns = TRUE, args = TRUE, func = FALSE, ipck = TRUE, S3 = FALSE,
     data = TRUE, help = TRUE, argdb = TRUE, fuzzy = FALSE, files = TRUE,
-    quotes = TRUE)
+    quotes = TRUE
+  )
   on.exit(do.call(utils::rc.settings, as.list(settings)), add = TRUE)
 
   completions <- character()
@@ -95,38 +99,47 @@ r_completions_metadata <- function(line) {
   is_func <- grepl(.fname_regex, line)
   fname <- gsub(.fname_regex, "\\1", line)
 
-  if (!length(completions)) list()
-  else if (is_func) r_completions_function_call_metadata(fname, completions)
-  else r_completions_general_metadata(completions)
+  if (!length(completions)) {
+    list()
+  } else if (is_func) {
+    r_completions_function_call_metadata(fname, completions)
+  } else {
+    r_completions_general_metadata(completions)
+  }
 }
 
 
 
 #' R completions when cursor is within a function call
-#' 
+#'
 #' @param fname the function name for which the function call specific
 #'   completion metadata should be constructed
 #' @inheritParams r_completions_general_metadata
-#' 
+#'
 r_completions_function_call_metadata <- function(fname, completions) {
   splat <- strsplit(fname, ":{2,3}")[[1]]
   n <- length(splat)
 
   symbol <- if (n == 2) splat[[2]] else splat[[1]]
   envir <- if (n == 2) asNamespace(splat[[1]]) else .GlobalEnv
-  
+
   # get call object
   obj <- tryCatch(get(symbol, envir = envir), error = function(e) NULL)
 
   # deduce environment name
-  envir_name <- if (isNamespace(envir)) getNamespaceName(envir)
-    else if (!is.null(environment(obj))) environmentName(environment(obj))
-    else ""
-  
+  envir_name <- if (isNamespace(envir)) {
+    getNamespaceName(envir)
+  } else if (!is.null(environment(obj))) {
+    environmentName(environment(obj))
+  } else {
+    ""
+  }
+
   # get formal arguments to populate with default values
   frmls <- tryCatch(formals(obj),
     warning = function(e) "",
-    error = function(e) "")
+    error = function(e) ""
+  )
 
   # quote singular character formal values
   chr_len1_frmls <- vapply(frmls, length, numeric(1L)) == 1L &
@@ -142,10 +155,11 @@ r_completions_function_call_metadata <- function(fname, completions) {
   r_help_type <- rep("", length(completions))
   r_help_type[frmls_i] <- "parameter"
   r_help_type[!frmls_i] <- ifelse(
-    completions[!frmls_i] %in% installed.packages()[,"Package"],
+    completions[!frmls_i] %in% installed.packages()[, "Package"],
     "package",
-    r_help_type[!frmls_i])
-  
+    r_help_type[!frmls_i]
+  )
+
   # map help type to meta text display
   meta <- ifelse(r_help_type == "package", meta_pkg(), "")
 
@@ -156,7 +170,8 @@ r_completions_function_call_metadata <- function(fname, completions) {
   captions[frmls_i] <- paste0(completions[frmls_i], " = ", frmls[completions[frmls_i]])
   captions[!frmls_i] <- ifelse(nchar(captions[!frmls_i]) >= 28,
     paste0(substr(captions[!frmls_i], 1, 28), "\u2026"), # (ellipses)
-    captions[!frmls_i])
+    captions[!frmls_i]
+  )
 
   # build completions metadata
   unname(Map(function(value, caption, meta, r_help_type, score) {
@@ -168,17 +183,18 @@ r_completions_function_call_metadata <- function(fname, completions) {
       r_envir = envir_name,
       r_symbol = symbol,
       r_help_type = r_help_type,
-      completer = "rlang")
+      completer = "rlang"
+    )
   }, values, captions, meta, r_help_type, rev(seq_along(completions))))
 }
 
 
 
 #' R completions for general case
-#' 
+#'
 #' @param completions a character vector of completions. These will serve as the
 #'   foundation for building added R-specific metadata
-#' 
+#'
 r_completions_general_metadata <- function(completions) {
   completions <- sort(completions[nzchar(completions)])
   splat <- strsplit(completions, ":{2,3}")
@@ -190,32 +206,43 @@ r_completions_general_metadata <- function(completions) {
 
     # try to get object, attempting object or namespace
     obj <- tryCatch({
-        get(symbol, envir = envir)
-      }, error = function(e) tryCatch({
+      get(symbol, envir = envir)
+    }, error = function(e) tryCatch({
         asNamespace(symbol)
       }, error = function(e) {
         NULL
       }))
 
     # deduce environment name
-    envir_name <- if (isNamespace(envir)) getNamespaceName(envir)
-      else if (!is.null(environment(obj))) environmentName(environment(obj))
-      else ""
+    envir_name <- if (isNamespace(envir)) {
+      getNamespaceName(envir)
+    } else if (!is.null(environment(obj))) {
+      environmentName(environment(obj))
+    } else {
+      ""
+    }
 
     # determine tooltip type
-    r_help_type <- if (isNamespace(obj)) "package"
-      else if (is.function(obj)) "function"
-      else "object"
+    r_help_type <- if (isNamespace(obj)) {
+      "package"
+    } else if (is.function(obj)) {
+      "function"
+    } else {
+      "object"
+    }
 
     meta <- switch(r_help_type,
-       "object" = meta_obj(),
-       "package" = meta_pkg(),
-       envir_name)
+      "object" = meta_obj(),
+      "package" = meta_pkg(),
+      envir_name
+    )
 
     # add () suffix to functions (excluding user-defined infix operators)
-    name <- if (is.function(obj) && !grepl("^%", as.character(symbol)))
+    name <- if (is.function(obj) && !grepl("^%", as.character(symbol))) {
       paste0(completion, "()")
-    else completion
+    } else {
+      completion
+    }
 
 
     # Some example tooltip metadata:
@@ -240,8 +267,7 @@ r_completions_general_metadata <- function(completions) {
       r_symbol = symbol,
       r_envir = envir_name,
       r_help_type = r_help_type,
-      completer = "rlang")
-
-
+      completer = "rlang"
+    )
   }, completions, splat, rev(seq_along(completions))))
 }

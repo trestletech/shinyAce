@@ -49,16 +49,19 @@ updateAceEditor <- function(
   autoCompleters = c("snippet", "text", "keyword", "static", "rlang"),
   autoCompleteList = NULL
 ) {
-
+  
   if (missing(session) || missing(editorId)) {
     stop("Must provide both a session and an editorId to update Ace editor settings")
   }
-  if(!all(autoComplete %in% c("disabled", "enabled", "live")))
+  if (!all(autoComplete %in% c("disabled", "enabled", "live"))) {
     stop("updateAceEditor: Incorrectly formatted autoComplete parameter")
-  if(!all(border %in% c("normal", "alert", "flash")))
+  }
+  if (!all(border %in% c("normal", "alert", "flash"))) {
     stop("updateAceEditor: Incorrectly formatted border parameter")
-  if(!is.empty(autoCompleters) && !all(autoCompleters %in% c("snippet", "text", "keyword", "static", "rlang")))
+  }
+  if (!is.empty(autoCompleters) && !all(autoCompleters %in% c("snippet", "text", "keyword", "static", "rlang"))) {
     stop("updateAceEditor: Incorrectly formatted autoCompleters parameter")
+  }
 
   theList <- list(id = session$ns(editorId))
 

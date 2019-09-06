@@ -1,3 +1,8 @@
+shinyAce 0.4.1
+--------------------------------------------------------------------
+
+* @dgkf provided a PR with improvements to rlang autocompletion, tooltips & annotations [PR66](https://github.com/trestletech/shinyAce/pull/66)
+
 shinyAce 0.4.0
 --------------------------------------------------------------------
 

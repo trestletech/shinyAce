@@ -17,24 +17,24 @@ An observer reference class object that is responsible for offering
   completion tooltips. See \code{\link[shiny]{observe}} for more details. You
   can use \code{suspend} or \code{destroy} to pause to stop dynamic code
   completion.
-  
+
   The observer reference object will send a custom shiny message using
   \code{session$sendCustomMessage} to the docTooltip endpoint containing a
   json list of completion item metadata objects. The json list should have a
   structure akin to one of:
-  
+
   A text object
   \preformatted{
   <str: text to display for tooltip>
   }
-  
+
   An object containing a \code{docHTML} property
   \preformatted{
   {
-     docHTML: <str: html to display for tooltip div, used if available>, 
+     docHTML: <str: html to display for tooltip div, used if available>,
   }
   }
-  
+
   An object containing a \code{docText} property
   \preformatted{
   {
