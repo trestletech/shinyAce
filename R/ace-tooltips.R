@@ -107,7 +107,7 @@ build_tooltip_fields <- function(v) {
 
 
 
-#' A helper for formating a tooltip entry
+#' A helper for formatting a tooltip entry
 #'
 #' @param title a character value to use as the title
 #' @param body an html block to embed as the body of the tooltip

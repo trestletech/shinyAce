@@ -2,7 +2,7 @@
 % Please edit documentation in R/ace-tooltips.R
 \name{tooltip_html}
 \alias{tooltip_html}
-\title{A helper for formating a tooltip entry}
+\title{A helper for formatting a tooltip entry}
 \usage{
 tooltip_html(title = "", body = "")
 }
@@ -12,5 +12,5 @@ tooltip_html(title = "", body = "")
 \item{body}{an html block to embed as the body of the tooltip}
 }
 \description{
-A helper for formating a tooltip entry
+A helper for formatting a tooltip entry
 }
