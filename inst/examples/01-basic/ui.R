@@ -8,6 +8,7 @@ shinyUI(
       numericInput("size", "Tab size:", 4),
       radioButtons("soft", NULL, c("Soft tabs" = TRUE, "Hard tabs" = FALSE), inline = TRUE),
       radioButtons("invisible", NULL, c("Hide invisibles" = FALSE, "Show invisibles" = TRUE), inline = TRUE),
+      radioButtons("linenr", NULL, c("Show line #" = TRUE, "Hide line #" = FALSE), inline = TRUE),
       actionButton("reset", "Reset text"),
       actionButton("clear", "Clear text"),
       HTML("<hr />"),

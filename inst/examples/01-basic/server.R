@@ -21,7 +21,8 @@ shinyServer(function(input, output, session) {
       mode = input$mode,
       tabSize = input$size,
       useSoftTabs = as.logical(input$soft),
-      showInvisibles = as.logical(input$invisible)
+      showInvisibles = as.logical(input$invisible),
+      showLineNumbers = as.logical(input$linenr)
     )
   })
 
