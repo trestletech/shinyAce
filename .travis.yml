@@ -3,7 +3,6 @@ r:
   - release
   - devel
 sudo: required
-dist: trusty
 r_binary_packages:
   - shiny
   - dplyr
