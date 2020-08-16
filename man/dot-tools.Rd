@@ -5,7 +5,9 @@
 \alias{.tools}
 \title{Get namespace to get access to unexported functions, namely
   RdTags}
-\format{An object of class \code{environment} of length 727.}
+\format{
+An object of class \code{environment} of length 736.
+}
 \usage{
 .tools
 }

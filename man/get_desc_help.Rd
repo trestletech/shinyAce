@@ -7,10 +7,11 @@
 get_desc_help(...)
 }
 \arguments{
-\item{...}{Arguments passed on to \code{get_help_file}
-\describe{
-  \item{}{}
-}}
+\item{...}{
+  Arguments passed on to \code{\link[=get_help_file]{get_help_file}}
+  \describe{
+    \item{\code{}}{}
+  }}
 }
 \value{
 a character value representing the description section of a help

@@ -7,7 +7,7 @@
 rd_2_html(...)
 }
 \arguments{
-\item{...}{ additional parameters to pass to \code{\link{parse_Rd}} when
+\item{...}{ additional parameters to pass to \code{\link[tools]{parse_Rd}} when
     \code{Rd} is a filename. }
 }
 \value{

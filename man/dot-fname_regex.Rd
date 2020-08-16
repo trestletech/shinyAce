@@ -5,7 +5,9 @@
 \alias{.fname_regex}
 \title{Regular expression for matching the function name in a completion line in the
 middle of a function call}
-\format{An object of class \code{character} of length 1.}
+\format{
+An object of class \code{character} of length 1.
+}
 \usage{
 .fname_regex
 }
