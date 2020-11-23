@@ -44,7 +44,7 @@
 #' @export
 updateAceEditor <- function(
   session, editorId, value, theme, readOnly, mode,
-  fontSize, showLineNumbers, wordWrap, useSoftTabs, tabSize, showInvisibles,
+  fontSize, showLineNumbers, wordWrap, useSoftTabs, tabSize, showInvisibles, showPrintMargin,
   border = c("normal", "alert", "flash"),
   autoComplete = c("disabled", "enabled", "live"),
   autoCompleters = c("snippet", "text", "keyword", "static", "rlang"),
@@ -76,6 +76,7 @@ updateAceEditor <- function(
   if (!missing(tabSize)) theList["tabSize"] <- tabSize
   if (!missing(useSoftTabs)) theList["useSoftTabs"] <- useSoftTabs
   if (!missing(showInvisibles)) theList["showInvisibles"] <- showInvisibles
+  if (!missing(showPrintMargin)) theList["showPrintMargin"] <- showPrintMargin
 
   if (!missing(border)) {
     border <- match.arg(border)
