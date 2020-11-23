@@ -121,6 +121,7 @@ aceEditor <- function(
   autoCompleteList = NULL,
   tabSize = 4, useSoftTabs = TRUE,
   showInvisibles = FALSE, setBehavioursEnabled = TRUE,
+  showPrintMargin = TRUE,
   autoScrollEditorIntoView = FALSE, 
   maxLines = NULL, minLines = NULL,
   placeholder = NULL
@@ -145,6 +146,7 @@ aceEditor <- function(
       tabSize = tabSize,
       useSoftTabs = useSoftTabs,
       showInvisibles = showInvisibles,
+      showPrintMargin = showPrintMargin,
       setBehavioursEnabled = setBehavioursEnabled,
       autoScrollEditorIntoView = autoScrollEditorIntoView,
       maxLines = maxLines,
