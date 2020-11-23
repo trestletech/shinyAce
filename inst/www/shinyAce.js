@@ -220,6 +220,10 @@
       editor.setOption("showInvisibles", data.showInvisibles);
     }
 
+    if (data.hasOwnProperty("showPrintMargin")) {
+      editor.setOption("showPrintMargin", data.showPrintMargin);
+    }
+
     if (data.hasOwnProperty('border')) {
       var classes = ['acenormal', 'aceflash', 'acealert'];
       $(el).removeClass(classes.join(' '));
