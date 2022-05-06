@@ -6,19 +6,22 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ace Editor Bindings for Shiny • shinyAce</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Ace Editor Bindings for Shiny">
 <meta property="og:description" content="Ace editor bindings to enable a rich text editing environment
     within Shiny.">
-<meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +34,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shinyAce</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -50,7 +47,14 @@
   <a href="news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/trestletech/shinyAce/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -59,134 +63,145 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="shinyace" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#shinyace" class="anchor"></a>shinyAce</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="shinyace">shinyAce<a class="anchor" aria-label="anchor" href="#shinyace"></a>
+</h1></div>
 
-<p>The <code>shinyAce</code> package enables Shiny application developers to use the <a href="https://ace.c9.io/#nav=about">Ace text editor</a> in their applications. All current modes (languages) and themes are supported in this package. The mode, theme, and current text can be defined when the element is initialized in <code>ui.R</code> or afterwards using the <code><a href="reference/updateAceEditor.html">updateAceEditor()</a></code> function. The editor registers itself as a reactive Shiny input, so the current value of the editor can easily be pulled from <code>server.R</code> using <code>input$yourEditorsName</code>.</p>
-<p><img src="https://trestletech.github.io/shinyAce/images/shinyAce.png" alt="shinyAce"></p>
-<p>Or view an <a href="https://vnijs.shinyapps.io/shinyAce-01-basic/">interactive example</a></p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>shinyAce is available <a href="https://cran.r-project.org/package=shinyAce">on CRAN</a>, so installation is as simple as:</p>
-<pre><code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages("shinyAce")</a></code></pre>
-<p>You can install the latest development version of the code using the <code>devtools</code> R package.</p>
-<pre><code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages"># Install devtools, if you haven't already.
-install.packages("devtools")
-devtools::install_github("trestletech/shinyAce")</a></code></pre>
+<p>The <code>shinyAce</code> package enables Shiny application developers to use the <a href="https://ace.c9.io/#nav=about" class="external-link">Ace text editor</a> in their applications. All current modes (languages) and themes are supported in this package. The mode, theme, and current text can be defined when the element is initialized in <code>ui.R</code> or afterwards using the <code><a href="reference/updateAceEditor.html">updateAceEditor()</a></code> function. The editor registers itself as a reactive Shiny input, so the current value of the editor can easily be pulled from <code>server.R</code> using <code>input$yourEditorsName</code>.</p>
+<div class="figure">
+<img src="https://trestletech.github.io/shinyAce/images/shinyAce.png" alt=""><p class="caption">shinyAce</p>
 </div>
-<div id="getting-started" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-started" class="anchor"></a>Getting Started</h2>
-<p>Various examples are available in the <a href="https://github.com/trestletech/shinyAce/tree/master/inst/examples"><code>inst/examples</code></a> directory included in the package. A few examples are described below. (Note that the package must be installed before you can run any examples.)</p>
-<div id="basic-live-demo" class="section level3">
-<h3 class="hasAnchor">
-<a href="#basic-live-demo" class="anchor"></a>01-basic (<a href="https://vnijs.shinyapps.io/shinyAce-01-basic/">Live Demo</a>)</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/01-basic", package="shinyAce"))</a></code></p>
-<p><img src="https://trestletech.github.io/shinyAce/images/shinyAce.png" alt="shinyAce"></p>
+<p>Or view an <a href="https://vnijs.shinyapps.io/shinyAce-01-basic/" class="external-link">interactive example</a></p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>shinyAce is available <a href="https://cran.r-project.org/package=shinyAce" class="external-link">on CRAN</a>, so installation is as simple as:</p>
+<pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"shinyAce"</span><span class="op">)</span></code></pre>
+<p>You can install the latest development version of the code using the <code>devtools</code> R package.</p>
+<pre><code><span class="co"># Install devtools, if you haven't already.</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"trestletech/shinyAce"</span><span class="op">)</span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="getting-started">Getting Started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h2>
+<p>Various examples are available in the <a href="https://github.com/trestletech/shinyAce/tree/master/inst/examples" class="external-link"><code>inst/examples</code></a> directory included in the package. A few examples are described below. (Note that the package must be installed before you can run any examples.)</p>
+<div class="section level3">
+<h3 id="01-basic-live-demo">01-basic (<a href="https://vnijs.shinyapps.io/shinyAce-01-basic/" class="external-link">Live Demo</a>)<a class="anchor" aria-label="anchor" href="#01-basic-live-demo"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/01-basic", package="shinyAce"))</code></p>
+<div class="figure">
+<img src="https://trestletech.github.io/shinyAce/images/shinyAce.png" alt=""><p class="caption">shinyAce</p>
+</div>
 <p>Demonstrates the basic capabilities of shinyAce including the ability to set an initial value, or interactively assign a value, theme, or mode later on in the session.</p>
 </div>
-<div id="eval" class="section level3">
-<h3 class="hasAnchor">
-<a href="#eval" class="anchor"></a>02-eval</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/02-eval", package="shinyAce"))</a></code></p>
-<p><img src="https://trestletech.github.io/shinyAce/images/shinyAce-eval.png" alt="shinyAce"></p>
+<div class="section level3">
+<h3 id="02-eval">02-eval<a class="anchor" aria-label="anchor" href="#02-eval"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/02-eval", package="shinyAce"))</code></p>
+<div class="figure">
+<img src="https://trestletech.github.io/shinyAce/images/shinyAce-eval.png" alt=""><p class="caption">shinyAce</p>
+</div>
 <p>Shows an example of using shinyAce to allow the user to compose R code which will then be evaluated on the server.</p>
 </div>
-<div id="knitr" class="section level3">
-<h3 class="hasAnchor">
-<a href="#knitr" class="anchor"></a>03-knitr</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/03-knitr", package="shinyAce"))</a></code></p>
-<p><img src="https://trestletech.github.io/shinyAce/images/shinyAce-knitr.png" alt="shinyAce"></p>
-<p>Demonstrates integrating shinyAce with the <a href="https://yihui.name/knitr/">knitr</a> package. (Note also that an example of this integration is available <a href="https://github.com/yihui/knitr/tree/master/inst/shiny">in the knitr package</a> itself and includes features such as R syntax highlighting.)</p>
+<div class="section level3">
+<h3 id="03-knitr">03-knitr<a class="anchor" aria-label="anchor" href="#03-knitr"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/03-knitr", package="shinyAce"))</code></p>
+<div class="figure">
+<img src="https://trestletech.github.io/shinyAce/images/shinyAce-knitr.png" alt=""><p class="caption">shinyAce</p>
 </div>
-<div id="shinyui" class="section level3">
-<h3 class="hasAnchor">
-<a href="#shinyui" class="anchor"></a>04-shinyui</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/04-shinyui", package="shinyAce"))</a></code></p>
-<p><img src="https://trestletech.github.io/shinyAce/images/shinyAce-renderui.png" alt="shinyAce"></p>
+<p>Demonstrates integrating shinyAce with the <a href="https://yihui.org/knitr/" class="external-link">knitr</a> package. (Note also that an example of this integration is available <a href="https://github.com/yihui/knitr/tree/master/inst/shiny" class="external-link">in the knitr package</a> itself and includes features such as R syntax highlighting.)</p>
+</div>
+<div class="section level3">
+<h3 id="04-shinyui">04-shinyui<a class="anchor" aria-label="anchor" href="#04-shinyui"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/04-shinyui", package="shinyAce"))</code></p>
+<div class="figure">
+<img src="https://trestletech.github.io/shinyAce/images/shinyAce-renderui.png" alt=""><p class="caption">shinyAce</p>
+</div>
 <p>Demonstrates using shinyAce to allow a user to create a Shiny UI within Shiny itself. The UI can then be rendered on the right half of the page. Could be a great learning tool for teaching how to construct Shiny UIs.</p>
 </div>
-<div id="hotkeys-live-demo" class="section level3">
-<h3 class="hasAnchor">
-<a href="#hotkeys-live-demo" class="anchor"></a>05-hotkeys (<a href="https://vnijs.shinyapps.io/shinyAce-05-hotkeys/">Live Demo</a>)</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/05-hotkeys", package="shinyAce"))</a></code></p>
+<div class="section level3">
+<h3 id="05-hotkeys-live-demo">05-hotkeys (<a href="https://vnijs.shinyapps.io/shinyAce-05-hotkeys/" class="external-link">Live Demo</a>)<a class="anchor" aria-label="anchor" href="#05-hotkeys-live-demo"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/05-hotkeys", package="shinyAce"))</code></p>
 <p>An example using the <code>hotkeys</code> feature of ShinyAce to allow application developers to expose keyboard shortcuts to their users.</p>
 </div>
-<div id="autocomplete-live-demo" class="section level3">
-<h3 class="hasAnchor">
-<a href="#autocomplete-live-demo" class="anchor"></a>06-autocomplete (<a href="https://vnijs.shinyapps.io/shinyAce-06-autocomplete/">Live Demo</a>)</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/06-autocomplete", package="shinyAce"))</a></code></p>
+<div class="section level3">
+<h3 id="06-autocomplete-live-demo">06-autocomplete (<a href="https://vnijs.shinyapps.io/shinyAce-06-autocomplete/" class="external-link">Live Demo</a>)<a class="anchor" aria-label="anchor" href="#06-autocomplete-live-demo"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/06-autocomplete", package="shinyAce"))</code></p>
 <p>An example using the <code>autocomplete</code> feature of ShinyAce to enable Ace to suggest completions as the user types.</p>
 </div>
-<div id="autocomplete-combine-live-demo" class="section level3">
-<h3 class="hasAnchor">
-<a href="#autocomplete-combine-live-demo" class="anchor"></a>07-autocomplete-combine (<a href="https://vnijs.shinyapps.io/shinyAce-07-autocomplete-combine/">Live Demo</a>)</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/07-autocomplete-combine", package="shinyAce"))</a></code></p>
+<div class="section level3">
+<h3 id="07-autocomplete-combine-live-demo">07-autocomplete-combine (<a href="https://vnijs.shinyapps.io/shinyAce-07-autocomplete-combine/" class="external-link">Live Demo</a>)<a class="anchor" aria-label="anchor" href="#07-autocomplete-combine-live-demo"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/07-autocomplete-combine", package="shinyAce"))</code></p>
 <p>Create a custom (reactive) autocomplete list to use in the editor</p>
 </div>
-<div id="resize-live-demo" class="section level3">
-<h3 class="hasAnchor">
-<a href="#resize-live-demo" class="anchor"></a>08-resize (<a href="https://vnijs.shinyapps.io/shinyAce-08-resize/">Live Demo</a>)</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/08-resize", package="shinyAce"))</a></code></p>
+<div class="section level3">
+<h3 id="08-resize-live-demo">08-resize (<a href="https://vnijs.shinyapps.io/shinyAce-08-resize/" class="external-link">Live Demo</a>)<a class="anchor" aria-label="anchor" href="#08-resize-live-demo"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/08-resize", package="shinyAce"))</code></p>
 <p>Shows how to include an Ace editor that will dynamically adjusting size depending on the provided user input.</p>
 </div>
-<div id="selectionid-live-demo" class="section level3">
-<h3 class="hasAnchor">
-<a href="#selectionid-live-demo" class="anchor"></a>09-selectionId (<a href="https://vnijs.shinyapps.io/shinyAce-09-selectionId/">Live Demo</a>)</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/09-selectionId", package="shinyAce"))</a></code></p>
+<div class="section level3">
+<h3 id="09-selectionid-live-demo">09-selectionId (<a href="https://vnijs.shinyapps.io/shinyAce-09-selectionId/" class="external-link">Live Demo</a>)<a class="anchor" aria-label="anchor" href="#09-selectionid-live-demo"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/09-selectionId", package="shinyAce"))</code></p>
 <p>Shows how to access the position of the cursor in the editor and any selected text or code.</p>
 </div>
-<div id="modules" class="section level3">
-<h3 class="hasAnchor">
-<a href="#modules" class="anchor"></a>10-modules</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/10-modules", package="shinyAce"))</a></code></p>
+<div class="section level3">
+<h3 id="10-modules">10-modules<a class="anchor" aria-label="anchor" href="#10-modules"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/10-modules", package="shinyAce"))</code></p>
 <p>Demonstrates how to use shinyAce with shiny modules.</p>
 </div>
-<div id="code-hotkeys" class="section level3">
-<h3 class="hasAnchor">
-<a href="#code-hotkeys" class="anchor"></a>11-code-hotkeys</h3>
-<p>Run example: <code><a href="https://www.rdocumentation.org/packages/shiny/topics/runApp">shiny::runApp(system.file("examples/11-code-hotkeys", package="shinyAce"))</a></code></p>
+<div class="section level3">
+<h3 id="11-code-hotkeys">11-code-hotkeys<a class="anchor" aria-label="anchor" href="#11-code-hotkeys"></a>
+</h3>
+<p>Run example: <code>shiny::runApp(system.file("examples/11-code-hotkeys", package="shinyAce"))</code></p>
 <p>Use hotkeys to evaluate a selection of code or step through your code using hotkeys</p>
 </div>
-<div id="security-note" class="section level3">
-<h3 class="hasAnchor">
-<a href="#security-note" class="anchor"></a>Security Note</h3>
+<div class="section level3">
+<h3 id="security-note">Security Note<a class="anchor" aria-label="anchor" href="#security-note"></a>
+</h3>
 <p>As with any online application, it is a <strong>genuinely bad idea</strong> to allow arbitrary users to execute code on your server. The above examples show such an environment in which arbitrary R code is being executed on a remote machine. In a trusted environment (such as after authenticating a user or on a network protected by a firewall), this may not be a terrible idea; on a public server without authentication, it most certainly is. So please use the above examples with caution, realizing that without proper security checks in place, allowing unknown users to execute arbitrary R code would make it trivial for an attacker to compromise your server or steal your private data.</p>
 </div>
 </div>
-<div id="contributors-in-order-of-first-commit" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contributors-in-order-of-first-commit" class="anchor"></a>Contributors (In order of first commit)</h2>
+<div class="section level2">
+<h2 id="contributors-in-order-of-first-commit">Contributors (In order of first commit)<a class="anchor" aria-label="anchor" href="#contributors-in-order-of-first-commit"></a>
+</h2>
 <ul>
 <li>
-<a href="https://github.com/trestletech">Jeff Allen</a> - Core project</li>
+<a href="https://github.com/trestletech" class="external-link">Jeff Allen</a> - Core project</li>
 <li>
-<a href="https://github.com/vnijs">Vincent Nijs</a> - Vim key bindings, keyboard shortcuts to run code chunks, expanded access to various Ace editor options, package maintenance (<a href="https://github.com/trestletech/shinyAce/pull/9">#9</a>, <a href="https://github.com/trestletech/shinyAce/pull/35">#35</a>, <a href="https://github.com/trestletech/shinyAce/pull/51">#51</a>)</li>
+<a href="https://github.com/vnijs" class="external-link">Vincent Nijs</a> - Vim key bindings, keyboard shortcuts to run code chunks, expanded access to various Ace editor options, package maintenance (<a href="https://github.com/trestletech/shinyAce/pull/9" class="external-link">#9</a>, <a href="https://github.com/trestletech/shinyAce/pull/35" class="external-link">#35</a>, <a href="https://github.com/trestletech/shinyAce/pull/51" class="external-link">#51</a>)</li>
 <li>
-<a href="https://github.com/ncarchedi">Nick Carchedi</a> - Word wrapping (<a href="https://github.com/trestletech/shinyAce/pull/12">#12</a>)</li>
+<a href="https://github.com/ncarchedi" class="external-link">Nick Carchedi</a> - Word wrapping (<a href="https://github.com/trestletech/shinyAce/pull/12" class="external-link">#12</a>)</li>
 <li>
-<a href="https://github.com/skranz">Sebastian Kranz</a> - Hotkey feature and cursor listener (<a href="https://github.com/trestletech/shinyAce/pull/16/files">#16</a>)</li>
+<a href="https://github.com/skranz" class="external-link">Sebastian Kranz</a> - Hotkey feature and cursor listener (<a href="https://github.com/trestletech/shinyAce/pull/16/files" class="external-link">#16</a>)</li>
 <li>
-<a href="https://github.com/saurfang">Forest Fang</a> - Code completion (<a href="https://github.com/trestletech/shinyAce/pull/21">#21</a>, <a href="https://github.com/trestletech/shinyAce/pull/52">#52</a>, <a href="https://github.com/trestletech/shinyAce/pull/53">#53</a>)</li>
+<a href="https://github.com/saurfang" class="external-link">Forest Fang</a> - Code completion (<a href="https://github.com/trestletech/shinyAce/pull/21" class="external-link">#21</a>, <a href="https://github.com/trestletech/shinyAce/pull/52" class="external-link">#52</a>, <a href="https://github.com/trestletech/shinyAce/pull/53" class="external-link">#53</a>)</li>
 <li>
-<a href="https://github.com/GregorDeCillia">Gregor De Cillia</a> - Auto completion with shiny modules (<a href="https://github.com/trestletech/shinyAce/pull/54">#54</a>)</li>
+<a href="https://github.com/GregorDeCillia" class="external-link">Gregor De Cillia</a> - Auto completion with shiny modules (<a href="https://github.com/trestletech/shinyAce/pull/54" class="external-link">#54</a>)</li>
 <li>
-<a href="https://github.com/detule">@detule</a> - Refactoring of much of the JS code in shinyAce to better work with Shiny Modules (<a href="https://github.com/trestletech/shinyAce/pull/62">#62</a>)</li>
+<a href="https://github.com/detule" class="external-link">@detule</a> - Refactoring of much of the JS code in shinyAce to better work with Shiny Modules (<a href="https://github.com/trestletech/shinyAce/pull/62" class="external-link">#62</a>)</li>
 </ul>
 </div>
-<div id="known-bugs" class="section level2">
-<h2 class="hasAnchor">
-<a href="#known-bugs" class="anchor"></a>Known Bugs</h2>
-<p>See the <a href="https://github.com/trestletech/shinyAce/issues">Issues page</a> for information on outstanding issues.</p>
+<div class="section level2">
+<h2 id="known-bugs">Known Bugs<a class="anchor" aria-label="anchor" href="#known-bugs"></a>
+</h2>
+<p>See the <a href="https://github.com/trestletech/shinyAce/issues" class="external-link">Issues page</a> for information on outstanding issues.</p>
 </div>
-<div id="license" class="section level2">
-<h2 class="hasAnchor">
-<a href="#license" class="anchor"></a>License</h2>
-<p>The development of this project was generously sponsored by the <a href="https://www.irsn.fr/EN/Pages/home.aspx">Institut de Radioprotection et de Sûreté Nucléaire</a> and performed by <a href="https://trestletech.com">Jeff Allen</a>. The code is licensed under The MIT License (MIT).</p>
+<div class="section level2">
+<h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
+</h2>
+<p>The development of this project was generously sponsored by the <a href="https://www.irsn.fr/EN/Pages/home.aspx" class="external-link">Institut de Radioprotection et de Sûreté Nucléaire</a> and performed by <a href="https://trestletech.com" class="external-link">Jeff Allen</a>. The code is licensed under The MIT License (MIT).</p>
 <p>Copyright (c) 2013 Institut de Radioprotection et de Sûreté Nucléaire</p>
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
@@ -195,53 +210,70 @@ devtools::install_github("trestletech/shinyAce")</a></code></pre>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=shinyAce">https://​cloud.r-project.org/​package=shinyAce</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/trestletech/shinyAce/issues">https://​github.com/​trestletech/​shinyAce/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=shinyAce" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/trestletech/shinyAce/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/trestletech/shinyAce/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing shinyAce</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Vincent Nijs <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Forest Fang <br><small class="roles"> Author </small>  </li>
 <li> Trestle Technology, LLC <br><small class="roles"> Author </small>  </li>
 <li>Jeff Allen <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/trestletech/shinyAce"><img src="https://travis-ci.org/trestletech/shinyAce.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://travis-ci.org/trestletech/shinyAce" class="external-link"><img src="https://travis-ci.org/trestletech/shinyAce.svg?branch=master" alt="Build Status"></a></li>
 </ul>
 </div>
+
+  </div>
 </div>
-</div>
+
 
       <footer><div class="copyright">
-  <p>Developed by Vincent Nijs, Forest Fang,  Trestle Technology, LLC, Jeff Allen.</p>
+  <p></p>
+<p>Developed by Vincent Nijs, Forest Fang, Trestle Technology, LLC, Jeff Allen.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
+
       </footer>
 </div>
+
+  
+
 
   
 
