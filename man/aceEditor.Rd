@@ -28,6 +28,7 @@ aceEditor(
   useSoftTabs = TRUE,
   showInvisibles = FALSE,
   setBehavioursEnabled = TRUE,
+  showPrintMargin = TRUE,
   autoScrollEditorIntoView = FALSE,
   maxLines = NULL,
   minLines = NULL,
@@ -120,6 +121,8 @@ Default value is FALSE}
 
 \item{setBehavioursEnabled}{Determines if the auto-pairing of special characters, like
 quotation marks, parenthesis, or brackets should be enabled. Default value is TRUE.}
+
+\item{showPrintMargin}{Show print margin. Default value is True}
 
 \item{autoScrollEditorIntoView}{If TRUE, expands the size of the editor window as new lines are added}
 

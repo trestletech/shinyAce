@@ -17,6 +17,7 @@ updateAceEditor(
   useSoftTabs,
   tabSize,
   showInvisibles,
+  showPrintMargin,
   border = c("normal", "alert", "flash"),
   autoComplete = c("disabled", "enabled", "live"),
   autoCompleters = c("snippet", "text", "keyword", "static", "rlang"),
@@ -56,6 +57,8 @@ Default value is \code{FALSE}.}
 
 \item{showInvisibles}{Show invisible characters (e.g., spaces, tabs, newline characters).
 Default value is FALSE}
+
+\item{showPrintMargin}{Show print margin. Default value is True}
 
 \item{border}{Set the \code{border} 'normal', 'alert', or 'flash'.}
 

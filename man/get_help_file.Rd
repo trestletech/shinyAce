@@ -38,7 +38,7 @@ get_help_file(...)
   }}
 }
 \value{
-the Rd object returned from \code{utils:::.getHelpFile}
+the Rd object returned from \code{utils:::getHelpFile}
 }
 \description{
 Safely return NULL if an error is encountered.

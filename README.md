@@ -58,7 +58,7 @@ Run example: `shiny::runApp(system.file("examples/03-knitr", package="shinyAce")
 
 ![shinyAce](https://trestletech.github.io/shinyAce/images/shinyAce-knitr.png)
 
-Demonstrates integrating shinyAce with the [knitr](https://yihui.name/knitr/) package. (Note also that an example of this integration is available [in the knitr package](https://github.com/yihui/knitr/tree/master/inst/shiny) itself and includes features such as R syntax highlighting.)
+Demonstrates integrating shinyAce with the [knitr](https://yihui.org/knitr/) package. (Note also that an example of this integration is available [in the knitr package](https://github.com/yihui/knitr/tree/master/inst/shiny) itself and includes features such as R syntax highlighting.)
 
 ### 04-shinyui
 

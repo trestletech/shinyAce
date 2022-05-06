@@ -27,7 +27,7 @@ shiny::shinyAppDir(system.file(package = "shinyAce", "examples", "12-tooltips"))
 #' @inheritParams utils::help
 #' @inheritDotParams utils::help
 #'
-#' @return the Rd object returned from \code{utils:::.getHelpFile}
+#' @return the Rd object returned from \code{utils:::getHelpFile}
 #' 
 #' @import utils
 #' 

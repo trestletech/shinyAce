@@ -23,6 +23,7 @@
 #' @param useSoftTabs Replace tabs by spaces. Default value is TRUE
 #' @param showInvisibles Show invisible characters (e.g., spaces, tabs, newline characters).
 #'    Default value is FALSE
+#' @param showPrintMargin Show print margin. Default value is True
 #' @param border Set the \code{border} 'normal', 'alert', or 'flash'.
 #' @param autoComplete Enable/Disable code completion. See \code{\link{aceEditor}}
 #'   for details.

@@ -62,6 +62,7 @@
 #' @param useSoftTabs Replace tabs by spaces. Default value is TRUE
 #' @param showInvisibles Show invisible characters (e.g., spaces, tabs, newline characters).
 #'   Default value is FALSE
+#' @param showPrintMargin Show print margin. Default value is True
 #' @param setBehavioursEnabled Determines if the auto-pairing of special characters, like
 #'   quotation marks, parenthesis, or brackets should be enabled. Default value is TRUE.
 #' @param autoScrollEditorIntoView If TRUE, expands the size of the editor window as new lines are added
