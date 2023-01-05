@@ -25,5 +25,5 @@ Suggests:
     dplyr (>= 0.8.3)
 BugReports: https://github.com/trestletech/shinyAce/issues
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Language: en-US
