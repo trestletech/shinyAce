@@ -51,7 +51,7 @@ updateAceEditor <- function(
   autoCompleters = c("snippet", "text", "keyword", "static", "rlang"),
   autoCompleteList = NULL
 ) {
-  
+
   if (missing(session) || missing(editorId)) {
     stop("Must provide both a session and an editorId to update Ace editor settings")
   }

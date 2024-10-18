@@ -7,11 +7,7 @@
 get_usage_help(...)
 }
 \arguments{
-\item{...}{
-  Arguments passed on to \code{\link[=get_help_file]{get_help_file}}
-  \describe{
-    \item{\code{}}{}
-  }}
+\item{...}{arguments passed to get_help_file}
 }
 \value{
 a character value representing the usage section of a help

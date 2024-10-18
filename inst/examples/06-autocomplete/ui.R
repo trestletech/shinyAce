@@ -5,7 +5,7 @@ shinyUI(fluidPage(
   titlePanel("shinyAce auto completion demo"),
   sidebarLayout(
     sidebarPanel(
-      helpText("Modify the code chunks below and click Eval to see the plot update. 
+      helpText("Modify the code chunks below and click Eval to see the plot update.
                 Use Ctrl+Space for code completion when enabled."),
       radioButtons("dataset", "Dataset: ", c("mtcars", "airquality"), inline = TRUE),
       tags$pre("  %>%"),
@@ -16,7 +16,7 @@ shinyUI(fluidPage(
       div(actionButton("eval", "Eval"), class = "pull-right"), br(),
       checkboxInput("enableAutocomplete", "Enable AutoComplete", TRUE),
       conditionalPanel(
-        "input.enableAutocomplete", 
+        "input.enableAutocomplete",
         wellPanel(
           checkboxInput("enableLiveCompletion", "Live auto completion", TRUE),
           checkboxInput("enableNameCompletion", list("Dataset column names completion in", tags$i("mutate")), TRUE),

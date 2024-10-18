@@ -9,10 +9,10 @@ shinyUI(fluidPage(
       checkboxInput("enableTooltips", "Enable R Tooltips", TRUE),
       checkboxInput("enableAnnotations", "Enable R Annotations", TRUE)),
     mainPanel(
-      aceEditor("ace_editor", 
-        mode = "r", 
+      aceEditor("ace_editor",
+        mode = "r",
         autoComplete = "live",
-        autoCompleters = "rlang", 
+        autoCompleters = "rlang",
         value = "# Tooltips:
 # linger over an autocomplete option to view some documentation. See
 # - Function descriptions
@@ -24,7 +24,7 @@ shinyUI(fluidPage(
 
 
 # Annotations:
-# gutter annotations used to indicate syntax errors, try uncommenting this line 
+# gutter annotations used to indicate syntax errors, try uncommenting this line
 # with an incomplete string
 # '''
 

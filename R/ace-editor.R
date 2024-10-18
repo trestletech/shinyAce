@@ -111,10 +111,10 @@
 #' @export
 aceEditor <- function(
   outputId, value, mode, theme,
-  vimKeyBinding = FALSE, readOnly = FALSE, 
+  vimKeyBinding = FALSE, readOnly = FALSE,
   height = "400px", fontSize = 12,
   debounce = 1000, wordWrap = FALSE, showLineNumbers = TRUE,
-  highlightActiveLine = TRUE, 
+  highlightActiveLine = TRUE,
   selectionId = NULL, cursorId = NULL,
   hotkeys = NULL, code_hotkeys = NULL,
   autoComplete = c("disabled", "enabled", "live"),
@@ -123,11 +123,11 @@ aceEditor <- function(
   tabSize = 4, useSoftTabs = TRUE,
   showInvisibles = FALSE, setBehavioursEnabled = TRUE,
   showPrintMargin = TRUE,
-  autoScrollEditorIntoView = FALSE, 
+  autoScrollEditorIntoView = FALSE,
   maxLines = NULL, minLines = NULL,
   placeholder = NULL
 ) {
-  
+
   escapedId <- gsub("\\.", "\\\\\\\\.", outputId)
   escapedId <- gsub("\\:", "\\\\\\\\:", escapedId)
   payloadLst <-

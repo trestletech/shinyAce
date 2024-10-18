@@ -1,8 +1,6 @@
 shinyAce
 ==========
 
-[![Build Status](https://travis-ci.org/trestletech/shinyAce.svg?branch=master)](https://travis-ci.org/trestletech/shinyAce)
-
 The `shinyAce` package enables Shiny application developers to use the 
 [Ace text editor](https://ace.c9.io/#nav=about) in their applications. All
 current modes (languages) and themes are supported in this package. The 
@@ -129,13 +127,13 @@ Known Bugs
 ----------
 
 See the [Issues page](https://github.com/trestletech/shinyAce/issues) for
-information on outstanding issues. 
+information on outstanding issues.
 
 License
 -------
 
-The development of this project was generously sponsored by the [Institut de 
-Radioprotection et de Sûreté Nucléaire](https://www.irsn.fr/EN/Pages/home.aspx) 
+The development of this project was generously sponsored by the [Institut de
+Radioprotection et de Sûreté Nucléaire](https://en.irsn.fr)
 and performed by [Jeff Allen](https://trestletech.com). The code is
 licensed under The MIT License (MIT).
 

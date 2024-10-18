@@ -7,11 +7,7 @@
 get_arg_help(..., args = character())
 }
 \arguments{
-\item{...}{
-  Arguments passed on to \code{\link[=get_help_file]{get_help_file}}
-  \describe{
-    \item{\code{}}{}
-  }}
+\item{...}{arguments passed to get_help_file}
 
 \item{args}{function arguments names to get documentation for}
 }

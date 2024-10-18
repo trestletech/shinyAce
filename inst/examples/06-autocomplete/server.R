@@ -63,7 +63,7 @@ shinyServer(function(input, output, session) {
     updateAceEditor(session, "plot", autoCompleters = completers)
   })
 
-  output$plot <- renderPlot({ 
+  output$plot <- renderPlot({
     input$eval
     tryCatch({
       # clear error

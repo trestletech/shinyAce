@@ -3,7 +3,7 @@ library(shinyAce)
 library(dplyr)
 
 server <- function(input, output, session) {
-  
+
   ## Dataset Selection
   dataset <- reactive({
     get(input$dataset)
