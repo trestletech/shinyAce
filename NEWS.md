@@ -1,3 +1,8 @@
+shinyAce 0.4.4
+--------------------------------------------------------------------
+
+* Accepted a pull request to address a [security issue](https://github.com/trestletech/shinyAce/pull/88)
+
 shinyAce 0.4.3
 --------------------------------------------------------------------
 
